@@ -1,0 +1,122 @@
+@import "tailwindcss";
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800;900&family=JetBrains+Mono:wght@400;500;700&family=Archivo+Black&family=Space+Grotesk:wght@400;500;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
+
+@theme {
+  --color-primary: #FF4D00;
+  --color-molten: #FA5D19;
+  --color-surface: #0A0A0B;
+  --color-neon: #FF4D00;
+  --color-onSurface: #FFFFFF;
+  
+  /* Stitch Design Tokens */
+  --color-stitch-surface-container-low: #fff1ed;
+  --color-stitch-surface-variant: #fbdcd4;
+  --color-stitch-surface-container: #ffe9e4;
+  --color-stitch-on-background: #281813;
+  --color-stitch-background: #fff8f6;
+  --color-stitch-primary: #FA5D19;
+  --color-stitch-surface-white: #ffffff;
+  --color-stitch-industrial-gray: #F4F4F4;
+  --color-stitch-surface-container-high: #ffe2da;
+  --color-stitch-surface-container-highest: #fbdcd4;
+  --color-stitch-surface-container-lowest: #ffffff;
+  
+  --font-space: 'Space Grotesk', sans-serif;
+}
+
+/* Stitch Brutalist Utility Classes */
+.brutal-shadow-stitch { 
+  box-shadow: 4px 4px 0px 0px #000000; 
+}
+.brutal-shadow-hover-stitch {
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+.brutal-shadow-hover-stitch:hover { 
+  box-shadow: 6px 6px 0px 0px #FA5D19;
+  transform: translate(-2px, -2px);
+}
+.brutal-shadow-active-stitch:active {
+  box-shadow: 0px 0px 0px 0px #000000;
+  transform: translate(4px, 4px);
+}
+.inner-grid-border-stitch > * { 
+  border: 1px solid #281813; 
+}
+
+
+:root {
+  --neon-orange: #FF4D00;
+  --deep-charcoal: #0A0A0B;
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+  scrollbar-gutter: stable;
+}
+
+body {
+  background-color: var(--deep-charcoal);
+  color: #FFFFFF;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Brutalist Aesthetic Custom Utilities */
+.brutalist-border {
+  border: 4px solid #FFFFFF;
+}
+
+.brutalist-shadow {
+  box-shadow: 10px 10px 0px 0px var(--neon-orange);
+}
+
+.text-neon {
+  color: var(--neon-orange);
+}
+
+.bg-neon {
+  background-color: var(--neon-orange);
+}
+
+.font-brutal-head {
+  font-family: 'Archivo Black', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  line-height: 0.85;
+}
+
+.kinetic-marquee {
+  animation: kinetic-scroll 20s linear infinite;
+}
+
+.marquee-fast {
+  animation: kinetic-scroll 15s linear infinite;
+}
+
+@keyframes kinetic-scroll {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.overlap-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+}
+
+.vertical-text {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
+
+.stark-grid {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 180px 180px;
+}

@@ -1,0 +1,147 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Savitha Engineering - Loading Specs</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500&amp;family=Space+Grotesk:wght@400;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#f24a0d",
+              "background-light": "#f8f6f5",
+              "background-dark": "#221510",
+            },
+            fontFamily: {
+              "display": ["Space Grotesk", "sans-serif"],
+              "mono": ["JetBrains Mono", "monospace"],
+              "body": ["Helvetica Neue", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .brutal-shadow {
+            box-shadow: 4px 4px 0px 0px #000000;
+        }
+        .brutal-shadow-primary {
+            box-shadow: 4px 4px 0px 0px #f24a0d;
+        }
+        @keyframes custom-blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        .animate-blink {
+            animation: custom-blink 1s step-end infinite;
+        }
+    </style>
+</head>
+<body class="font-body text-black bg-white min-h-screen">
+<!-- SHARED COMPONENT START -->
+<div class="relative flex h-auto min-h-screen w-full flex-col bg-white group/design-root overflow-x-hidden" style="--checkbox-tick-svg: url('data:image/svg+xml,%3csvg viewBox=%270 0 16 16%27 fill=%27rgb(255,255,255)%27 xmlns=%27http://www.w3.org/2000/svg%27%3e%3cpath d=%27M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z%27/%3e%3c/svg%3e'); font-family: &quot;Space Grotesk&quot;, &quot;Noto Sans&quot;, sans-serif;">
+<div class="layout-container flex h-full grow flex-col w-full max-w-[1440px] mx-auto">
+<div class="flex flex-1 py-5 px-8 gap-8">
+<!-- Left Sidebar (From Shared Component modified to sit side-by-side with grid per PRD layout needs, though keeping inner structure intact) -->
+<div class="flex flex-col w-[280px] shrink-0 border-r-2 border-black pr-4">
+<header class="flex items-center justify-between whitespace-nowrap border-b-2 border-black pb-6 mb-6">
+<div class="flex items-center gap-4 text-[#181311]">
+<div class="size-6 text-primary">
+<svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M39.475 21.6262C40.358 21.4363 40.6863 21.5589 40.7581 21.5934C40.7876 21.655 40.8547 21.857 40.8082 22.3336C40.7408 23.0255 40.4502 24.0046 39.8572 25.2301C38.6799 27.6631 36.5085 30.6631 33.5858 33.5858C30.6631 36.5085 27.6632 38.6799 25.2301 39.8572C24.0046 40.4502 23.0255 40.7407 22.3336 40.8082C21.8571 40.8547 21.6551 40.7875 21.5934 40.7581C21.5589 40.6863 21.4363 40.358 21.6262 39.475C21.8562 38.4054 22.4689 36.9657 23.5038 35.2817C24.7575 33.2417 26.5497 30.9744 28.7621 28.762C30.9744 26.5497 33.2417 24.7574 35.2817 23.5037C36.9657 22.4689 38.4054 21.8562 39.475 21.6262ZM4.41189 29.2403L18.7597 43.5881C19.8813 44.7097 21.4027 44.9179 22.7217 44.7893C24.0585 44.659 25.5148 44.1631 26.9723 43.4579C29.9052 42.0387 33.2618 39.5667 36.4142 36.4142C39.5667 33.2618 42.0387 29.9052 43.4579 26.9723C44.1631 25.5148 44.659 24.0585 44.7893 22.7217C44.9179 21.4027 44.7097 19.8813 43.5881 18.7597L29.2403 4.41187C27.8527 3.02428 25.8765 3.02573 24.2861 3.36776C22.6081 3.72863 20.7334 4.58419 18.8396 5.74801C16.4978 7.18716 13.9881 9.18353 11.5858 11.5858C9.18354 13.988 7.18717 16.4978 5.74802 18.8396C4.58421 20.7334 3.72865 22.6081 3.36778 24.2861C3.02574 25.8765 3.02429 27.8527 4.41189 29.2403Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h2 class="text-black text-xl font-display font-bold leading-tight uppercase">Savitha Eng</h2>
+</div>
+</header>
+<h3 class="font-display font-bold mb-4 uppercase text-sm tracking-wider">Active Parameters</h3>
+<div class="px-0 font-mono text-sm">
+<label class="flex gap-x-3 py-3 flex-row items-center cursor-pointer group">
+<input checked="" class="h-5 w-5 rounded-none border-black border-2 bg-white text-primary checked:bg-primary checked:border-primary checked:bg-[image:--checkbox-tick-svg] focus:ring-0 focus:ring-offset-0 focus:border-primary transition-colors" type="checkbox">
+<p class="text-black font-medium group-hover:text-primary transition-colors">Temperature Range</p>
+</label>
+<label class="flex gap-x-3 py-3 flex-row items-center cursor-pointer group">
+<input checked="" class="h-5 w-5 rounded-none border-black border-2 bg-white text-primary checked:bg-primary checked:border-primary checked:bg-[image:--checkbox-tick-svg] focus:ring-0 focus:ring-offset-0 focus:border-primary transition-colors" type="checkbox">
+<p class="text-black font-medium group-hover:text-primary transition-colors">Fuel Type</p>
+</label>
+<label class="flex gap-x-3 py-3 flex-row items-center cursor-pointer group">
+<input class="h-5 w-5 rounded-none border-black border-2 bg-white text-primary checked:bg-primary checked:border-primary checked:bg-[image:--checkbox-tick-svg] focus:ring-0 focus:ring-offset-0 focus:border-primary transition-colors" type="checkbox">
+<p class="text-black font-medium group-hover:text-primary transition-colors">Material</p>
+</label>
+</div>
+</div>
+<!-- Main Content Area -->
+<div class="flex flex-col flex-1 relative">
+<!-- Top Nav CTA -->
+<div class="flex justify-end items-center mb-8 gap-8 border-b-2 border-black pb-4">
+<nav class="flex items-center gap-8 font-display uppercase text-sm font-bold">
+<a class="text-black hover:text-primary transition-colors" href="#">Products</a>
+<a class="text-black hover:text-primary transition-colors" href="#">Solutions</a>
+<a class="text-black hover:text-primary transition-colors" href="#">Support</a>
+</nav>
+<button class="flex items-center justify-center rounded bg-white border-2 border-black brutal-shadow h-10 px-6 text-black font-display text-sm font-bold uppercase hover:bg-background-light active:translate-y-[2px] active:translate-x-[2px] active:shadow-[2px_2px_0px_0px_#000000] transition-all">
+                Download Brochure
+            </button>
+</div>
+<!-- LOADING STATE GRID CONTAINER -->
+<div class="relative flex-1 min-h-[600px]">
+<!-- Grid of Skeleton Cards -->
+<div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+<!-- Skeleton Card 1 -->
+<div class="border-2 border-black rounded h-[380px] bg-[repeating-linear-gradient(45deg,#f4f4f4,#f4f4f4_10px,#ffffff_10px,#ffffff_20px)] brutal-shadow flex flex-col p-4" data-alt="A highly structured architectural blueprint skeleton representing an industrial furnace unit. The image is composed entirely of diagonal grey and white alternating stripes at a 45-degree angle, simulating raw CAD rendering placeholders. Thick, unyielding black geometric borders frame the stark white background, emphasizing a brutalist, engineering-focused aesthetic. The mood is highly technical and precise, void of organic shapes, heavily relying on high-contrast black, white, and subtle grey lighting to convey incomplete structural data processing in a light-mode digital interface.">
+<div class="h-48 border-2 border-black bg-white mb-4"></div>
+<div class="h-6 bg-black w-3/4 mb-4"></div>
+<div class="space-y-2 mt-auto">
+<div class="h-4 bg-black w-full"></div>
+<div class="h-4 bg-black w-5/6"></div>
+</div>
+</div>
+<!-- Skeleton Card 2 -->
+<div class="border-2 border-black rounded h-[380px] bg-[repeating-linear-gradient(45deg,#f4f4f4,#f4f4f4_10px,#ffffff_10px,#ffffff_20px)] brutal-shadow flex flex-col p-4" data-alt="A highly structured architectural blueprint skeleton representing an industrial heating component. The image is composed entirely of diagonal grey and white alternating stripes at a 45-degree angle, simulating raw CAD rendering placeholders. Thick, unyielding black geometric borders frame the stark white background, emphasizing a brutalist, engineering-focused aesthetic. The mood is highly technical and precise, void of organic shapes, heavily relying on high-contrast black, white, and subtle grey lighting to convey incomplete structural data processing in a light-mode digital interface.">
+<div class="h-48 border-2 border-black bg-white mb-4"></div>
+<div class="h-6 bg-black w-2/3 mb-4"></div>
+<div class="space-y-2 mt-auto">
+<div class="h-4 bg-black w-full"></div>
+<div class="h-4 bg-black w-4/5"></div>
+</div>
+</div>
+<!-- Skeleton Card 3 -->
+<div class="border-2 border-black rounded h-[380px] bg-[repeating-linear-gradient(45deg,#f4f4f4,#f4f4f4_10px,#ffffff_10px,#ffffff_20px)] brutal-shadow flex flex-col p-4 hidden lg:flex" data-alt="A highly structured architectural blueprint skeleton representing heavy industrial machinery. The image is composed entirely of diagonal grey and white alternating stripes at a 45-degree angle, simulating raw CAD rendering placeholders. Thick, unyielding black geometric borders frame the stark white background, emphasizing a brutalist, engineering-focused aesthetic. The mood is highly technical and precise, void of organic shapes, heavily relying on high-contrast black, white, and subtle grey lighting to convey incomplete structural data processing in a light-mode digital interface.">
+<div class="h-48 border-2 border-black bg-white mb-4"></div>
+<div class="h-6 bg-black w-4/5 mb-4"></div>
+<div class="space-y-2 mt-auto">
+<div class="h-4 bg-black w-full"></div>
+<div class="h-4 bg-black w-full"></div>
+</div>
+</div>
+<!-- Skeleton Card 4 -->
+<div class="border-2 border-black rounded h-[380px] bg-[repeating-linear-gradient(45deg,#f4f4f4,#f4f4f4_10px,#ffffff_10px,#ffffff_20px)] brutal-shadow flex flex-col p-4 hidden xl:flex" data-alt="A highly structured architectural blueprint skeleton representing thermal processing equipment. The image is composed entirely of diagonal grey and white alternating stripes at a 45-degree angle, simulating raw CAD rendering placeholders. Thick, unyielding black geometric borders frame the stark white background, emphasizing a brutalist, engineering-focused aesthetic. The mood is highly technical and precise, void of organic shapes, heavily relying on high-contrast black, white, and subtle grey lighting to convey incomplete structural data processing in a light-mode digital interface.">
+<div class="h-48 border-2 border-black bg-white mb-4"></div>
+<div class="h-6 bg-black w-3/4 mb-4"></div>
+<div class="space-y-2 mt-auto">
+<div class="h-4 bg-black w-full"></div>
+<div class="h-4 bg-black w-5/6"></div>
+</div>
+</div>
+</div>
+<!-- Loading Overlay -->
+<div class="absolute inset-0 bg-white/70 backdrop-blur-[1px] z-10 flex items-center justify-center">
+<div class="bg-white border-2 border-black px-8 py-4 brutal-shadow-primary flex items-center gap-3">
+<span class="text-primary font-mono font-bold text-2xl tracking-widest uppercase">Calculating Specs</span>
+<span class="text-primary font-mono font-bold text-2xl animate-blink w-4">_</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- SHARED COMPONENT END -->
+</body></html>

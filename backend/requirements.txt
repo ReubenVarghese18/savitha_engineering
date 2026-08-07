@@ -1,0 +1,12 @@
+fastapi
+uvicorn
+sqlalchemy
+reportlab
+passlib
+bcrypt
+python-jose
+python-dotenv
+python-multipart
+slowapi
+sentry-sdk[fastapi]
+alembic
