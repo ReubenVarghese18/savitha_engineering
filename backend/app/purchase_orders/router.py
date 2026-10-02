@@ -18,15 +18,19 @@ class POStatusUpdate(BaseModel):
     status: str
 
 @router.post("")
-async def create_purchase_order(po: POCreate, db: Session = Depends(get_db)):
-    db_po = PurchaseOrder(
-        vendor_name=po.vendor_name,
-        items_requested=json.dumps(po.items_requested)
-    )
-    db.add(db_po)
-    db.commit()
-    db.refresh(db_po)
-    return {"status": "success", "id": db_po.id}
+async def create_purchase_order(po: POCreate, current_user: dict = Depends(get_current_user), db: Session = Depends(get_db)):
+    try:
+        db_po = PurchaseOrder(
+            vendor_name=po.vendor_name,
+            items_requested=json.dumps(po.items_requested)
+        )
+        db.add(db_po)
+        db.commit()
+        db.refresh(db_po)
+        return {"status": "success", "id": db_po.id}
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail="Failed to create purchase order")
 
 @router.get("")
 async def get_purchase_orders(current_user: dict = Depends(get_current_user), db: Session = Depends(get_db)):
@@ -46,6 +50,10 @@ async def update_po_status(po_id: int, update: POStatusUpdate, current_user: dic
     po = db.query(PurchaseOrder).filter(PurchaseOrder.id == po_id).first()
     if not po:
         raise HTTPException(status_code=404, detail="Purchase Order not found")
-    po.status = update.status
-    db.commit()
-    return {"status": "success", "id": po_id, "new_status": update.status}
+    try:
+        po.status = update.status
+        db.commit()
+        return {"status": "success", "id": po_id, "new_status": update.status}
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail="Failed to update purchase order")

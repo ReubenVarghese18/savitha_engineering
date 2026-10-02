@@ -1,14 +1,16 @@
-import sqlite3
 import re
 import os
 import sentry_sdk
 from typing import List
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, HTTPException
 from pydantic import BaseModel, field_validator
 from fastapi.middleware.cors import CORSMiddleware
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from app.limiter import limiter
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Import engine and Base
 from app.database import engine, Base
@@ -41,10 +43,11 @@ app = FastAPI(title="Savitha Industrial Backend")
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
-# 1. SECURITY GATE: Allow React (localhost:5173) to send data
+# 1. SECURITY GATE: Configure CORS from environment
+allowed_origins = os.getenv("CORS_ORIGINS", "http://localhost:5173,http://localhost:5174").split(",")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://localhost:5174"], # Your Vite frontend URLs
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -61,24 +64,29 @@ class QuoteRequest(BaseModel):
     custom_details: str | None = None
     equipment_serial_number: str | None = None
 
-# 3. THE ENDPOINT: Where the frontend sends the data
+# 3. THE ENDPOINT: Where the frontend sends the data (public endpoint for customer quotes)
 @app.post("/api/quotes")
 async def receive_quote(quote: QuoteRequest, db: Session = Depends(get_db)):
     import json
-    assets_json = json.dumps(quote.requested_assets or [])
-    db_quote = Quote(
-        full_name=quote.full_name,
-        company=quote.company,
-        category=quote.category,
-        requirement_details=quote.requirement_details,
-        requested_assets=assets_json,
-        is_custom_request=quote.is_custom_request,
-        custom_details=quote.custom_details,
-        equipment_serial_number=quote.equipment_serial_number
-    )
-    db.add(db_quote)
-    db.commit()
-    return {"status": "success", "message": "Quote processing initiated"}
+    try:
+        assets_json = json.dumps(quote.requested_assets or [])
+        db_quote = Quote(
+            full_name=quote.full_name,
+            company=quote.company,
+            category=quote.category,
+            requirement_details=quote.requirement_details,
+            requested_assets=assets_json,
+            is_custom_request=quote.is_custom_request,
+            custom_details=quote.custom_details,
+            equipment_serial_number=quote.equipment_serial_number
+        )
+        db.add(db_quote)
+        db.commit()
+        db.refresh(db_quote)
+        return {"status": "success", "message": "Quote processing initiated", "quote_id": db_quote.id}
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail="Failed to process quote")
 
 @app.get("/api/quotes")
 async def get_quotes(current_user: dict = Depends(get_current_user), db: Session = Depends(get_db)):
@@ -117,11 +125,14 @@ class QuoteStatusUpdate(BaseModel):
 async def update_quote_status(quote_id: int, update: QuoteStatusUpdate, current_user: dict = Depends(get_current_user), db: Session = Depends(get_db)):
     quote = db.query(Quote).filter(Quote.id == quote_id).first()
     if not quote:
-        from fastapi import HTTPException
         raise HTTPException(status_code=404, detail="Quote not found")
-    quote.status = update.status
-    db.commit()
-    return {"status": "success", "id": quote_id, "new_status": update.status}
+    try:
+        quote.status = update.status
+        db.commit()
+        return {"status": "success", "id": quote_id, "new_status": update.status}
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail="Failed to update quote")
 
 class QuoteTerms(BaseModel):
     base_price: str
@@ -140,16 +151,18 @@ class QuoteTerms(BaseModel):
 async def save_quote_draft(quote_id: int, terms: QuoteTerms, current_user: dict = Depends(get_current_user), db: Session = Depends(get_db)):
     quote = db.query(Quote).filter(Quote.id == quote_id).first()
     if not quote:
-        from fastapi import HTTPException
         raise HTTPException(status_code=404, detail="Quote not found")
-        
-    quote.base_price = terms.base_price
-    quote.lead_time = terms.lead_time
-    quote.payment_terms = terms.payment_terms
-    quote.notes = terms.notes
-    db.commit()
-    
-    return {"status": "success", "message": "Draft saved successfully"}
+
+    try:
+        quote.base_price = terms.base_price
+        quote.lead_time = terms.lead_time
+        quote.payment_terms = terms.payment_terms
+        quote.notes = terms.notes
+        db.commit()
+        return {"status": "success", "message": "Draft saved successfully"}
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail="Failed to save draft")
 
 @app.post("/api/quotes/{id}/generate-pdf")
 async def generate_quote_pdf(id: int, terms: QuoteTerms, current_user: dict = Depends(get_current_user)):

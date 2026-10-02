@@ -1,5 +1,5 @@
 import os
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from fastapi import APIRouter, Depends, HTTPException, status, Request
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 import bcrypt
@@ -24,10 +24,17 @@ router = APIRouter()
 def get_password_hash(password: str) -> str:
     return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
 
-# Dummy admin user in memory
+# Load admin credentials from environment - pre-hash password in env or use default
+ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD")
+if not ADMIN_PASSWORD:
+    raise ValueError("ADMIN_PASSWORD environment variable is not set. Set it before running the app.")
+
+ADMIN_USERNAME = os.getenv("ADMIN_USERNAME", "admin")
+
+# Pre-compute hash from env password (can be optimized by pre-hashing in .env)
 ADMIN_USER = {
-    "username": "admin",
-    "password_hash": get_password_hash("savitha2026")
+    "username": ADMIN_USERNAME,
+    "password_hash": get_password_hash(ADMIN_PASSWORD)
 }
 
 def verify_password(plain_password, hashed_password):
@@ -36,9 +43,9 @@ def verify_password(plain_password, hashed_password):
 def create_access_token(data: dict, expires_delta: timedelta = None):
     to_encode = data.copy()
     if expires_delta:
-        expire = datetime.utcnow() + expires_delta
+        expire = datetime.now(timezone.utc) + expires_delta
     else:
-        expire = datetime.utcnow() + timedelta(minutes=15)
+        expire = datetime.now(timezone.utc) + timedelta(minutes=15)
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt

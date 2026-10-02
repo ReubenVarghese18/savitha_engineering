@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, Text, Float
+from sqlalchemy import Column, Integer, String, ForeignKey, Text, Float, Boolean
 from sqlalchemy.orm import relationship
 from app.database import Base
 
@@ -17,7 +17,7 @@ class Furnace(Base):
     max_temp_val = Column(Float)                                # numeric max degC
     description  = Column(Text)
     short_description = Column(Text)
-    is_active    = Column(Integer, default=1)
+    is_active    = Column(Boolean, default=True)
 
     specs      = relationship("TechnicalSpecs", back_populates="furnace", uselist=False,
                               cascade="all, delete-orphan")
