@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { useQuote } from '../context/QuoteContext';
+import { apiFetch } from '../api/client';
 
 export default function RFQFooter() {
   const { selectedProducts, removeProductFromQuote, clearQuote } = useQuote();
@@ -45,11 +46,8 @@ export default function RFQFooter() {
     }
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/quotes', {
+      await apiFetch('/api/quotes', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify({
           full_name,
           company,
@@ -59,15 +57,11 @@ export default function RFQFooter() {
         }),
       });
 
-      if (response.ok) {
-        alert(`RFQ TRANSMITTED.\nNAME: ${full_name.toUpperCase()}\nCOMPANY: ${company.toUpperCase()}\n\nOUR TECHNICAL TEAM WILL CONTACT YOU WITHIN 4 HOURS.`);
-        setFullName('');
-        setCompany('');
-        setRequirementDetails('');
-        clearQuote();
-      } else {
-        alert('FAILED TO TRANSMIT RFQ. PLEASE TRY AGAIN.');
-      }
+      alert(`RFQ TRANSMITTED.\nNAME: ${full_name.toUpperCase()}\nCOMPANY: ${company.toUpperCase()}\n\nOUR TECHNICAL TEAM WILL CONTACT YOU WITHIN 4 HOURS.`);
+      setFullName('');
+      setCompany('');
+      setRequirementDetails('');
+      clearQuote();
     } catch (error) {
       console.error('Error submitting form:', error);
       alert('AN ERROR OCCURRED while sending request.');

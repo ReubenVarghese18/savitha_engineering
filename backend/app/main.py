@@ -2,7 +2,7 @@ import re
 import os
 import sentry_sdk
 from typing import List
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, Depends, HTTPException, Request
 from pydantic import BaseModel, field_validator
 from fastapi.middleware.cors import CORSMiddleware
 from slowapi import _rate_limit_exceeded_handler
@@ -66,7 +66,8 @@ class QuoteRequest(BaseModel):
 
 # 3. THE ENDPOINT: Where the frontend sends the data (public endpoint for customer quotes)
 @app.post("/api/quotes")
-async def receive_quote(quote: QuoteRequest, db: Session = Depends(get_db)):
+@limiter.limit("10/minute")
+async def receive_quote(request: Request, quote: QuoteRequest, db: Session = Depends(get_db)):
     import json
     try:
         assets_json = json.dumps(quote.requested_assets or [])
