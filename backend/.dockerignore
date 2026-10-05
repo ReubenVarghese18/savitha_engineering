@@ -1,0 +1,7 @@
+venv/
+__pycache__/
+*.pyc
+.env
+*.db
+stitch_screens/
+products_data.json

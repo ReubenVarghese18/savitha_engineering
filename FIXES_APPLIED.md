@@ -16,9 +16,9 @@ Fixed 10 critical security and production issues in the backend code.
 
 ### 2. ✅ **Hardcoded Admin Password - Security**
 - **File:** `backend/app/auth.py`
-- **Issue:** Password "savitha2026" hardcoded in source code
+- **Issue:** Admin password hardcoded in source code
 - **Fix:** Moved to environment variable `ADMIN_PASSWORD`
-- **Before:** `get_password_hash("savitha2026")`
+- **Before:** password literal passed to `get_password_hash(...)`
 - **After:** Reads from `os.getenv("ADMIN_PASSWORD")`
 
 ### 3. ✅ **Quote Submission Missing Auth - Security**
@@ -80,7 +80,7 @@ Add these to your `.env` file:
 ```env
 # Authentication
 ADMIN_USERNAME=admin
-ADMIN_PASSWORD=savitha2026
+ADMIN_PASSWORD=<choose-a-strong-password>
 
 # CORS Configuration (comma-separated)
 CORS_ORIGINS=http://localhost:5173,http://localhost:5174
