@@ -23,6 +23,7 @@ from app.database import Base, SQLALCHEMY_DATABASE_URL
 import app.furnaces.models
 import app.enquiries.models
 import app.quotes.models
+import app.purchase_orders.models
 
 target_metadata = Base.metadata
 

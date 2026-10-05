@@ -1,0 +1,18 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: savitha
+      POSTGRES_PASSWORD: savitha_dev_pw
+      POSTGRES_DB: savitha
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U savitha"]
+      interval: 5s
+      retries: 10
+
+volumes:
+  pgdata:

@@ -10,3 +10,4 @@ python-multipart
 slowapi
 sentry-sdk[fastapi]
 alembic
+psycopg2-binary
