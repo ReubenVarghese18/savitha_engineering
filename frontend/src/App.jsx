@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { QuoteProvider } from './context/QuoteContext';
@@ -14,14 +14,14 @@ import RFQFooter from './components/RFQFooter';
 import ProductsPage from './pages/Products';
 import PDPPage from './pages/PDP';
 
-// Admin / Auth Components
-import Login from './pages/admin/Login';
-import AdminLayout from './layouts/AdminLayout';
-import LiveFeed from './pages/admin/LiveFeed';
-import Production from './pages/admin/Production';
-import AdminCatalog from './pages/admin/Catalog';
-import Clients from './pages/admin/Clients';
-import Service from './pages/admin/Service';
+// Admin / Auth Components (lazy-loaded so public visitors never download them)
+const Login = lazy(() => import('./pages/admin/Login'));
+const AdminLayout = lazy(() => import('./layouts/AdminLayout'));
+const LiveFeed = lazy(() => import('./pages/admin/LiveFeed'));
+const Production = lazy(() => import('./pages/admin/Production'));
+const AdminCatalog = lazy(() => import('./pages/admin/Catalog'));
+const Clients = lazy(() => import('./pages/admin/Clients'));
+const Service = lazy(() => import('./pages/admin/Service'));
 
 function ScrollToTop() {
   const { pathname, hash } = useLocation();
@@ -57,6 +57,7 @@ function App() {
       <QuoteProvider>
         <BrowserRouter>
         <ScrollToTop />
+        <Suspense fallback={<div className="min-h-screen bg-[#0A0A0B]" />}>
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<PublicLanding />} />
@@ -86,6 +87,7 @@ function App() {
           {/* Fallback Catch-All Redirect */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
+        </Suspense>
         </BrowserRouter>
       </QuoteProvider>
     </AuthProvider>
