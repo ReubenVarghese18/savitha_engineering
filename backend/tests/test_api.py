@@ -18,7 +18,7 @@ def _furnace(auth, client, **overrides):
     return r.json()
 
 
-QUOTE = {"full_name": "Asha", "company": "Acme", "category": "Furnaces",
+QUOTE = {"full_name": "Asha", "company": "Acme", "email": "Asha@Example.com", "category": "Furnaces",
          "requirement_details": "Need a box furnace", "requested_assets": ["SE-1", "SE-2"]}
 
 
@@ -77,6 +77,65 @@ def test_public_quote_submission_and_admin_review(client, auth):
 
 def test_quote_requires_mandatory_fields(client):
     assert client.post("/api/quotes", json={"full_name": "x"}).status_code == 422
+
+
+def test_quote_stores_contact_details_normalised(client, auth):
+    qid = client.post("/api/quotes", json=dict(QUOTE, phone="+91 98765 43210")).json()["quote_id"]
+    got = client.get(f"/api/quotes/{qid}", headers=auth).json()
+    assert got["email"] == "asha@example.com" and got["phone"] == "+91 98765 43210"
+
+
+def test_quote_needs_at_least_one_contact_method(client):
+    no_contact = {k: v for k, v in QUOTE.items() if k != "email"}
+    assert client.post("/api/quotes", json=no_contact).status_code == 422
+    assert client.post("/api/quotes", json=dict(no_contact, email="   ", phone="")).status_code == 422
+
+
+def test_quote_accepts_phone_only(client):
+    no_email = {k: v for k, v in QUOTE.items() if k != "email"}
+    assert client.post("/api/quotes", json=dict(no_email, phone="022-4444 5555")).status_code == 200
+
+
+@pytest.mark.parametrize("overrides", [
+    {"email": "not-an-email"},
+    {"email": "a b@c.com"},
+    {"email": "a@b.com\r\nBcc: evil@x.test"},
+    {"phone": "abc"},
+    {"phone": "12"},
+    {"full_name": "   "},
+    {"company": ""},
+    {"requirement_details": "   "},
+    {"full_name": "x" * 121},
+    {"requirement_details": "x" * 5001},
+    {"requested_assets": ["SKU"] * 51},
+    {"requested_assets": ["x" * 51]},
+])
+def test_quote_rejects_invalid_or_oversized_fields(client, overrides):
+    assert client.post("/api/quotes", json=dict(QUOTE, **overrides)).status_code == 422
+
+
+def test_alert_email_has_contact_details_reply_to_and_no_header_injection(monkeypatch):
+    import app.notifications as notifications
+    sent = []
+
+    class FakeSMTP:
+        def __init__(self, *a, **k): pass
+        def __enter__(self): return self
+        def __exit__(self, *a): return False
+        def starttls(self): pass
+        def login(self, *a): pass
+        def send_message(self, msg): sent.append(msg)
+
+    monkeypatch.setattr(notifications.smtplib, "SMTP", FakeSMTP)
+    monkeypatch.setenv("SMTP_HOST", "smtp.test")
+    monkeypatch.setenv("QUOTE_ALERT_TO", "sales@test.local")
+    notifications.send_quote_alert({"id": 7, "full_name": "Asha", "company": "Acme\r\nBcc: evil@x.test",
+                                    "email": "asha@example.com", "phone": "+91 99999 99999", "category": "F",
+                                    "requirement_details": "need", "requested_assets": ["SE-1"]})
+    msg = sent[0]
+    assert msg["Reply-To"] == "asha@example.com" and msg["Bcc"] is None
+    body = msg.get_content()
+    assert "Email: asha@example.com" in body and "Phone: +91 99999 99999" in body
 
 
 def test_missing_quote_returns_404(client, auth):

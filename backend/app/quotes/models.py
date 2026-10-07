@@ -8,6 +8,8 @@ class Quote(Base):
     id = Column(Integer, primary_key=True, index=True)
     full_name = Column(String, nullable=False)
     company = Column(String, nullable=False)
+    email = Column(String, nullable=True)
+    phone = Column(String, nullable=True)
     category = Column(String, nullable=False)
     requirement_details = Column(Text, nullable=False)
     requested_assets = Column(Text, nullable=True) # Stored as JSON string

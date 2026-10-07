@@ -40,6 +40,8 @@ export default function AdminLayout() {
   const [formData, setFormData] = useState({
     full_name: '',
     company: '',
+    email: '',
+    phone: '',
     category: '',
     timeline: '',
     requirement_details: '',
@@ -56,12 +58,18 @@ export default function AdminLayout() {
 
   const handleSubmitInquiry = async (e) => {
     e.preventDefault();
+    if (!formData.email.trim() && !formData.phone.trim()) {
+      alert('Enter an email or a phone number so the customer can be contacted.');
+      return;
+    }
     try {
       await apiFetch('/api/quotes', {
         method: 'POST',
         body: JSON.stringify({
           full_name: formData.full_name,
           company: formData.company,
+          email: formData.email.trim(),
+          phone: formData.phone.trim(),
           category: formData.category,
           requirement_details: `Timeline: ${formData.timeline} | ${formData.requirement_details}`,
           requested_assets: formData.requested_asset ? [formData.requested_asset] : [],
@@ -76,6 +84,8 @@ export default function AdminLayout() {
       setFormData({
           full_name: '',
           company: '',
+          email: '',
+          phone: '',
           category: '',
           timeline: '',
           requirement_details: '',
@@ -482,6 +492,34 @@ export default function AdminLayout() {
                     onChange={(e) => setFormData({...formData, full_name: e.target.value})}
                     placeholder="E.G. BRUCE WAYNE"
                     className="w-full px-4 py-3 border-2 border-black bg-white rounded-none focus:outline-none focus:border-[#FA5D19] focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-mono text-lg uppercase tracking-wider transition-all"
+                  />
+                </div>
+              </div>
+
+              {/* Contact: email and/or phone */}
+              <div className="grid grid-cols-2 gap-8 text-left">
+                <div className="flex flex-col">
+                  <label className="block text-sm font-mono font-bold tracking-widest text-black uppercase mb-2">
+                    EMAIL
+                  </label>
+                  <input
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) => setFormData({...formData, email: e.target.value})}
+                    placeholder="NAME@COMPANY.COM"
+                    className="w-full px-4 py-3 border-2 border-black bg-white rounded-none focus:outline-none focus:border-[#FA5D19] focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-mono text-lg tracking-wider transition-all"
+                  />
+                </div>
+                <div className="flex flex-col">
+                  <label className="block text-sm font-mono font-bold tracking-widest text-black uppercase mb-2">
+                    PHONE
+                  </label>
+                  <input
+                    type="tel"
+                    value={formData.phone}
+                    onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                    placeholder="+91 ..."
+                    className="w-full px-4 py-3 border-2 border-black bg-white rounded-none focus:outline-none focus:border-[#FA5D19] focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-mono text-lg tracking-wider transition-all"
                   />
                 </div>
               </div>

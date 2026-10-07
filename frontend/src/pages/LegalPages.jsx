@@ -46,7 +46,7 @@ export function PrivacyPage() {
         <p><P>registered legal company name</P>, trading as Savitha Engineering, <P>registered address</P> (&ldquo;we&rdquo;, &ldquo;us&rdquo;).</p>
       </Section>
       <Section heading="What we collect">
-        <p>When you request a quote or contact us we collect the details you enter: your name, company, the products you select, your requirement details and, if provided, an equipment serial number.</p>
+        <p>When you request a quote or contact us we collect the details you enter: your name, company, email address and/or phone number, the products you select, your requirement details and, if provided, an equipment serial number.</p>
         <p>Like most websites, our servers and error-monitoring tools may record technical data such as your IP address, browser type and the pages that caused an error. This site may load fonts from Google Fonts, which means your browser contacts Google when a page loads. <P>list any analytics or tracking tools added before launch</P></p>
       </Section>
       <Section heading="How we use it">

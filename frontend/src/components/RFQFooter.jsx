@@ -9,6 +9,8 @@ export default function RFQFooter() {
   const [full_name, setFullName] = useState('');
   const [company, setCompany] = useState('');
   const [requirement_details, setRequirementDetails] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
@@ -28,6 +30,15 @@ export default function RFQFooter() {
     }
   };
 
+  const validateForm = () => {
+    if (!full_name.trim() || !company.trim()) return 'PLEASE ENTER YOUR NAME AND COMPANY.';
+    if (!email.trim() && !phone.trim()) return 'PLEASE ENTER AN EMAIL OR PHONE NUMBER SO WE CAN REPLY.';
+    if (email.trim() && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email.trim())) return 'PLEASE ENTER A VALID EMAIL ADDRESS.';
+    if (phone.trim() && !/^\+?[0-9][0-9\s\-().]{5,28}$/.test(phone.trim())) return 'PLEASE ENTER A VALID PHONE NUMBER.';
+    if (!requirement_details.trim()) return 'PLEASE DESCRIBE YOUR REQUIREMENT.';
+    return '';
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -40,17 +51,21 @@ export default function RFQFooter() {
       return;
     }
 
-    if (!full_name || !company) {
-      alert('PLEASE FILL OUT ALL MANDATORY FIELDS.');
+    const problem = validateForm();
+    if (problem) {
+      setErrorMessage(`[ ERROR: ${problem} ]`);
       return;
     }
+    setErrorMessage('');
 
     try {
       await apiFetch('/api/quotes', {
         method: 'POST',
         body: JSON.stringify({
-          full_name,
-          company,
+          full_name: full_name.trim(),
+          company: company.trim(),
+          email: email.trim(),
+          phone: phone.trim(),
           category: "Multi-Product Quote",
           requirement_details,
           requested_assets: selectedProducts.map(p => p.id),
@@ -60,6 +75,8 @@ export default function RFQFooter() {
       alert(`RFQ TRANSMITTED.\nNAME: ${full_name.toUpperCase()}\nCOMPANY: ${company.toUpperCase()}\n\nOUR TECHNICAL TEAM WILL CONTACT YOU WITHIN 4 HOURS.`);
       setFullName('');
       setCompany('');
+      setEmail('');
+      setPhone('');
       setRequirementDetails('');
       clearQuote();
     } catch (error) {
@@ -102,6 +119,15 @@ export default function RFQFooter() {
                     <input name="company" value={company} onChange={(e) => setCompany(e.target.value)} className="w-full bg-gray-100 border-2 border-gray-300 p-3 uppercase text-sm focus:ring-0 focus:border-black placeholder:text-black/30 font-semibold" placeholder="COMPANY" type="text" required />
                   </div>
                 </div>
+                <div className="grid md:grid-cols-2 gap-12">
+                  <div className="w-full">
+                    <input name="email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full bg-gray-100 border-2 border-gray-300 p-3 text-sm focus:ring-0 focus:border-black placeholder:text-black/30 font-semibold" placeholder="EMAIL" type="email" autoComplete="email" maxLength={254} />
+                  </div>
+                  <div className="w-full">
+                    <input name="phone" value={phone} onChange={(e) => setPhone(e.target.value)} className="w-full bg-gray-100 border-2 border-gray-300 p-3 text-sm focus:ring-0 focus:border-black placeholder:text-black/30 font-semibold" placeholder="PHONE" type="tel" autoComplete="tel" maxLength={30} />
+                  </div>
+                </div>
+                <p className="font-mono text-[10px] font-bold text-gray-500 uppercase tracking-widest -mt-4">EMAIL OR PHONE REQUIRED SO OUR TEAM CAN REPLY</p>
                 <div className="w-full text-left space-y-3">
                   <label className="block font-mono text-[10px] font-bold text-gray-500 uppercase tracking-widest">
                     SELECTED ASSETS FOR QUOTE
@@ -131,7 +157,7 @@ export default function RFQFooter() {
                   </div>
                 </div>
                 <div className="w-full">
-                  <textarea name="requirements" value={requirement_details} onChange={(e) => setRequirementDetails(e.target.value)} className="w-full bg-gray-100 border-2 border-gray-300 p-3 uppercase text-sm focus:ring-0 focus:border-black placeholder:text-black/30 font-semibold" placeholder="REQUIREMENT DETAILS" rows="3"></textarea>
+                  <textarea name="requirements" value={requirement_details} onChange={(e) => setRequirementDetails(e.target.value)} className="w-full bg-gray-100 border-2 border-gray-300 p-3 uppercase text-sm focus:ring-0 focus:border-black placeholder:text-black/30 font-semibold" placeholder="REQUIREMENT DETAILS" rows="3" maxLength={5000} required></textarea>
                 </div>
                 {errorMessage && (
                   <div className="border-4 border-black bg-[#FF3333] text-white p-6 font-mono font-bold uppercase tracking-wider shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] text-left space-y-4">

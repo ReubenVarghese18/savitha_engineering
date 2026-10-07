@@ -4,7 +4,7 @@ import sentry_sdk
 from typing import List
 from fastapi import FastAPI, Depends, HTTPException, Request, BackgroundTasks
 from app.notifications import send_quote_alert
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 from fastapi.middleware.cors import CORSMiddleware
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
@@ -55,15 +55,54 @@ app.add_middleware(
 )
 
 # 2. THE BLUEPRINT: Tell Swagger exactly what data to expect
+EMAIL_RE = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
+PHONE_RE = re.compile(r"^\+?[0-9][0-9\s\-().]{5,28}$")
+
+
 class QuoteRequest(BaseModel):
-    full_name: str
-    company: str
-    category: str
-    requirement_details: str
-    requested_assets: List[str] = []
+    model_config = ConfigDict(str_strip_whitespace=True)
+
+    full_name: str = Field(min_length=1, max_length=120)
+    company: str = Field(min_length=1, max_length=200)
+    email: str | None = Field(default=None, max_length=254)
+    phone: str | None = Field(default=None, max_length=30)
+    category: str = Field(max_length=100)
+    requirement_details: str = Field(min_length=1, max_length=5000)
+    requested_assets: List[str] = Field(default_factory=list, max_length=50)
     is_custom_request: bool = False
-    custom_details: str | None = None
-    equipment_serial_number: str | None = None
+    custom_details: str | None = Field(default=None, max_length=5000)
+    equipment_serial_number: str | None = Field(default=None, max_length=100)
+
+    @field_validator("email")
+    @classmethod
+    def check_email(cls, v):
+        if not v:
+            return None
+        if not EMAIL_RE.match(v):
+            raise ValueError("Enter a valid email address")
+        return v.lower()
+
+    @field_validator("phone")
+    @classmethod
+    def check_phone(cls, v):
+        if not v:
+            return None
+        if not PHONE_RE.match(v):
+            raise ValueError("Enter a valid phone number")
+        return v
+
+    @field_validator("requested_assets")
+    @classmethod
+    def check_assets(cls, v):
+        if any(len(a) > 50 for a in v):
+            raise ValueError("Invalid product reference")
+        return v
+
+    @model_validator(mode="after")
+    def need_a_contact_method(self):
+        if not self.email and not self.phone:
+            raise ValueError("Provide an email address or a phone number")
+        return self
 
 # 3. THE ENDPOINT: Where the frontend sends the data (public endpoint for customer quotes)
 @app.post("/api/quotes")
@@ -75,6 +114,8 @@ async def receive_quote(request: Request, quote: QuoteRequest, background_tasks:
         db_quote = Quote(
             full_name=quote.full_name,
             company=quote.company,
+            email=quote.email,
+            phone=quote.phone,
             category=quote.category,
             requirement_details=quote.requirement_details,
             requested_assets=assets_json,
@@ -89,6 +130,8 @@ async def receive_quote(request: Request, quote: QuoteRequest, background_tasks:
             "id": db_quote.id,
             "full_name": quote.full_name,
             "company": quote.company,
+            "email": quote.email,
+            "phone": quote.phone,
             "category": quote.category,
             "requirement_details": quote.requirement_details,
             "requested_assets": quote.requested_assets,

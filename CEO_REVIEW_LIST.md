@@ -35,6 +35,7 @@ Tick each box once it is settled.
 - [ ] Buy the domain name, and decide who owns the registrar account
 - [ ] Choose the hosting provider and monthly budget (website, database, email)
 - [ ] Decide how long database backups are kept and where copies are stored. They should be kept off the web server so one failure cannot lose both the site and its backups
+- [ ] Confirm what customers must give when requesting a quote. Today it is name, company, requirements, and an email or a phone number (at least one). Decide whether both should be required, and whether to collect anything else (for example city or expected purchase date)
 - [ ] Choose the email service for quote alerts, and who receives them
 - [ ] Decide who gets admin access, and who owns the admin password (currently one shared login)
 - [ ] Confirm the production stages and their names for quotes (currently Pending, Engineering Review, Designing, Manufacturing, Testing, Delivered) and what counts as a "won" deal

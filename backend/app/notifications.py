@@ -27,12 +27,16 @@ def send_quote_alert(quote: dict) -> None:
     msg["Subject"] = f"New quote request #{quote['id']} from {_one_line(quote['company'], 60)}"
     msg["From"] = sender
     msg["To"] = ", ".join(recipients)
+    if quote.get("email"):
+        msg["Reply-To"] = quote["email"]
     assets = ", ".join(quote.get("requested_assets") or []) or "none selected"
     msg.set_content(
         f"A new quote request was submitted on the website.\n\n"
         f"Quote ID: {quote['id']}\n"
         f"Name: {_one_line(quote['full_name'])}\n"
         f"Company: {_one_line(quote['company'])}\n"
+        f"Email: {_one_line(quote.get('email') or '-')}\n"
+        f"Phone: {_one_line(quote.get('phone') or '-')}\n"
         f"Category: {_one_line(quote['category'])}\n"
         f"Products: {assets}\n"
         f"Custom request: {'yes' if quote.get('is_custom_request') else 'no'}\n\n"

@@ -143,6 +143,21 @@ export default function QuoteModal({ inquiry, onClose, onUpdate }) {
           </button>
         </div>
 
+        {/* Customer contact details */}
+        {(inquiry.full_name || inquiry.email || inquiry.phone) && (
+          <div className="px-6 py-3 border-b-[3px] border-black bg-[#F2F0E9] font-mono text-xs space-y-1 text-black">
+            {inquiry.full_name && (
+              <div><span className="font-bold text-gray-500">CONTACT </span>{inquiry.full_name}</div>
+            )}
+            {inquiry.email && (
+              <div><span className="font-bold text-gray-500">EMAIL </span><a className="underline text-[#FA5D19]" href={`mailto:${inquiry.email}`}>{inquiry.email}</a></div>
+            )}
+            {inquiry.phone && (
+              <div><span className="font-bold text-gray-500">PHONE </span><a className="underline text-[#FA5D19]" href={`tel:${inquiry.phone}`}>{inquiry.phone}</a></div>
+            )}
+          </div>
+        )}
+
         {/* Scrollable Body */}
         <div className="flex-1 overflow-y-auto p-8 space-y-8">
           
