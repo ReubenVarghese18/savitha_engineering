@@ -2,7 +2,8 @@ import re
 import os
 import sentry_sdk
 from typing import List
-from fastapi import FastAPI, Depends, HTTPException, Request
+from fastapi import FastAPI, Depends, HTTPException, Request, BackgroundTasks
+from app.notifications import send_quote_alert
 from pydantic import BaseModel, field_validator
 from fastapi.middleware.cors import CORSMiddleware
 from slowapi import _rate_limit_exceeded_handler
@@ -67,7 +68,7 @@ class QuoteRequest(BaseModel):
 # 3. THE ENDPOINT: Where the frontend sends the data (public endpoint for customer quotes)
 @app.post("/api/quotes")
 @limiter.limit("10/minute")
-async def receive_quote(request: Request, quote: QuoteRequest, db: Session = Depends(get_db)):
+async def receive_quote(request: Request, quote: QuoteRequest, background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
     import json
     try:
         assets_json = json.dumps(quote.requested_assets or [])
@@ -84,6 +85,15 @@ async def receive_quote(request: Request, quote: QuoteRequest, db: Session = Dep
         db.add(db_quote)
         db.commit()
         db.refresh(db_quote)
+        background_tasks.add_task(send_quote_alert, {
+            "id": db_quote.id,
+            "full_name": quote.full_name,
+            "company": quote.company,
+            "category": quote.category,
+            "requirement_details": quote.requirement_details,
+            "requested_assets": quote.requested_assets,
+            "is_custom_request": quote.is_custom_request,
+        })
         return {"status": "success", "message": "Quote processing initiated", "quote_id": db_quote.id}
     except Exception as e:
         db.rollback()
@@ -166,50 +176,32 @@ async def save_quote_draft(quote_id: int, terms: QuoteTerms, current_user: dict 
         raise HTTPException(status_code=500, detail="Failed to save draft")
 
 @app.post("/api/quotes/{id}/generate-pdf")
-async def generate_quote_pdf(id: int, terms: QuoteTerms, current_user: dict = Depends(get_current_user)):
+async def generate_quote_pdf(id: int, terms: QuoteTerms, current_user: dict = Depends(get_current_user), db: Session = Depends(get_db)):
+    import json
     from fastapi import Response
-    import io
-    from reportlab.pdfgen import canvas
-    from reportlab.lib.pagesizes import letter
+    from app.furnaces.models import Furnace
+    from app.quote_pdf import build_quote_pdf
 
-    buffer = io.BytesIO()
-    
-    # Create the PDF object, using the buffer as its "file."
-    c = canvas.Canvas(buffer, pagesize=letter)
-    width, height = letter
-    
-    # Start writing below the 150px top margin
-    y_position = height - 150
-    
-    # "QUOTATION" in bold
-    c.setFont("Helvetica-Bold", 24)
-    c.drawString(50, y_position, "QUOTATION")
-    
-    # Add terms
-    y_position -= 50
-    c.setFont("Helvetica", 12)
-    c.drawString(50, y_position, f"Quote ID: {id}")
-    y_position -= 30
-    c.drawString(50, y_position, f"Base Price: {terms.base_price}")
-    y_position -= 20
-    c.drawString(50, y_position, f"Lead Time: {terms.lead_time}")
-    y_position -= 20
-    c.drawString(50, y_position, f"Payment Terms: {terms.payment_terms}")
-    y_position -= 20
-    c.drawString(50, y_position, f"Notes: {terms.notes}")
-    
-    # Close the PDF object cleanly, and we're done.
-    c.showPage()
-    c.save()
-    
-    # Get the value of the BytesIO buffer and return it in the response
-    pdf_bytes = buffer.getvalue()
-    buffer.close()
-    
+    quote = db.query(Quote).filter(Quote.id == id).first()
+    if not quote:
+        raise HTTPException(status_code=404, detail="Quote not found")
+
+    try:
+        skus = json.loads(quote.requested_assets or "[]")
+    except (json.JSONDecodeError, TypeError):
+        skus = []
+    names = {f.sku: f.name for f in db.query(Furnace).filter(Furnace.sku.in_(skus)).all()} if skus else {}
+    products = [{"sku": sku, "name": names.get(sku)} for sku in skus]
+
+    pdf_bytes = build_quote_pdf(
+        {"id": quote.id, "full_name": quote.full_name, "company": quote.company},
+        terms.model_dump(),
+        products,
+    )
     return Response(
         content=pdf_bytes,
         media_type="application/pdf",
-        headers={"Content-Disposition": f"attachment; filename=Quote_{id}.pdf"}
+        headers={"Content-Disposition": f"attachment; filename=Quote_{id}.pdf"},
     )
 
 
@@ -225,15 +217,17 @@ async def generate_sitemap():
         xml_content = '<?xml version="1.0" encoding="UTF-8"?>\n'
         xml_content += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
         
+        site_url = os.getenv("SITE_URL", "https://savithaengineering.com").rstrip("/")
+
         # Add static routes
-        xml_content += "  <url>\n    <loc>https://savithaengineering.com/</loc>\n  </url>\n"
-        xml_content += "  <url>\n    <loc>https://savithaengineering.com/catalog</loc>\n  </url>\n"
-        
+        xml_content += f"  <url>\n    <loc>{site_url}/</loc>\n  </url>\n"
+        xml_content += f"  <url>\n    <loc>{site_url}/products</loc>\n  </url>\n"
+
         # Add dynamic furnace routes
         for f in furnaces:
             if f.is_active is not False:
                 slug = f.sku if f.sku else str(f.id)
-                xml_content += f"  <url>\n    <loc>https://savithaengineering.com/catalog/{slug}</loc>\n  </url>\n"
+                xml_content += f"  <url>\n    <loc>{site_url}/products/{slug}</loc>\n  </url>\n"
                 
         xml_content += '</urlset>'
         return Response(content=xml_content, media_type="application/xml")

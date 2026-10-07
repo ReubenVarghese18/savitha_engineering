@@ -1,5 +1,6 @@
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 from app.database import get_db
 from app.furnaces import schemas, service
@@ -23,12 +24,20 @@ def get_furnace(furnace_id: int, db: Session = Depends(get_db)):
 @router.post("/", response_model=schemas.FurnaceResponse, status_code=201)
 def create_furnace(furnace_in: schemas.FurnaceCreate, db: Session = Depends(get_db), current_user: dict = Depends(get_current_user)):
     """Create a new furnace"""
-    return service.create_furnace(db=db, furnace_in=furnace_in)
+    try:
+        return service.create_furnace(db=db, furnace_in=furnace_in)
+    except IntegrityError:
+        db.rollback()
+        raise HTTPException(status_code=409, detail="A furnace with this SKU already exists")
 
 @router.put("/{furnace_id}", response_model=schemas.FurnaceResponse)
 def update_furnace(furnace_id: int, furnace_in: schemas.FurnaceUpdate, db: Session = Depends(get_db), current_user: dict = Depends(get_current_user)):
     """Update an existing furnace and its specs"""
-    updated_furnace = service.update_furnace(db, furnace_id, furnace_in)
+    try:
+        updated_furnace = service.update_furnace(db, furnace_id, furnace_in)
+    except IntegrityError:
+        db.rollback()
+        raise HTTPException(status_code=409, detail="A furnace with this SKU already exists")
     if not updated_furnace:
         raise HTTPException(status_code=404, detail="Furnace not found")
     return updated_furnace
