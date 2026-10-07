@@ -390,13 +390,13 @@ export default function PDPPage() {
             <div className="xl:col-span-5 flex flex-col gap-8">
 
               {/* Primary Actions Card */}
-              <div className="border-2 border-stitch-on-background p-8 bg-stitch-surface-white brutal-shadow-stitch flex flex-col gap-6">
-                <div className="flex justify-between items-center">
+              <div className="border-2 border-stitch-on-background p-5 sm:p-8 bg-stitch-surface-white brutal-shadow-stitch flex flex-col gap-6">
+                <div className="flex flex-wrap justify-between items-center gap-2">
                   <div className="bg-stitch-on-background text-white font-mono text-[10px] px-3 py-1 flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
                     IN STOCK / READY TO SHIP
                   </div>
-                  <div className="font-mono text-xs text-stitch-primary font-bold uppercase">SKU: {product.sku}</div>
+                  <div className="font-mono text-xs text-stitch-primary font-bold uppercase break-all">SKU: {product.sku}</div>
                 </div>
 
                 <div className="bg-stitch-surface-container-low border-l-4 border-stitch-primary p-4">

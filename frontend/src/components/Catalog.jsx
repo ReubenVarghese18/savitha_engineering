@@ -14,7 +14,7 @@ export default function Catalog() {
 
   return (
     <section className="px-6 max-w-6xl mx-auto py-24" id="products">
-      <div className="mb-32 flex flex-col lg:flex-row justify-between items-end gap-12">
+      <div className="mb-16 lg:mb-32 flex flex-col lg:flex-row justify-between items-start lg:items-end gap-8 lg:gap-12">
         <h2 className="font-brutal-head text-[clamp(2rem,6.5vw,6rem)] flex-1 leading-[0.85]">PRECISION<br/>CATALOG</h2>
         <div className="brutalist-border p-8 bg-neon text-white brutalist-shadow max-w-xl">
           <p className="font-black text-lg uppercase leading-tight">

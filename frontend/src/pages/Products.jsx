@@ -326,6 +326,7 @@ export default function ProductsPage() {
   const [fuelFilters, setFuelFilters] = useState([]);
   const [materialFilters, setMaterialFilters] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [filtersOpen, setFiltersOpen] = useState(false);
 
   // Listen to routing state changes and pre-select category
   useEffect(() => {
@@ -560,8 +561,19 @@ export default function ProductsPage() {
 
       <div className="plp-page-content flex-grow w-full bg-white text-black">
         <div className="flex flex-col md:flex-row w-full max-w-[1600px] mx-auto">
+          {/* Mobile filter toggle */}
+          <button
+            type="button"
+            className="md:hidden w-full flex justify-between items-center px-6 py-4 bg-black text-white font-mono text-sm font-bold uppercase tracking-widest border-0 cursor-pointer"
+            aria-expanded={filtersOpen}
+            onClick={() => setFiltersOpen((open) => !open)}
+          >
+            <span>[ FILTERS ]</span>
+            <span>{filtersOpen ? '−' : '+'}</span>
+          </button>
+
           {/* Sidebar */}
-          <aside className="w-full md:w-[280px] shrink-0 border-b-[2px] md:border-b-0 md:border-r-[2px] border-black bg-white p-6 products-sidebar-sticky">
+          <aside className={`${filtersOpen ? 'block' : 'hidden'} md:block w-full md:w-[280px] shrink-0 border-b-[2px] md:border-b-0 md:border-r-[2px] border-black bg-white p-6 products-sidebar-sticky`}>
             <div className="mb-8">
               <h3 className="text-lg font-bold uppercase border-b-[2px] border-black pb-2 mb-4">Technical Filters</h3>
               <p className="font-mono text-xs text-gray-600 uppercase">SYS_REF: FLT_01A</p>

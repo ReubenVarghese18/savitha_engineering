@@ -134,14 +134,14 @@ export default function Hero() {
           </div>
         </div>
 
-        <div className="mt-32 relative">
+        <div className="mt-16 md:mt-32 relative">
           <motion.div 
             variants={imageVariants}
-            className="brutalist-border overflow-hidden h-[500px]"
+            className="brutalist-border overflow-hidden h-auto md:h-[500px]"
           >
             <img
               alt="Industrial Hero"
-              className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
+              className="w-full h-auto md:h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
               src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQYfiVXCxs3xuKANYO3ermf7dVPXvwJc-UF5rt768PmD6zPWLFF00P1uxyFGI5Y_1NW2W-YkVEsPTxsSDtdBL_C7TRuSZMAvmMfYk7p837XJz_pcF_NMhKiDzPDi0LRcY66g0gv0ptIQIJzsWHMd6MUMmLZKzylgnrie4lx5DL2ff6OQXySQYrjhfADM7JvG-IqPPPj-pe9FsmfK2nQIpvwaANALn9xLk1Xj3S3EyEcSgCi_OAClK_HdpYFpjMDRnvx2T9mrmX1Co"
             />
           </motion.div>
@@ -149,7 +149,7 @@ export default function Hero() {
           {/* Absolute-positioned Live Diagnostic Box */}
           <motion.div 
             variants={diagnosticVariants}
-            className="absolute -bottom-10 right-10 border border-[#FA5D19] p-6 w-80 shadow-2xl z-30 backdrop-blur-xl bg-black/80"
+            className="mt-6 md:mt-0 w-full md:w-80 md:absolute md:-bottom-10 md:right-10 border border-[#FA5D19] p-6 shadow-2xl z-30 backdrop-blur-xl bg-black/80"
           >
             <div className="flex justify-between items-center mb-6">
               <div className="flex items-center gap-2">
@@ -196,16 +196,16 @@ export default function Hero() {
         <div className="mb-24">
           <h2 className="font-brutal-head text-[clamp(2rem,6.5vw,6rem)] leading-[0.85]">THE SAVITHA<br/><span className="text-primary">ADVANTAGE</span></h2>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="bg-black border-4 border-white/20 hover:border-[#FA5D19] transition-all duration-300 cursor-default group text-center py-16 px-8 min-h-[500px] flex flex-col items-center justify-center">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="bg-black border-4 border-white/20 hover:border-[#FA5D19] transition-all duration-300 cursor-default group text-center py-12 lg:py-16 px-8 min-h-[320px] lg:min-h-[500px] flex flex-col items-center justify-center">
             <span className="material-symbols-outlined text-primary mb-10 group-hover:scale-110 transition-transform block" style={{ fontSize: '4rem' }}>shield</span>            <h3 className="font-brutal-head text-xl lg:text-2xl mb-6">45+ Years of Mastery</h3>
             <p className="font-bold opacity-70 uppercase leading-relaxed text-sm">Four decades of specialized domain expertise in thermal dynamics, metallurgy, and heavy structural engineering since 1976.</p>
           </div>
-          <div className="bg-black border-4 border-white/20 hover:border-[#FA5D19] transition-all duration-300 cursor-default group text-center py-16 px-8 min-h-[500px] flex flex-col items-center justify-center">
+          <div className="bg-black border-4 border-white/20 hover:border-[#FA5D19] transition-all duration-300 cursor-default group text-center py-12 lg:py-16 px-8 min-h-[320px] lg:min-h-[500px] flex flex-col items-center justify-center">
             <span className="material-symbols-outlined text-primary mb-10 group-hover:scale-110 transition-transform block" style={{ fontSize: '4rem' }}>verified_user</span>            <h3 className="font-brutal-head text-xl lg:text-2xl mb-6">Uncompromising Quality</h3>
             <p className="font-bold opacity-70 uppercase leading-relaxed text-sm">Every unit undergoes rigorous multi-parameter testing for thermal mapping, leak detection, and operational durability before deployment.</p>
           </div>
-          <div className="bg-black border-4 border-white/20 hover:border-[#FA5D19] transition-all duration-300 cursor-default group text-center py-16 px-8 min-h-[500px] flex flex-col items-center justify-center">
+          <div className="bg-black border-4 border-white/20 hover:border-[#FA5D19] transition-all duration-300 cursor-default group text-center py-12 lg:py-16 px-8 min-h-[320px] lg:min-h-[500px] flex flex-col items-center justify-center">
             <span className="material-symbols-outlined text-primary mb-10 group-hover:scale-110 transition-transform block" style={{ fontSize: '4rem' }}>settings</span>            <h3 className="font-brutal-head text-xl lg:text-2xl mb-6">100% OEM Customization</h3>
             <p className="font-bold opacity-70 uppercase leading-relaxed text-sm">From initial CAD design to final factory-floor installation, we deliver bespoke heating solutions tailored to your unique industrial requirements.</p>
           </div>
@@ -214,23 +214,23 @@ export default function Hero() {
 
       {/* Marquee Divider */}
       <div className="bg-black text-white px-6 text-center border-b-4 border-white">
-        <h2 className="font-brutal-head bg-black text-white text-4xl py-6 px-10">TRUSTED BY INDUSTRY GIANTS</h2>
+        <h2 className="font-brutal-head bg-black text-white text-2xl md:text-4xl py-6 px-6 md:px-10">TRUSTED BY INDUSTRY GIANTS</h2>
       </div>
-      <section className="text-black brutalist-border border-x-0 overflow-hidden py-20 bg-white">
+      <section className="text-black brutalist-border border-x-0 overflow-hidden py-12 md:py-20 bg-white">
         <div className="flex kinetic-marquee whitespace-nowrap">
-          <div className="flex items-center gap-20 px-10">
-            <span className="font-brutal-head text-5xl">EXIDE INDUSTRIES LTD.</span><span className="font-brutal-head text-5xl text-neon">★</span>
-            <span className="font-brutal-head text-5xl">CROMPTON GREAVES</span><span className="font-brutal-head text-5xl text-neon">★</span>
-            <span className="font-brutal-head text-5xl">HINDUSTAN PENCILS PVT. LTD.</span><span className="font-brutal-head text-5xl text-neon">★</span>
-            <span className="font-brutal-head text-5xl">MEHTA TUBES PVT. LTD.</span><span className="font-brutal-head text-5xl text-neon">★</span>
-            <span className="font-brutal-head text-5xl">MULTIMETALS LTD.</span><span className="font-brutal-head text-5xl text-neon">★</span>
+          <div className="flex items-center gap-10 md:gap-20 px-10">
+            <span className="font-brutal-head text-3xl md:text-5xl">EXIDE INDUSTRIES LTD.</span><span className="font-brutal-head text-3xl md:text-5xl text-neon">★</span>
+            <span className="font-brutal-head text-3xl md:text-5xl">CROMPTON GREAVES</span><span className="font-brutal-head text-3xl md:text-5xl text-neon">★</span>
+            <span className="font-brutal-head text-3xl md:text-5xl">HINDUSTAN PENCILS PVT. LTD.</span><span className="font-brutal-head text-3xl md:text-5xl text-neon">★</span>
+            <span className="font-brutal-head text-3xl md:text-5xl">MEHTA TUBES PVT. LTD.</span><span className="font-brutal-head text-3xl md:text-5xl text-neon">★</span>
+            <span className="font-brutal-head text-3xl md:text-5xl">MULTIMETALS LTD.</span><span className="font-brutal-head text-3xl md:text-5xl text-neon">★</span>
           </div>
-          <div className="flex items-center gap-20 px-10">
-            <span className="font-brutal-head text-5xl">EXIDE INDUSTRIES LTD.</span><span className="font-brutal-head text-5xl text-neon">★</span>
-            <span className="font-brutal-head text-5xl">CROMPTON GREAVES</span><span className="font-brutal-head text-5xl text-neon">★</span>
-            <span className="font-brutal-head text-5xl">HINDUSTAN PENCILS PVT. LTD.</span><span className="font-brutal-head text-5xl text-neon">★</span>
-            <span className="font-brutal-head text-5xl">MEHTA TUBES PVT. LTD.</span><span className="font-brutal-head text-5xl text-neon">★</span>
-            <span className="font-brutal-head text-5xl">MULTIMETALS LTD.</span><span className="font-brutal-head text-5xl text-neon">★</span>
+          <div className="flex items-center gap-10 md:gap-20 px-10">
+            <span className="font-brutal-head text-3xl md:text-5xl">EXIDE INDUSTRIES LTD.</span><span className="font-brutal-head text-3xl md:text-5xl text-neon">★</span>
+            <span className="font-brutal-head text-3xl md:text-5xl">CROMPTON GREAVES</span><span className="font-brutal-head text-3xl md:text-5xl text-neon">★</span>
+            <span className="font-brutal-head text-3xl md:text-5xl">HINDUSTAN PENCILS PVT. LTD.</span><span className="font-brutal-head text-3xl md:text-5xl text-neon">★</span>
+            <span className="font-brutal-head text-3xl md:text-5xl">MEHTA TUBES PVT. LTD.</span><span className="font-brutal-head text-3xl md:text-5xl text-neon">★</span>
+            <span className="font-brutal-head text-3xl md:text-5xl">MULTIMETALS LTD.</span><span className="font-brutal-head text-3xl md:text-5xl text-neon">★</span>
           </div>
         </div>
       </section>

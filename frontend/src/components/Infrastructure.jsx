@@ -37,15 +37,15 @@ export default function Infrastructure() {
                 </div>
               </div>
             </div>
-            <div className="p-12 text-white bg-black/90">
+            <div className="p-5 sm:p-8 lg:p-12 text-white bg-black/90">
               <div className="mb-12 text-center">
-                <h2 className="font-brutal-head text-4xl md:text-6xl lg:text-8xl uppercase tracking-tighter mb-4">Global Scale &amp; <span className="text-primary">Infrastructure</span></h2>
+                <h2 className="font-brutal-head text-2xl sm:text-4xl md:text-6xl lg:text-8xl uppercase tracking-tighter mb-4">Global Scale &amp; <span className="text-primary">Infrastructure</span></h2>
                 <p className="font-black uppercase tracking-[0.2em] text-sm opacity-50">Strategic Industrial Operations &amp; Compliance Matrix</p>
               </div>
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8">
                 {stats.map((stat, idx) => (
-                  <div key={idx} className="p-6 brutalist-border bg-white/5 group hover:border-primary transition-colors text-center flex flex-col items-center justify-center min-h-[160px] py-4">
-                    <div className="font-brutal-head text-primary mb-2 text-5xl md:text-6xl leading-none">{stat.value}</div>
+                  <div key={idx} className="p-3 sm:p-6 brutalist-border bg-white/5 group hover:border-primary transition-colors text-center flex flex-col items-center justify-center min-h-[160px] py-4">
+                    <div className="font-brutal-head text-primary mb-2 text-3xl sm:text-5xl md:text-6xl leading-none">{stat.value}</div>
                     <div className="font-black uppercase tracking-widest text-[10px] opacity-60">{stat.label}</div>
                   </div>
                 ))}
