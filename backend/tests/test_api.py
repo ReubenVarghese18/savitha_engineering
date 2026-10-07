@@ -265,3 +265,20 @@ def test_update_to_existing_sku_returns_conflict(client, auth):
     a, b = _furnace(auth, client), _furnace(auth, client)
     r = client.put(f"/furnaces/{b['id']}", json={"sku": a["sku"]}, headers=auth)
     assert r.status_code == 409
+
+
+# -- Security headers ---------------------------------------------------------
+
+@pytest.mark.parametrize("path", ["/docs", "/api/quotes", "/furnaces/", "/sitemap.xml"])
+def test_responses_carry_security_headers(client, path):
+    h = client.get(path).headers
+    assert h["x-content-type-options"] == "nosniff"
+    assert h["x-frame-options"] == "DENY"
+    assert h["referrer-policy"] == "strict-origin-when-cross-origin"
+    assert "camera=()" in h["permissions-policy"]
+
+
+def test_hsts_is_off_by_default_and_opt_in(client, monkeypatch):
+    assert "strict-transport-security" not in client.get("/furnaces/").headers
+    monkeypatch.setenv("ENABLE_HSTS", "true")
+    assert "max-age=31536000" in client.get("/furnaces/").headers["strict-transport-security"]
