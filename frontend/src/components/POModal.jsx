@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { apiFetch } from '../api/client';
 
 export default function POModal({ po, onClose, onUpdate }) {
   const [vendorName, setVendorName] = useState(po?.vendor_name || '');
@@ -14,19 +15,10 @@ export default function POModal({ po, onClose, onUpdate }) {
     const itemsArray = itemsRequested.split(',').map(i => i.trim()).filter(Boolean);
     
     try {
-      const token = localStorage.getItem('adminToken');
-      const res = await fetch('http://localhost:8000/api/purchase_orders', {
+      const data = await apiFetch('/api/purchase_orders', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
         body: JSON.stringify({ vendor_name: vendorName, items_requested: itemsArray }),
       });
-      
-      if (!res.ok) throw new Error('Failed to create PO');
-      
-      const data = await res.json();
       if (onUpdate) {
         onUpdate({ 
           id: data.id, 

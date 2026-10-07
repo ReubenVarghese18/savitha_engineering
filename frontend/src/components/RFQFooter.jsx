@@ -197,9 +197,9 @@ export default function RFQFooter() {
                 <div className="space-y-6">
                   <h4 className="font-brutal-head text-xl text-neon">LEGAL</h4>
                   <ul className="font-black space-y-2 uppercase text-lg">
-                    <li><a className="hover:text-neon" href="#privacy">Privacy</a></li>
-                    <li><a className="hover:text-neon" href="#terms">Terms</a></li>
-                    <li><a className="hover:text-neon" href="#compliance">Compliance</a></li>
+                    <li><Link className="hover:text-neon" to="/privacy">Privacy</Link></li>
+                    <li><Link className="hover:text-neon" to="/terms">Terms</Link></li>
+                    <li><Link className="hover:text-neon" to="/contact">Contact</Link></li>
                   </ul>
                 </div>
               </div>

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { NavLink, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { products } from '../data/products';
+import { apiFetch } from '../api/client';
 
 const JOBS_DATA = [
   { id: 'JOB-1042', company: 'Wayne Enterprises', po: '45009210', status: 'QUEUED' },
@@ -56,9 +57,8 @@ export default function AdminLayout() {
   const handleSubmitInquiry = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch('http://localhost:8000/api/quotes', {
+      await apiFetch('/api/quotes', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           full_name: formData.full_name,
           company: formData.company,
@@ -70,11 +70,10 @@ export default function AdminLayout() {
           equipment_serial_number: formData.category === "Custom Build / Spare Parts" ? formData.equipment_serial_number : null
         })
       });
-      if (res.ok) {
-        alert("Inquiry saved successfully!");
-        setIsNewInquiryOpen(false);
-        setInquiryRefreshTrigger(prev => prev + 1);
-        setFormData({
+      alert("Inquiry saved successfully!");
+      setIsNewInquiryOpen(false);
+      setInquiryRefreshTrigger(prev => prev + 1);
+      setFormData({
           full_name: '',
           company: '',
           category: '',
@@ -84,7 +83,6 @@ export default function AdminLayout() {
           custom_details: '',
           equipment_serial_number: ''
         });
-      }
     } catch (err) {
       alert("Failed to save inquiry.");
     }

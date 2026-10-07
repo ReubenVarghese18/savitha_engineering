@@ -1,13 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import QuoteModal from '../../components/QuoteModal';
 import POModal from '../../components/POModal';
+import { apiFetch } from '../../api/client';
+
+const WON_STATUSES = ['DESIGNING', 'MANUFACTURING', 'TESTING', 'DELIVERED'];
+const MONTHS = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+
 
 export default function LiveFeed() {
   const { setIsNewInquiryOpen, inquiryRefreshTrigger } = useOutletContext();
   const [activeInquiry, setActiveInquiry] = useState(null);
   const [timeRange, setTimeRange] = useState('6M');
   const [inquiries, setInquiries] = useState([]);
+  const [lastSync, setLastSync] = useState(null);
 
   const [isNewPOOpen, setIsNewPOOpen] = useState(false);
   const [activePO, setActivePO] = useState(null);
@@ -15,14 +21,10 @@ export default function LiveFeed() {
   useEffect(() => {
     const fetchInquiries = async () => {
       try {
-        const token = localStorage.getItem('adminToken');
-        const [qRes, pRes] = await Promise.all([
-          fetch('http://localhost:8000/api/quotes', { headers: { 'Authorization': `Bearer ${token}` } }),
-          fetch('http://localhost:8000/api/purchase_orders', { headers: { 'Authorization': `Bearer ${token}` } })
+        const [qData, pData] = await Promise.all([
+          apiFetch('/api/quotes').catch(() => []),
+          apiFetch('/api/purchase_orders').catch(() => [])
         ]);
-        
-        const qData = qRes.ok ? await qRes.json() : [];
-        const pData = pRes.ok ? await pRes.json() : [];
         
         const combined = [
           ...qData.map(q => ({ ...q, type: 'QUOTE' })),
@@ -31,6 +33,7 @@ export default function LiveFeed() {
         
         combined.sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
         setInquiries(combined);
+        setLastSync(new Date());
       } catch (err) {
         console.error('[LiveFeed] Failed to fetch inquiries:', err);
       }
@@ -56,48 +59,71 @@ export default function LiveFeed() {
     'ALL': 'ALL TIME'
   };
 
-  const mockKPIs = {
-    '30D': { quotes: 8, deals: 3, rev: '₹ 45 L' },
-    '3M': { quotes: 14, deals: 5, rev: '₹ 80 L' },
-    '6M': { quotes: 28, deals: 12, rev: '₹ 1.2 Cr' },
-    '1Y': { quotes: 54, deals: 26, rev: '₹ 3.1 Cr' },
-    '3Y': { quotes: 142, deals: 78, rev: '₹ 8.5 Cr' },
-    'ALL': { quotes: 289, deals: 140, rev: '₹ 14.2 Cr' }
-  };
+  const { kpis, chartData, stats } = useMemo(() => {
+    const quotes = inquiries.filter((i) => i.type === 'QUOTE');
+    const pos = inquiries.filter((i) => i.type === 'PO');
+    const now = new Date();
+    const statusOf = (q) => (q.status || 'PENDING').toUpperCase();
+    const isWon = (q) => WON_STATUSES.includes(statusOf(q));
+    const monthIndex = (d) => d.getFullYear() * 12 + d.getMonth();
 
-  const mockChartData = {
-    '30D': [
-      { label: 'W1', value: 30, text: '3 Deals' }, { label: 'W2', value: 60, text: '6 Deals' }, { label: 'W3', value: 20, text: '2 Deals' }, { label: 'W4', value: 90, text: '9 Deals' }
-    ],
-    '3M': [
-      { label: 'APR', value: 40, text: '4 Deals' }, { label: 'MAY', value: 60, text: '6 Deals' }, { label: 'JUN', value: 90, text: '9 Deals' }
-    ],
-    '6M': [
-      { label: 'JAN', value: 20, text: '2 Deals' }, { label: 'FEB', value: 50, text: '5 Deals' }, { label: 'MAR', value: 30, text: '3 Deals' }, { label: 'APR', value: 70, text: '7 Deals' }, { label: 'MAY', value: 40, text: '4 Deals' }, { label: 'JUN', value: 90, text: '9 Deals' }
-    ],
-    '1Y': [
-      { label: 'Q1', value: 30, text: '12 Deals' }, { label: 'Q2', value: 60, text: '24 Deals' }, { label: 'Q3', value: 40, text: '16 Deals' }, { label: 'Q4', value: 80, text: '32 Deals' }
-    ],
-    '3Y': [
-      { label: '2024', value: 50, text: '45 Deals' }, { label: '2025', value: 75, text: '68 Deals' }, { label: '2026', value: 95, text: '86 Deals' }
-    ],
-    'ALL': [
-      { label: '2022', value: 20, text: '15 Deals' }, { label: '2023', value: 40, text: '35 Deals' }, { label: '2024', value: 60, text: '55 Deals' }, { label: '2025', value: 80, text: '75 Deals' }, { label: '2026', value: 100, text: '95 Deals' }
-    ]
-  };
+    let inRange = () => true;
+    let buckets;
+    let bucketOf = () => -1;
 
-  const mockTableData = [
-    { id: 'SE-7601', date: '24/05/2026', client: 'B. Wayne', company: 'Wayne Enterprises', category: 'Precision Annealing', details: 'Batch processing unit v4', requested_assets: ['SE-ANNE-001', 'SE-ANNE-002'], status: 'PENDING', bg: 'bg-[#FFF000]', text: 'text-black' },
-    { id: 'SE-7602', date: '25/05/2026', client: 'T. Stark', company: 'Stark Industries', category: 'Melting Furnaces', details: 'Arc-refinery upgrade', requested_assets: ['SE-MELT-001', 'SE-MELT-003'], status: 'QUOTED', bg: 'bg-[#00FF00]', text: 'text-black' },
-    { id: 'SE-7603', date: '26/05/2026', client: 'L. Luthor', company: 'Lexcorp', category: 'Custom Build', details: 'Thermal core isolation', requested_assets: ['SE-CUST-001', 'SE-CUST-004'], status: 'PENDING', bg: 'bg-[#FFF000]', text: 'text-black' },
-    { id: 'SE-7604', date: '28/05/2026', client: 'O. Queen', company: 'Queen Consolidated', category: 'Industrial Oven', details: 'High capacity baking', requested_assets: ['SE-OVEN-001'], status: 'QUOTED', bg: 'bg-[#00FF00]', text: 'text-black' },
-    { id: 'SE-7605', date: '02/06/2026', client: 'V. Von Doom', company: 'Latverian Tech', category: 'Forging Press', details: 'Titanium compression', requested_assets: ['SE-FORG-001', 'SE-FORG-002'], status: 'PENDING', bg: 'bg-[#FFF000]', text: 'text-black' },
-    { id: 'SE-7606', date: '05/06/2026', client: 'N. Osborn', company: 'Oscorp', category: 'Chemical Reactor', details: 'High-pressure synthesis', requested_assets: ['SE-CUST-002'], status: 'WON', bg: 'bg-[#00FFFF]', text: 'text-black' },
-    { id: 'SE-7607', date: '08/06/2026', client: 'H. Pym', company: 'Pym Technologies', category: 'Micro-Furnace', details: 'Particle containment unit', requested_assets: ['SE-BATCH-003'], status: 'LOST', bg: 'bg-[#FF0000]', text: 'text-white' },
-    { id: 'SE-7608', date: '10/06/2026', client: 'M. Dyson', company: 'Cyberdyne Systems', category: 'Automation Core', details: 'Neural net processor housing', requested_assets: ['SE-CUST-005'], status: 'MISSED', bg: 'bg-black', text: 'text-white' },
-    { id: 'SE-7609', date: '12/06/2026', client: 'A. Wesker', company: 'Umbrella Corp', category: 'Bio-Incubator', details: 'Temperature controlled vault', requested_assets: ['SE-BATCH-004'], status: 'QUOTED', bg: 'bg-[#00FF00]', text: 'text-black' },
-    { id: 'SE-7610', date: '14/06/2026', client: 'P. Weyland', company: 'Weyland-Yutani', category: 'Cryo-Chamber', details: 'Deep space hibernation rig', requested_assets: ['SE-BATCH-001', 'SE-BATCH-002'], status: 'WON', bg: 'bg-[#00FFFF]', text: 'text-black' }
-  ];
+    if (timeRange === '30D') {
+      const start = new Date(now.getTime() - 30 * 86400000);
+      inRange = (d) => d >= start;
+      buckets = ['W1', 'W2', 'W3', 'W4'];
+      bucketOf = (d) => 3 - Math.min(3, Math.floor((now - d) / (7.5 * 86400000)));
+    } else if (['3M', '6M', '1Y'].includes(timeRange)) {
+      const n = { '3M': 3, '6M': 6, '1Y': 12 }[timeRange];
+      const startIdx = monthIndex(now) - (n - 1);
+      inRange = (d) => monthIndex(d) >= startIdx;
+      buckets = Array.from({ length: n }, (_, i) => MONTHS[(startIdx + i) % 12]);
+      bucketOf = (d) => monthIndex(d) - startIdx;
+    } else {
+      const years = timeRange === '3Y'
+        ? 3
+        : Math.max(1, now.getFullYear() - Math.min(now.getFullYear(), ...quotes.filter((q) => q.created_at).map((q) => new Date(q.created_at).getFullYear())) + 1);
+      const startYear = now.getFullYear() - (years - 1);
+      inRange = (d) => d.getFullYear() >= startYear;
+      buckets = Array.from({ length: years }, (_, i) => String(startYear + i));
+      bucketOf = (d) => d.getFullYear() - startYear;
+    }
+
+    const counts = buckets.map(() => 0);
+    let quotesInRange = 0;
+    let dealsInRange = 0;
+    quotes.forEach((q) => {
+      if (!q.created_at) return;
+      const d = new Date(q.created_at);
+      if (!inRange(d)) return;
+      quotesInRange += 1;
+      if (isWon(q)) {
+        dealsInRange += 1;
+        const idx = bucketOf(d);
+        if (idx >= 0 && idx < counts.length) counts[idx] += 1;
+      }
+    });
+
+    const max = Math.max(1, ...counts);
+    return {
+      kpis: { quotes: quotesInRange, deals: dealsInRange },
+      chartData: buckets.map((label, i) => ({
+        label,
+        count: counts[i],
+        value: (counts[i] / max) * 100,
+        text: `${counts[i]} ${counts[i] === 1 ? 'Deal' : 'Deals'}`,
+      })),
+      stats: {
+        totalQuotes: quotes.length,
+        awaitingReview: quotes.filter((q) => ['PENDING', 'ENGINEERING REVIEW'].includes(statusOf(q))).length,
+        inProduction: quotes.filter((q) => ['DESIGNING', 'MANUFACTURING', 'TESTING'].includes(statusOf(q))).length,
+        openPOs: pos.filter((p) => (p.status || 'DRAFT').toUpperCase() !== 'DELIVERED').length,
+      },
+    };
+  }, [inquiries, timeRange]);
 
   const onRowClick = (row) => {
     if (row.type === 'PO') {
@@ -195,11 +221,11 @@ export default function LiveFeed() {
   
   <span className="text-5xl font-black text-black mt-6 font-mono tracking-tighter">{inquiries.filter(q => (q.status || 'PENDING').toUpperCase() === 'PENDING').length}</span>
 </div>
-{/* Card 2: Quotes Sent (Historical) */}
+{/* Card 2: Quotes Received (Historical) */}
 <div className="bg-white border-[3px] border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] p-6 md:p-8 flex flex-col justify-between">
   <div className="flex justify-between items-center w-full">
     <h4 className="text-xs font-bold text-gray-600 uppercase tracking-widest leading-none">
-      Quotes Sent
+      Quotes Received
     </h4>
     
     {/* Aligned Dynamic Time Range Badge */}
@@ -210,7 +236,7 @@ export default function LiveFeed() {
     </div>
   </div>
   
-  <span className="text-5xl font-black text-black mt-6 font-mono tracking-tighter">{mockKPIs[timeRange].quotes}</span>
+  <span className="text-5xl font-black text-black mt-6 font-mono tracking-tighter">{kpis.quotes}</span>
 </div>
 
 {/* Card 3: Deals Closed / Won (Historical) */}
@@ -229,8 +255,7 @@ export default function LiveFeed() {
   </div>
   
   <div className="mt-6 flex items-baseline gap-3">
-    <span className="text-5xl font-black text-black font-mono tracking-tighter">{mockKPIs[timeRange].deals}</span>
-    <span className="text-sm font-bold text-[#FA5D19] font-mono tracking-widest">{mockKPIs[timeRange].rev}</span>
+    <span className="text-5xl font-black text-black font-mono tracking-tighter">{kpis.deals}</span>
   </div>
 </div>
 </div>
@@ -239,7 +264,7 @@ export default function LiveFeed() {
 <div className="w-full mt-6 bg-white border-[3px] border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] p-6 md:p-8 flex flex-col h-[350px]">
   
   <div className="flex justify-between items-center mb-8">
-    <h3 className="text-sm font-bold tracking-widest uppercase text-black">Deals Closed Per Month</h3>
+    <h3 className="text-sm font-bold tracking-widest uppercase text-black">Deals Closed Over Time</h3>
     <span className="text-[10px] font-mono text-gray-500 uppercase tracking-widest">RANGE: {timeRange}</span>
   </div>  {/* Bar Chart Container */}
   <div className="flex-1 flex items-end justify-between gap-2 sm:gap-6 border-b-[3px] border-black pb-0 relative">
@@ -252,11 +277,11 @@ export default function LiveFeed() {
       <div className="w-full border-t-[2px] border-dashed border-gray-200"></div>
     </div>
 
-    {mockChartData[timeRange].map((item, index) => (
+    {chartData.map((item, index) => (
       <div key={index} className="flex flex-col items-center flex-1 group z-10 h-full justify-end">
         <div 
           style={{ height: `${item.value}%` }} 
-          className="w-full max-w-[60px] bg-[#FA5D19] border-[3px] border-black transition-all duration-300 ease-out group-hover:bg-black relative cursor-pointer shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]"
+          className={`w-full max-w-[60px] ${item.count === 0 ? 'bg-zinc-200' : 'bg-[#FA5D19]'} border-[3px] border-black transition-all duration-300 ease-out group-hover:bg-black relative cursor-pointer shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]`}
         >
           <span className="absolute -top-10 left-1/2 -translate-x-1/2 bg-black text-white text-[11px] py-1 px-3 font-mono opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
             {item.text}
@@ -366,34 +391,20 @@ export default function LiveFeed() {
 <section className="pb-12">
 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 <div className="bg-white border-2 border-black p-4">
-<p className="font-label-caps text-[9px] font-black uppercase text-zinc-400 mb-2">Thermal Output</p>
-<p className="font-data-readout text-xl">1,240 °C</p>
-<div className="mt-3 h-1.5 bg-zinc-100">
-<div className="bg-molten-amber h-full" style={{"width":"82%"}}></div>
-</div>
-</div>
-<div className="bg-white border-2 border-black p-4">
-<p className="font-label-caps text-[9px] font-black uppercase text-zinc-400 mb-2">Inquiry Queue</p>
-<div className="flex items-baseline gap-2">
-<p className="font-data-readout text-xl">42</p>
-<span className="text-[9px] font-black text-green-600">+12 SINCE LAST UPDATE</span>
-</div>
-</div>
-<div className="bg-white border-2 border-black p-4">
-<p className="font-label-caps text-[9px] font-black uppercase text-zinc-400 mb-2">System Uptime</p>
-<p className="font-data-readout text-xl">99.98%</p>
-<div className="mt-3 flex gap-0.5">
-<div className="h-1.5 flex-1 bg-green-500"></div>
-<div className="h-1.5 flex-1 bg-green-500"></div>
-<div className="h-1.5 flex-1 bg-green-500"></div>
-<div className="h-1.5 flex-1 bg-green-500"></div>
-<div className="h-1.5 flex-1 bg-zinc-200"></div>
-</div>
+<p className="font-label-caps text-[9px] font-black uppercase text-zinc-400 mb-2">Total Quotes</p>
+<p className="font-data-readout text-xl">{stats.totalQuotes}</p>
 </div>
 <div className="bg-white border-2 border-black p-4 border-l-4 border-l-molten-amber">
-<p className="font-label-caps text-[9px] font-black uppercase text-zinc-400 mb-2">Active Nodes</p>
-<p className="font-data-readout text-xl">08</p>
-<p className="text-[8px] font-bold text-molten-amber mt-1 animate-pulse uppercase">NODE_07: RE-CALIBRATING</p>
+<p className="font-label-caps text-[9px] font-black uppercase text-zinc-400 mb-2">Awaiting Review</p>
+<p className="font-data-readout text-xl">{stats.awaitingReview}</p>
+</div>
+<div className="bg-white border-2 border-black p-4">
+<p className="font-label-caps text-[9px] font-black uppercase text-zinc-400 mb-2">In Production</p>
+<p className="font-data-readout text-xl">{stats.inProduction}</p>
+</div>
+<div className="bg-white border-2 border-black p-4">
+<p className="font-label-caps text-[9px] font-black uppercase text-zinc-400 mb-2">Open Purchase Orders</p>
+<p className="font-data-readout text-xl">{stats.openPOs}</p>
 </div>
 </div>
 </section></div>
@@ -402,14 +413,11 @@ export default function LiveFeed() {
 <div className="flex gap-8 items-center h-full">
 <div className="flex items-center gap-2">
 <span className="w-2 h-2 rounded-full bg-green-500 text-zinc-950"></span>
-<span className="font-label-caps text-[9px] text-secondary uppercase text-zinc-950">Connection: SECURE</span>
-</div>
-<div className="hidden md:flex items-center gap-2">
-<span className="font-label-caps text-[9px] text-secondary uppercase text-zinc-950">Latency: 14ms</span>
+<span className="font-label-caps text-[9px] text-secondary uppercase text-zinc-950">{inquiries.length} records loaded</span>
 </div>
 </div>
 <div className="flex items-center gap-4">
-<span className="font-label-caps text-[9px] text-on-surface text-zinc-950" id="system-time">2026-06-03 17:47:19 UTC</span>
+<span className="font-label-caps text-[9px] text-on-surface text-zinc-950">{lastSync ? `LAST SYNC: ${lastSync.toLocaleTimeString('en-GB')}` : 'SYNCING...'}</span>
 </div>
 </footer>
       <QuoteModal 

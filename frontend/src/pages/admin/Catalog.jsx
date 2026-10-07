@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import ProductModal from '../../components/ProductModal';
+import { apiFetch } from '../../api/client';
+import AdminFooter from '../../components/AdminFooter';
 
 // Shared style constants
 const INPUT_CLS = "w-full px-4 py-3 border-2 border-black bg-white rounded-none focus:outline-none focus:border-[#FA5D19] focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-mono text-lg uppercase tracking-wider transition-all";
@@ -66,11 +68,8 @@ export default function Catalog() {
 
   const fetchProducts = async () => {
     try {
-      const res = await fetch('http://localhost:8000/furnaces/');
-      if (res.ok) {
-        const data = await res.json();
-        setProductsList(data);
-      }
+      const data = await apiFetch('/furnaces/');
+      setProductsList(data);
     } catch (err) {
       console.error(err);
     }
@@ -84,26 +83,17 @@ export default function Catalog() {
     try {
       const isEditing = !!selectedProduct;
       const url = isEditing 
-        ? `http://localhost:8000/furnaces/${selectedProduct.id}` 
-        : `http://localhost:8000/furnaces/`;
+        ? `/furnaces/${selectedProduct.id}` 
+        : `/furnaces/`;
       const method = isEditing ? 'PUT' : 'POST';
 
-      const token = localStorage.getItem('adminToken');
-      const res = await fetch(url, {
+      await apiFetch(url, {
         method,
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
         body: JSON.stringify(payload)
       });
 
-      if (res.ok) {
-        setIsProductModalOpen(false);
-        fetchProducts();
-      } else {
-        alert("Failed to save product.");
-      }
+      setIsProductModalOpen(false);
+      fetchProducts();
     } catch (err) {
       console.error(err);
       alert("Error saving product.");
@@ -384,20 +374,7 @@ export default function Catalog() {
       )}
 </div>
 
-<footer className="h-8 border-t border-outline-variant px-margin-lg flex items-center justify-between shrink-0 overflow-hidden bg-white border-t-2 border-black" style={{"backgroundColor":"rgb(242, 240, 233)","borderTop":"2px solid rgb(0, 0, 0)"}}>
-<div className="flex gap-8 items-center h-full">
-<div className="flex items-center gap-2">
-<span className="w-2 h-2 rounded-full bg-green-500 text-zinc-950"></span>
-<span className="font-label-caps text-[9px] text-secondary uppercase text-zinc-950">Connection: SECURE</span>
-</div>
-<div className="hidden md:flex items-center gap-2">
-<span className="font-label-caps text-[9px] text-secondary uppercase text-zinc-950">Latency: 14ms</span>
-</div>
-</div>
-<div className="flex items-center gap-4">
-<span className="font-label-caps text-[9px] text-on-surface text-zinc-950" id="system-time">2026-06-03 17:47:19 UTC</span>
-</div>
-</footer>
+<AdminFooter />
 
       {/* ── ADD ITEM MODAL ────────────────────────────────────────────── */}
       {isAddItemOpen && (

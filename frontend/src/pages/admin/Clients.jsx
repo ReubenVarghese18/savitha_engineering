@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import AdminFooter from '../../components/AdminFooter';
 
 /* ─────────────────────────────────────────────────────────────────
    SHARED STYLE CONSTANTS
@@ -246,23 +247,7 @@ export default function Clients() {
       </div>
 
       {/* ── FOOTER ──────────────────────────────────────────────────── */}
-      <footer
-        className="h-8 border-t border-outline-variant px-margin-lg flex items-center justify-between shrink-0 overflow-hidden bg-white border-t-2 border-black"
-        style={{ backgroundColor: 'rgb(242, 240, 233)', borderTop: '2px solid rgb(0, 0, 0)' }}
-      >
-        <div className="flex gap-8 items-center h-full">
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-green-500"></span>
-            <span className="font-mono text-[9px] uppercase text-zinc-950">Connection: SECURE</span>
-          </div>
-          <div className="hidden md:flex items-center gap-2">
-            <span className="font-mono text-[9px] uppercase text-zinc-950">Latency: 14ms</span>
-          </div>
-        </div>
-        <div className="flex items-center gap-4">
-          <span className="font-mono text-[9px] uppercase text-zinc-950" id="system-time">2026-06-03 19:00:17 UTC</span>
-        </div>
-      </footer>
+      <AdminFooter />
 
       {/* ══════════════════════════════════════════════════════════════
           ADD NEW CLIENT MODAL

@@ -4,6 +4,8 @@ import Navbar from '../components/Navbar';
 import RFQFooter from '../components/RFQFooter';
 import { products as dummyProducts } from '../data/products';
 import { useQuote } from '../context/QuoteContext';
+import { apiFetch } from '../api/client';
+import { Helmet } from 'react-helmet-async';
 
 // ── BLUEPRINT IMAGE PLACEHOLDER SUB-COMPONENT ────────────────────────
 function BlueprintPlaceholder({ title }) {
@@ -273,9 +275,7 @@ export default function ProductsPage() {
     let cancelled = false;
     const loadProducts = async () => {
       try {
-        const res = await fetch('http://localhost:8000/furnaces/');
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const apiData = await res.json();
+        const apiData = await apiFetch('/furnaces/');
         if (!cancelled && apiData && apiData.length > 0) {
           // Normalize the API shape into the camelCase shape the render expects.
           const normalized = apiData.filter(p => p.is_active !== false).map(p => ({
@@ -404,6 +404,13 @@ export default function ProductsPage() {
 
   return (
     <div className="no-roundness bg-[#0A0A0B] text-white min-h-screen flex flex-col antialiased selection:bg-[#f24a0d] selection:text-black stark-grid">
+      <Helmet>
+        <title>Industrial Furnaces &amp; Ovens Catalog | Savitha Engineering</title>
+        <meta name="description" content="Browse Savitha Engineering's range of melting furnaces, annealing systems, batch and box furnaces and industrial ovens. Request a quote online." />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Industrial Furnaces &amp; Ovens Catalog | Savitha Engineering" />
+        <meta property="og:description" content="Browse Savitha Engineering's range of melting furnaces, annealing systems, batch and box furnaces and industrial ovens. Request a quote online." />
+      </Helmet>
       <style dangerouslySetInnerHTML={{
         __html: `
         @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@500&display=swap');

@@ -3,6 +3,8 @@ import { useLocation } from 'react-router-dom';
 import { DndContext, useDraggable, useDroppable, pointerWithin } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
 import { products } from '../../data/products';
+import { apiFetch } from '../../api/client';
+import AdminFooter from '../../components/AdminFooter';
 
 const getJobAssets = (job) => {
   if (!job) return [];
@@ -70,15 +72,6 @@ const PROCUREMENT_COLUMNS = [
   { status: 'ORDERED', title: '[ ORDERED ]', color: '#FA5D19', badgeColor: 'bg-[#FA5D19] text-zinc-950 border border-black' },
   { status: 'RECEIVED', title: '[ RECEIVED ]', color: '#EAB308', badgeColor: 'bg-yellow-400 text-black border border-black' },
   { status: 'DELIVERED', title: '[ DELIVERED ]', color: '#00AA66', badgeColor: 'bg-[#00AA66] text-white border border-black' }
-];
-
-const INITIAL_JOBS = [
-  { id: 'JOB-1042', company: 'Wayne Enterprises', po: '45009210', due: 'DUE: 14 DAYS', status: 'QUEUED', requested_assets: ['SE-ANNE-001', 'SE-ANNE-002'] },
-  { id: 'JOB-1045', company: 'LexCorp Industries', po: 'LX-8822', due: 'DUE: 18 DAYS', status: 'QUEUED', requested_assets: ['SE-CUST-001', 'SE-CUST-004'] },
-  { id: 'JOB-1039', company: 'Stark Industries', po: 'MARK-85', due: 'DUE: 05 DAYS', progress: 65, status: 'IN ASSEMBLY', requested_assets: ['SE-FORG-001', 'SE-FORG-002'] },
-  { id: 'JOB-1031', company: 'Pym Tech', po: 'SUB-001', due: 'DUE: OVERDUE', details: 'CALIBRATING SENSORS...', status: 'TESTING', requested_assets: ['SE-MELT-005', 'SE-BATCH-010'] },
-  { id: 'JOB-1028', company: 'Oscorp', po: 'GLIDER-X', due: 'PASSED QC', status: 'READY FOR DISPATCH', requested_assets: ['SE-BATCH-001', 'SE-OVEN-001'] },
-  { id: 'JOB-1025', company: 'S.H.I.E.L.D.', po: 'HELI-STRK', due: 'PASSED QC', status: 'READY FOR DISPATCH', requested_assets: ['SE-MELT-001', 'SE-MELT-003', 'SE-FORG-006'] }
 ];
 
 function KanbanColumn({ column, children }) {
@@ -236,13 +229,8 @@ export default function Production() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const token = localStorage.getItem('adminToken');
         if (mode === 'SALES') {
-          const res = await fetch('http://localhost:8000/api/quotes', {
-            headers: { 'Authorization': `Bearer ${token}` }
-          });
-          if (!res.ok) throw new Error(`HTTP ${res.status}`);
-          const data = await res.json();
+          const data = await apiFetch('/api/quotes');
           const mapped = data.map((quote) => ({
             type:             'QUOTE',
             id:               `SE-${quote.id}`,
@@ -265,13 +253,9 @@ export default function Production() {
             custom_details:    quote.custom_details,
             equipment_serial_number: quote.equipment_serial_number,
           }));
-          setBoardData(mapped.length > 0 ? mapped : INITIAL_JOBS);
+          setBoardData(mapped);
         } else {
-          const res = await fetch('http://localhost:8000/api/purchase_orders', {
-            headers: { 'Authorization': `Bearer ${token}` }
-          });
-          if (!res.ok) throw new Error(`HTTP ${res.status}`);
-          const data = await res.json();
+          const data = await apiFetch('/api/purchase_orders');
           const mapped = data.map((po) => ({
             type:             'PO',
             id:               `PO-${po.id}`,
@@ -350,24 +334,18 @@ export default function Production() {
     let endpoint = '';
     
     if (originalCard.type === 'PO') {
-      endpoint = `http://localhost:8000/api/purchase_orders/${numericId}`;
+      endpoint = `/api/purchase_orders/${numericId}`;
       dbStatus = destinationColumnId.charAt(0) + destinationColumnId.slice(1).toLowerCase();
     } else {
-      endpoint = `http://localhost:8000/api/quotes/${numericId}`;
+      endpoint = `/api/quotes/${numericId}`;
       dbStatus = COLUMN_TO_DB_STATUS[destinationColumnId] || 'Pending';
     }
 
     try {
-      const token = localStorage.getItem('adminToken');
-      const res = await fetch(endpoint, {
+      await apiFetch(endpoint, {
         method:  'PATCH',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
         body:    JSON.stringify({ status: dbStatus }),
       });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
     } catch (err) {
       console.error('[Production] PATCH failed — reverting card:', err);
       // ── REVERT on failure ──────────────────────────────────────────────
@@ -729,20 +707,7 @@ export default function Production() {
         </div>
       )}
 
-      <footer className="h-8 border-t border-outline-variant px-margin-lg flex items-center justify-between shrink-0 overflow-hidden bg-white border-t-2 border-black" style={{"backgroundColor":"rgb(242, 240, 233)","borderTop":"2px solid rgb(0, 0, 0)"}}>
-        <div className="flex gap-8 items-center h-full">
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-green-500 text-zinc-950"></span>
-            <span className="font-mono text-[9px] uppercase text-zinc-950">Connection: SECURE</span>
-          </div>
-          <div className="hidden md:flex items-center gap-2">
-            <span className="font-mono text-[9px] uppercase text-zinc-950">Latency: 14ms</span>
-          </div>
-        </div>
-        <div className="flex items-center gap-4">
-          <span className="font-mono text-[9px] uppercase text-zinc-950" id="system-time">2026-06-03 17:47:19 UTC</span>
-        </div>
-      </footer>
+      <AdminFooter />
     </>
   );
 }

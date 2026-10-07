@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { apiFetch } from '../../api/client';
 
 export default function Login() {
   const [username, setUsername] = useState('');
@@ -16,12 +17,13 @@ export default function Login() {
     try {
       const params = new URLSearchParams({ username, password });
       
-      const response = await fetch('http://localhost:8000/api/login', {
+      const response = await apiFetch('/api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
         body: params.toString(),
+        rawResponse: true
       });
 
       if (!response.ok) {

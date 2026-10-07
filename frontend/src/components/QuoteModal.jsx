@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { products } from '../data/products';
+import { apiFetch } from '../api/client';
 
 export default function QuoteModal({ inquiry, onClose, onUpdate }) {
   if (!inquiry) return null;
@@ -38,12 +39,7 @@ export default function QuoteModal({ inquiry, onClose, onUpdate }) {
     
     const fetchDraft = async () => {
       try {
-        const token = localStorage.getItem('adminToken');
-        const res = await fetch(`http://localhost:8000/api/quotes/${inquiry.id}`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        if (!res.ok) return;
-        const data = await res.json();
+        const data = await apiFetch(`/api/quotes/${inquiry.id}`);
         
         if (!cancelled) {
           if (data.base_price) setBasePrice(data.base_price);
@@ -63,13 +59,8 @@ export default function QuoteModal({ inquiry, onClose, onUpdate }) {
   const handleSaveDraft = async () => {
     try {
       setIsSaving(true);
-      const token = localStorage.getItem('adminToken');
-      const res = await fetch(`http://localhost:8000/api/quotes/${inquiry.id}/draft`, {
+      await apiFetch(`/api/quotes/${inquiry.id}/draft`, {
         method: "PATCH",
-        headers: { 
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
-        },
         body: JSON.stringify({
           base_price: basePrice,
           lead_time: leadTime,
@@ -77,8 +68,6 @@ export default function QuoteModal({ inquiry, onClose, onUpdate }) {
           notes: notes
         })
       });
-
-      if (!res.ok) throw new Error("Failed to save draft");
 
       setIsSaving(false);
       setIsSaved(true);
@@ -109,22 +98,16 @@ export default function QuoteModal({ inquiry, onClose, onUpdate }) {
   const handleGeneratePDF = async () => {
     try {
       setIsGenerating(true);
-      const token = localStorage.getItem('adminToken');
-      const res = await fetch(`http://localhost:8000/api/quotes/${inquiry.id}/generate-pdf`, {
+      const res = await apiFetch(`/api/quotes/${inquiry.id}/generate-pdf`, {
         method: "POST",
-        headers: { 
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
-        },
         body: JSON.stringify({
           base_price: basePrice,
           lead_time: leadTime,
           payment_terms: paymentTerms,
           notes: notes
-        })
+        }),
+        rawResponse: true
       });
-
-      if (!res.ok) throw new Error("Failed to generate PDF");
 
       const blob = await res.blob();
       const url = window.URL.createObjectURL(blob);

@@ -5,6 +5,7 @@ import Navbar from '../components/Navbar';
 import RFQFooter from '../components/RFQFooter';
 import { products as fallbackProducts } from '../data/products';
 import { useQuote } from '../context/QuoteContext';
+import { apiFetch } from '../api/client';
 
 // ── BLUEPRINT IMAGE PLACEHOLDER FOR PDP ───────────────────────────────
 function PDPBlueprintPlaceholder({ title }) {
@@ -36,6 +37,35 @@ function PDPBlueprintPlaceholder({ title }) {
   );
 }
 
+function ProductNotFound() {
+  return (
+    <div className="no-roundness bg-[#0A0A0B] text-white min-h-screen flex flex-col antialiased selection:bg-[#FF4D00] selection:text-black stark-grid">
+      <Helmet>
+        <title>Product Not Found | Savitha Engineering</title>
+        <meta name="robots" content="noindex" />
+      </Helmet>
+      <Navbar />
+      <main className="flex-grow flex items-center justify-center px-6 py-24">
+        <div className="max-w-xl w-full border-[3px] border-white p-10 shadow-[8px_8px_0px_0px_#FF4D00]">
+          <p className="font-mono text-xs tracking-[0.2em] text-[#FF4D00] mb-4">ERROR // 404</p>
+          <h1 className="text-5xl font-black uppercase leading-none mb-6">Product not found</h1>
+          <p className="text-gray-300 mb-8">
+            This product doesn&apos;t exist or is no longer listed in our catalog.
+          </p>
+          <div className="flex flex-wrap gap-4">
+            <Link to="/products" className="px-6 py-3 bg-[#FF4D00] text-black font-black uppercase tracking-widest border-[3px] border-white hover:bg-white transition-colors">
+              Browse catalog
+            </Link>
+            <Link to="/" className="px-6 py-3 bg-transparent text-white font-black uppercase tracking-widest border-[3px] border-white hover:bg-white hover:text-black transition-colors">
+              Home
+            </Link>
+          </div>
+        </div>
+      </main>
+    </div>
+  );
+}
+
 export default function PDPPage() {
   const { productId } = useParams();
   const navigate = useNavigate();
@@ -49,9 +79,7 @@ export default function PDPPage() {
     let cancelled = false;
     const loadProducts = async () => {
       try {
-        const res = await fetch('http://localhost:8000/furnaces/');
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const apiData = await res.json();
+        const apiData = await apiFetch('/furnaces/');
         if (!cancelled && apiData && apiData.length > 0) {
           // Normalize the API shape into the camelCase shape the render expects.
           const normalized = apiData.filter(p => p.is_active !== false).map(p => ({
@@ -94,7 +122,8 @@ export default function PDPPage() {
   // ─────────────────────────────────────────────────────────────────────
 
   // Resolve the current product from state (works with both API and fallback data)
-  const product = products.find(p => p.id === productId || p.sku === productId) || products[0];
+  const matchedProduct = products.find(p => p.id === productId || p.sku === productId);
+  const product = matchedProduct || products[0];
 
   const isAdded = product ? isProductInQuote(product.id) : false;
 
@@ -186,6 +215,8 @@ export default function PDPPage() {
       </div>
     );
   }
+
+  if (!matchedProduct) return <ProductNotFound />;
   // ─────────────────────────────────────────────────────────────────────
 
   const metaDesc = `${product.title} (${product.category}). Max temp: ${product.tempText}. ${product.specifications?.shortDescription || product.description || ''}`.substring(0, 155) + '...';
@@ -229,7 +260,7 @@ export default function PDPPage() {
   return (
     <div className="no-roundness bg-[#0A0A0B] text-white min-h-screen flex flex-col antialiased selection:bg-[#FF4D00] selection:text-black stark-grid">
       <Helmet>
-        <title>{product.title} - {product.sku} | Savitha Engineering</title>
+        <title>{`${product.title} - ${product.sku} | Savitha Engineering`}</title>
         <meta name="description" content={metaDesc} />
         <meta property="og:title" content={`${product.title} - ${product.sku} | Savitha Engineering`} />
         <meta property="og:description" content={metaDesc} />

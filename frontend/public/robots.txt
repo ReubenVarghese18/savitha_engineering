@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /admin
+Allow: /
+
+# Replace with the real domain once it is purchased
+Sitemap: https://savithaengineering.com/sitemap.xml
