@@ -4,22 +4,6 @@ import { useAuth } from '../context/AuthContext';
 import { products } from '../data/products';
 import { apiFetch } from '../api/client';
 
-const JOBS_DATA = [
-  { id: 'JOB-1042', company: 'Wayne Enterprises', po: '45009210', status: 'QUEUED' },
-  { id: 'JOB-1045', company: 'LexCorp Industries', po: 'LX-8822', status: 'QUEUED' },
-  { id: 'JOB-1039', company: 'Stark Industries', po: 'MARK-85', status: 'IN ASSEMBLY' },
-  { id: 'JOB-1031', company: 'Pym Tech', po: 'SUB-001', status: 'TESTING' },
-  { id: 'JOB-1028', company: 'Oscorp', po: 'GLIDER-X', status: 'READY FOR DISPATCH' },
-  { id: 'JOB-1025', company: 'S.H.I.E.L.D.', po: 'HELI-STRK', status: 'READY FOR DISPATCH' }
-];
-
-const CLIENTS_DATA = [
-  { id: 'SE-C101', company: 'Wayne Enterprises', contact: 'Bruce Wayne' },
-  { id: 'SE-C102', company: 'Stark Industries', contact: 'Tony Stark' },
-  { id: 'SE-C103', company: 'LexCorp', contact: 'Lex Luthor' },
-  { id: 'SE-C104', company: 'Pym Tech', contact: 'Hank Pym' }
-];
-
 export default function AdminLayout() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
@@ -32,6 +16,7 @@ export default function AdminLayout() {
   const headerRef = useRef(null);
 
   const [isTerminalOpen, setIsTerminalOpen] = useState(false);
+  const [searchQuotes, setSearchQuotes] = useState([]);
   const [terminalQuery, setTerminalQuery] = useState('');
   const [selectedIndex, setSelectedIndex] = useState(0);
   const terminalInputRef = useRef(null);
@@ -110,6 +95,12 @@ export default function AdminLayout() {
     return () => window.removeEventListener('keydown', handleGlobalKeyDown);
   }, []);
 
+  // Load real quotes for the command search whenever it opens
+  useEffect(() => {
+    if (!isTerminalOpen) return;
+    apiFetch('/api/quotes').then(setSearchQuotes).catch(() => setSearchQuotes([]));
+  }, [isTerminalOpen]);
+
   // Autofocus input on open
   useEffect(() => {
     if (isTerminalOpen && terminalInputRef.current) {
@@ -169,28 +160,25 @@ export default function AdminLayout() {
       { type: 'ACTION', label: 'LOG NEW INQUIRY', action: 'NEW_INQUIRY' }
     ].filter(a => a.label.toLowerCase().includes(q));
 
-    const matchedJobs = JOBS_DATA.filter(j => 
-      j.id.toLowerCase().includes(q) || 
-      j.company.toLowerCase().includes(q) ||
-      (j.po && j.po.toLowerCase().includes(q))
-    ).map(j => ({ type: 'JOBS', label: `${j.id} // ${j.company.toUpperCase()}`, job: j }));
+    const matchedQuotes = searchQuotes.filter(item =>
+      `se-${item.id}`.includes(q) ||
+      [item.company, item.full_name, item.email, item.phone, item.status]
+        .some(v => v && String(v).toLowerCase().includes(q))
+    ).slice(0, 8).map(item => ({
+      type: 'QUOTES',
+      label: `SE-${item.id} // ${String(item.company || '').toUpperCase()} (${String(item.status || 'PENDING').toUpperCase()})`,
+      quote: item,
+    }));
 
     const matchedProducts = products.filter(p => 
       (p.sku && p.sku.toLowerCase().includes(q)) || 
       (p.title && p.title.toLowerCase().includes(q))
     ).map(p => ({ type: 'PRODUCTS', label: `${p.sku} // ${p.title.toUpperCase()}`, product: p }));
 
-    const matchedClients = CLIENTS_DATA.filter(c => 
-      c.id.toLowerCase().includes(q) || 
-      c.company.toLowerCase().includes(q) || 
-      c.contact.toLowerCase().includes(q)
-    ).map(c => ({ type: 'CLIENTS', label: `${c.id} // ${c.company.toUpperCase()} (${c.contact.toUpperCase()})`, client: c }));
-
     return [
       ...matchedActions,
-      ...matchedJobs,
-      ...matchedProducts,
-      ...matchedClients
+      ...matchedQuotes,
+      ...matchedProducts
     ];
   };
 
@@ -204,12 +192,10 @@ export default function AdminLayout() {
       } else if (item.path) {
         navigate(item.path);
       }
-    } else if (item.type === 'JOBS') {
-      navigate('/admin/production', { state: { highlightJobId: item.job.id } });
+    } else if (item.type === 'QUOTES') {
+      navigate('/admin/production', { state: { highlightJobId: `SE-${item.quote.id}` } });
     } else if (item.type === 'PRODUCTS') {
       navigate('/admin/catalog', { state: { activeTab: 'PRODUCTS' } });
-    } else if (item.type === 'CLIENTS') {
-      navigate('/admin/clients', { state: { highlightClientId: item.client.id } });
     }
   };
 
@@ -705,9 +691,8 @@ export default function AdminLayout() {
                 (() => {
                   const categories = [
                     { type: 'ACTION', title: '[ ACTION ]' },
-                    { type: 'JOBS', title: '[ JOBS ]' },
-                    { type: 'PRODUCTS', title: '[ PRODUCTS ]' },
-                    { type: 'CLIENTS', title: '[ CLIENTS ]' }
+                    { type: 'QUOTES', title: '[ QUOTES ]' },
+                    { type: 'PRODUCTS', title: '[ PRODUCTS ]' }
                   ];
 
                   return categories.map((cat) => {
