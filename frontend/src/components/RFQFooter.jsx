@@ -108,7 +108,7 @@ export default function RFQFooter() {
         </div>
         <section className="px-6 max-w-6xl mx-auto py-24 pb-32">
           <div className="overlap-grid gap-8">
-            <div className="col-span-12 lg:col-span-7 bg-white text-black shadow-[12px_12px_0px_0px_#FA5D19] p-10 lg:p-12">
+            <div className="col-span-12 lg:col-span-7 bg-white text-black shadow-[12px_12px_0px_0px_#FA5D19] p-6 sm:p-10 lg:p-12">
               <h2 className="font-brutal-head leading-none mb-12 lg:mb-16 text-3xl lg:text-4xl">REQUEST<br />TECHNICAL<br />QUOTE</h2>
               <form className="space-y-8" onSubmit={handleSubmit}>
                 <div className="grid md:grid-cols-2 gap-12">
@@ -181,7 +181,7 @@ export default function RFQFooter() {
               </form>
             </div>
             <div className="col-span-12 lg:col-span-5 flex flex-col gap-8">
-              <div className="bg-black border-4 border-white shadow-[12px_12px_0px_0px_#FA5D19] p-12 flex-1 text-left text-white">
+              <div className="bg-black border-4 border-white shadow-[12px_12px_0px_0px_#FA5D19] p-6 sm:p-12 flex-1 text-left text-white">
                 <h3 className="font-brutal-head text-lg text-neon mb-4">HEADQUARTERS</h3>
                 <p className="font-brutal-head text-2xl mb-8">MUMBAI - 400080,<br />MAHARASHTRA, INDIA.</p>
                 <div className="space-y-4">
@@ -201,17 +201,17 @@ export default function RFQFooter() {
         </section>
         <div className="bg-white text-black py-20 px-6 border-t-4 border-black">
           <div className="max-w-6xl mx-auto">
-            <div className="flex flex-col lg:flex-row justify-between items-start gap-20 mb-20">
-              <div className="max-w-2xl">
+            <div className="flex flex-col lg:flex-row justify-between items-start gap-10 lg:gap-20 mb-12 lg:mb-20">
+              <div className="max-w-2xl w-full min-w-0">
                 <div className="flex items-center gap-6 mb-8 cursor-pointer" onClick={scrollToTop}>
                   <div className="w-16 h-16 bg-black text-white flex items-center justify-center brutalist-border">
                     <svg className="w-10 h-10 fill-current" viewBox="0 0 24 24"><path d="M12,2C10.5,5.5,12.5,8.5,13.5,10c1.2,1.8,1.2,3.5,0.5,5c-0.8,1.8-3,2.5-4.5,1.5c-1-0.7-1.5-2-1-3.5c0.5-1.5,1.5-2.5,1.5-2.5s-4,2.5-4,6.5c0,4,3,7,7,7s7-3,7-7C20,7,12,2,12,2z"></path></svg>
                   </div>
-                  <span className="font-brutal-head text-5xl">SAVITHA ENGINEERING</span>
+                  <span className="font-brutal-head text-3xl sm:text-5xl">SAVITHA ENGINEERING</span>
                 </div>
-                <p className="font-bold text-2xl leading-tight uppercase">Engineering precision heating solutions since 1976. Custom-built excellence for the nation's most critical industries.</p>
+                <p className="font-bold text-lg sm:text-2xl leading-tight uppercase">Engineering precision heating solutions since 1976. Custom-built excellence for the nation's most critical industries.</p>
               </div>
-              <div className="grid grid-cols-2 gap-20">
+              <div className="grid grid-cols-2 gap-8 sm:gap-20">
                 <div className="space-y-6">
                   <h4 className="font-brutal-head text-xl text-neon">LINKS</h4>
                   <ul className="font-black space-y-2 uppercase text-lg">

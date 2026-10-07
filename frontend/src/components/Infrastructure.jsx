@@ -56,7 +56,7 @@ export default function Infrastructure() {
       </section>
       
       <section className="px-6 max-w-6xl mx-auto py-24" id="founders-legacy">
-        <div className="overlap-grid gap-12 items-center">
+        <div className="overlap-grid gap-y-12 lg:gap-x-12 items-center">
           <div className="col-span-12 lg:col-span-6 brutalist-border p-4 bg-white brutalist-shadow">
             <img alt="Industrial Leadership" className="w-full object-cover grayscale hover:grayscale-0 transition-all duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDMMhHgW1B83VcC0GaoBeAlCFV2FU5_h2PafoG76kX5ezqo0ENJpQR3p1JJUa4bbNi8DV8k53GF0Ud5QFPscyazIP1jYhKTuu6h-NLW6unQ_1SoTHmnA5ZGTCupo4kaB8dg7-9HCvb3aE3kU_Qsypc2iFab5Sj2bthe_FJsAaCp5h-_Z75v5SHjnSA9VxeZA3WrqPjZLhkB2zZev1_1PIU6ohnruldaSYMlIMeEAtIGTnBBfKHWC4N2OcjrDfud1oLGD3rVZJzeyk4" />
           </div>

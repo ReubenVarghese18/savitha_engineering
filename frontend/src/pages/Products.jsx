@@ -120,7 +120,7 @@ function ProductListItem({ title, specs, imagePlaceholder, sku, status }) {
       <div className="absolute top-2 left-2 px-2 py-1 bg-black text-white font-mono text-[10px] uppercase z-10">
         {status || 'IN_STOCK'}
       </div>
-      <div className="flex flex-col md:flex-row gap-6 w-full">
+      <div className="flex flex-col lg:flex-row gap-6 w-full">
         {/* Left: Image container (approx 40% to 45% width) */}
         <div className="w-full md:w-2/5 shrink-0">
           <div className="brutal-border-light bg-[#F4F4F4] overflow-hidden h-64 w-full relative">
@@ -133,7 +133,7 @@ function ProductListItem({ title, specs, imagePlaceholder, sku, status }) {
         </div>
 
         {/* Right: Content container (remaining space) */}
-        <div className="flex-1 flex flex-col md:flex-row gap-6 justify-between">
+        <div className="flex-1 flex flex-col lg:flex-row gap-6 justify-between">
           <div className="flex-1 flex flex-col justify-center">
             <span className="font-mono text-xs text-gray-500 block mb-1">{sku}</span>
             <h2 className="text-xl font-bold uppercase mb-2 tracking-tight">{title}</h2>
@@ -153,7 +153,7 @@ function ProductListItem({ title, specs, imagePlaceholder, sku, status }) {
             </div>
           </div>
 
-          <div className="w-full md:w-48 shrink-0 flex flex-col gap-2 justify-center">
+          <div className="w-full lg:w-48 shrink-0 flex flex-col gap-2 justify-center">
             <button
               onClick={handleQuoteClick}
               className={`w-full brutal-border font-bold uppercase py-2 text-sm shadow-brutal transition-all focus:outline-none rounded-sm cursor-pointer ${isAdded
@@ -644,24 +644,24 @@ export default function ProductsPage() {
           </aside>
 
           {/* Main Content Area */}
-          <main className="flex-1 bg-white p-6 md:p-8">
-            <div className="flex justify-between items-center mb-8 border-b-[2px] border-black pb-4">
+          <main className="flex-1 min-w-0 bg-white p-6 md:p-8">
+            <div className="flex flex-col md:flex-row md:flex-wrap md:justify-between md:items-center gap-4 mb-8 border-b-[2px] border-black pb-4">
               <h1 className="text-2xl md:text-3xl font-bold uppercase">{selectedCategory}</h1>
-              <div className="flex items-center gap-6">
+              <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-3 sm:gap-6 w-full md:w-auto">
                 {/* Search Bar */}
-                <div className="relative">
+                <div className="relative w-full sm:w-auto">
                   <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 text-sm">search</span>
                   <input
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="bg-white border-2 border-black py-2 pl-10 pr-4 font-mono text-xs focus:outline-none focus:border-primary focus:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] w-[200px] uppercase tracking-wider transition-all rounded-none"
+                    className="bg-white border-2 border-black py-2 pl-10 pr-4 font-mono text-xs focus:outline-none focus:border-primary focus:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] w-full sm:w-[200px] uppercase tracking-wider transition-all rounded-none"
                     placeholder="Search Catalog..."
                     type="text"
                   />
                 </div>
 
                 {/* Category Dropdown */}
-                <div className="relative w-[340px]">
+                <div className="relative w-full sm:w-[340px]">
                   <select
                     value={selectedCategory}
                     onChange={(e) => setSelectedCategory(e.target.value)}

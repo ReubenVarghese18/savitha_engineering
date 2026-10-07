@@ -129,7 +129,7 @@ export default function Hero() {
             </div>
           </motion.div>
 
-          <div className="absolute right-0 top-1/4 vertical-text font-brutal-head text-[10rem] opacity-5 pointer-events-none">
+          <div className="hidden md:block absolute right-0 top-1/4 vertical-text font-brutal-head text-[10rem] opacity-5 pointer-events-none">
             MUMBAI INDUSTRIAL
           </div>
         </div>

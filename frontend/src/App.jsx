@@ -43,7 +43,7 @@ function ScrollToTop() {
 
 function PublicLanding() {
   return (
-    <div className="min-h-screen bg-[#0A0A0B] text-white selection:bg-[#FF4D00] selection:text-black stark-grid">
+    <div className="min-h-screen overflow-x-clip bg-[#0A0A0B] text-white selection:bg-[#FF4D00] selection:text-black stark-grid">
       <Helmet>
         <title>Savitha Engineering | Industrial Furnaces &amp; Ovens Since 1976</title>
         <meta name="description" content="Manufacturer of extreme-performance industrial furnaces, specialized melting systems and heavy-duty thermal ovens, built to international standards since 1976." />

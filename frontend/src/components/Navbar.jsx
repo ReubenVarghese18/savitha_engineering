@@ -6,6 +6,7 @@ export default function Navbar() {
   const [prevScrollPos, setPrevScrollPos] = useState(0);
   const [visible, setVisible] = useState(true);
   const [activeSection, setActiveSection] = useState('');
+  const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const { selectedProducts } = useQuote();
@@ -74,6 +75,10 @@ export default function Navbar() {
     if (location.pathname === '/products') {
       setVisible(true);
     }
+  }, [location.pathname]);
+
+  useEffect(() => {
+    setMenuOpen(false);
   }, [location.pathname]);
 
   useEffect(() => {
@@ -195,7 +200,45 @@ export default function Navbar() {
             {ctaText}
           </button>
         </div>
+
+        {/* Mobile menu button */}
+        <button
+          className="lg:hidden w-12 h-12 flex items-center justify-center bg-transparent border-2 border-white text-white cursor-pointer"
+          aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+          aria-expanded={menuOpen}
+          onClick={() => setMenuOpen((open) => !open)}
+        >
+          <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="square">
+            {menuOpen ? <path d="M5 5l14 14M19 5L5 19" /> : <path d="M4 7h16M4 12h16M4 17h16" />}
+          </svg>
+        </button>
       </div>
+
+      {/* Mobile menu panel */}
+      {menuOpen && (
+        <div className="lg:hidden max-w-6xl mx-auto w-full mt-6 pt-2 border-t border-white/10 flex flex-col">
+          {[
+            ['PRODUCTS', () => navigate('/products')],
+            ['INFRASTRUCTURE', () => handleNavClick('infrastructure')],
+            ['QUALITY (TQM)', () => handleNavClick('services')],
+            ['OUR LEGACY', () => handleNavClick('founders-legacy')],
+          ].map(([label, go]) => (
+            <button
+              key={label}
+              className="text-left uppercase text-base font-semibold tracking-wider text-gray-200 py-4 bg-transparent border-0 border-b border-white/10 cursor-pointer"
+              onClick={() => { setMenuOpen(false); go(); }}
+            >
+              {label}
+            </button>
+          ))}
+          <button
+            className={`mt-6 px-8 py-4 cursor-pointer font-sans font-bold uppercase tracking-wide ${ctaClasses}`}
+            onClick={() => { setMenuOpen(false); handleNavClick('contact'); }}
+          >
+            {ctaText}
+          </button>
+        </div>
+      )}
     </nav>
   );
 }

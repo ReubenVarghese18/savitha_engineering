@@ -27,6 +27,7 @@ Tick each box once it is settled.
 ## C. Claims and content shown on the site
 - [ ] Approve the headline claims: "45+ years of mastery" (the company dates from 1976, so it is now 50 years), "±0.5 °C thermal precision" and "30+ years operational life"
 - [ ] Confirm the promise shown after a quote request: "our technical team will contact you within 4 hours"
+- [ ] Approve the "Guided by Vision, Built on Integrity" leadership section on the homepage: it names Mr. Sajith Daniel Varghese, and calls the company a "premier subcontinent exporter" that grew "from a local Mumbai workshop"; confirm the wording and the photo shown with it
 - [ ] Written permission to show these client names under "Trusted by industry giants": Exide Industries, Crompton Greaves, Hindustan Pencils, Mehta Tubes, Multimetals
 - [ ] Approve the product photos and descriptions (photos being prepared)
 - [ ] Confirm which products are public. 32 are visible and 17 are currently hidden from the catalogue
