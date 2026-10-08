@@ -41,7 +41,7 @@ sitemap, deep links, HSTS header).
   (`robots.txt` and the sitemap pick up the domain from `DOMAIN` automatically)
 - [ ] Pin `connect-src` in `frontend/nginx.conf` to the real domain instead of `https:`
 - [ ] Add the Sentry DSN if error tracking is wanted
-- [ ] Turn on automatic backups (below) and test a restore once
+- [ ] Set up the off-server copy of backups (below) and test a restore once
 
 ## Updating the site
 ```bash
@@ -51,12 +51,19 @@ docker compose -f docker-compose.prod.yml --env-file .env.production up -d --bui
 Database changes are applied automatically at start-up (`alembic upgrade`).
 
 ## Backups
-```bash
-docker compose -f docker-compose.prod.yml --env-file .env.production exec db \
-  pg_dump -U savitha --format=custom savitha > savitha-$(date +%F).dump
-```
-Run it daily from cron and copy the file OFF the server (another machine or cloud storage).
-Restore to a new database with `pg_restore`.
+The `backup` service makes a database backup when the stack starts and then every 24 hours,
+into the `backups/` folder next to this file (`savitha-YYYY-MM-DD-HHMM.dump`). Files older than
+`BACKUP_KEEP_DAYS` (default 14) are deleted automatically. Tested 2026-10-08: backup written and
+restored into a fresh database with all data intact.
+
+- [ ] **Copy backups OFF the server.** A backup on the same machine is lost if the server is.
+  For example a daily `rclone copy backups/ <cloud-remote>:savitha-backups` from cron, or download
+  them regularly. Where they go is a CEO decision (see CEO_REVIEW_LIST.md, section D).
+- Check it is working: `docker compose -f docker-compose.prod.yml logs backup`
+- **Restore** (replaces the live data, so take a fresh backup first):
+  ```bash
+  docker compose -f docker-compose.prod.yml --env-file .env.production exec backup     pg_restore --clean --if-exists -h db -U savitha -d savitha /backups/<file>.dump
+  ```
 
 ## Useful commands
 - Logs: `docker compose -f docker-compose.prod.yml logs -f backend`

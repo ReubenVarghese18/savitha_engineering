@@ -12,9 +12,9 @@ import Catalog from './components/Catalog';
 import TqmSection from './components/TqmSection';
 import Infrastructure from './components/Infrastructure';
 import RFQFooter from './components/RFQFooter';
-import ProductsPage from './pages/Products';
-import PDPPage from './pages/PDP';
 
+const ProductsPage = lazy(() => import('./pages/Products'));
+const PDPPage = lazy(() => import('./pages/PDP'));
 const PrivacyPage = lazy(() => import('./pages/LegalPages').then((m) => ({ default: m.PrivacyPage })));
 const TermsPage = lazy(() => import('./pages/LegalPages').then((m) => ({ default: m.TermsPage })));
 const ContactPage = lazy(() => import('./pages/LegalPages').then((m) => ({ default: m.ContactPage })));

@@ -41,6 +41,21 @@ services:
       SMTP_FROM: ${SMTP_FROM:-}
       QUOTE_ALERT_TO: ${QUOTE_ALERT_TO:-}
 
+  backup:
+    image: postgres:16
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      PGPASSWORD: ${POSTGRES_PASSWORD}
+      BACKUP_KEEP_DAYS: ${BACKUP_KEEP_DAYS:-14}
+      TZ: Asia/Kolkata
+    volumes:
+      - ./deploy/run-backups.sh:/run-backups.sh:ro
+      - ./backups:/backups
+    entrypoint: ["sh", "/run-backups.sh"]
+
   frontend:
     build:
       context: ./frontend
