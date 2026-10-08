@@ -12,6 +12,9 @@ export default function RFQFooter() {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(null);
+  const [contactVisible, setContactVisible] = useState(false);
 
   useEffect(() => {
     if (selectedProducts.length > 0) {
@@ -28,6 +31,24 @@ export default function RFQFooter() {
         setErrorMessage("[ ERROR: NO ASSET SELECTED. ]");
       }
     }
+  };
+
+  useEffect(() => {
+    const el = document.getElementById('contact');
+    if (!el || !('IntersectionObserver' in window)) return undefined;
+    const observer = new IntersectionObserver(([entry]) => setContactVisible(entry.isIntersecting), { threshold: 0.1 });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  const describeSubmitError = (error) => {
+    const msg = String(error?.message || '');
+    if (msg.includes('429')) return 'TOO MANY REQUESTS. PLEASE WAIT A MINUTE AND TRY AGAIN.';
+    if (error instanceof TypeError || /failed to fetch|networkerror|load failed/i.test(msg)) {
+      return 'COULD NOT REACH OUR SERVER. CHECK YOUR CONNECTION OR CALL +91 8044464594.';
+    }
+    if (msg.includes('422')) return 'SOME DETAILS LOOK INVALID. PLEASE CHECK THE FORM AND TRY AGAIN.';
+    return 'SOMETHING WENT WRONG SENDING YOUR REQUEST. PLEASE TRY AGAIN OR CALL +91 8044464594.';
   };
 
   const validateForm = () => {
@@ -57,6 +78,7 @@ export default function RFQFooter() {
       return;
     }
     setErrorMessage('');
+    setSubmitting(true);
 
     try {
       await apiFetch('/api/quotes', {
@@ -72,7 +94,7 @@ export default function RFQFooter() {
         }),
       });
 
-      alert(`RFQ TRANSMITTED.\nNAME: ${full_name.toUpperCase()}\nCOMPANY: ${company.toUpperCase()}\n\nOUR TECHNICAL TEAM WILL CONTACT YOU WITHIN 4 HOURS.`);
+      setSubmitted({ name: full_name.trim(), via: email.trim() || phone.trim() });
       setFullName('');
       setCompany('');
       setEmail('');
@@ -81,7 +103,9 @@ export default function RFQFooter() {
       clearQuote();
     } catch (error) {
       console.error('Error submitting form:', error);
-      alert('AN ERROR OCCURRED while sending request.');
+      setErrorMessage(`[ ERROR: ${describeSubmitError(error)} ]`);
+    } finally {
+      setSubmitting(false);
     }
   };
   
@@ -110,6 +134,22 @@ export default function RFQFooter() {
           <div className="overlap-grid gap-8">
             <div className="col-span-12 lg:col-span-7 bg-white text-black shadow-[12px_12px_0px_0px_#FA5D19] p-6 sm:p-10 lg:p-12">
               <h2 className="font-brutal-head leading-none mb-12 lg:mb-16 text-3xl lg:text-4xl">REQUEST<br />TECHNICAL<br />QUOTE</h2>
+              {submitted ? (
+                <div role="status" aria-live="polite" className="space-y-6 text-left">
+                  <p className="font-mono text-xs font-bold tracking-widest text-[#FA5D19]">[ REQUEST RECEIVED ]</p>
+                  <h3 className="font-brutal-head text-3xl lg:text-4xl leading-tight uppercase break-words">Thank you, {submitted.name}.</h3>
+                  <p className="font-bold uppercase leading-relaxed">
+                    Our technical team will contact you at <span className="font-mono normal-case break-words">{submitted.via}</span> within 4 hours.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => setSubmitted(null)}
+                    className="bg-black text-white px-6 py-3 font-mono text-sm font-bold uppercase tracking-widest border-0 cursor-pointer hover:bg-[#FA5D19] transition-colors"
+                  >
+                    Send another request
+                  </button>
+                </div>
+              ) : (
               <form className="space-y-8" onSubmit={handleSubmit}>
                 <div className="grid md:grid-cols-2 gap-12">
                   <div className="w-full">
@@ -177,8 +217,9 @@ export default function RFQFooter() {
                     )}
                   </div>
                 )}
-                <button type="submit" onClick={handleButtonClick} className="w-full bg-neon text-white font-brutal-head text-xl hover:bg-black hover:text-primary transition-colors py-3 brutalist-border border-black cursor-pointer">SUBMIT QUOTE REQUEST</button>
+                <button type="submit" disabled={submitting} onClick={handleButtonClick} className="w-full bg-neon text-white font-brutal-head text-xl hover:bg-black hover:text-primary transition-colors py-3 brutalist-border border-black cursor-pointer disabled:opacity-60 disabled:cursor-wait">{submitting ? 'SENDING...' : 'SUBMIT QUOTE REQUEST'}</button>
               </form>
+              )}
             </div>
             <div className="col-span-12 lg:col-span-5 flex flex-col gap-8">
               <div className="bg-black border-4 border-white shadow-[12px_12px_0px_0px_#FA5D19] p-6 sm:p-12 flex-1 text-left text-white">
@@ -238,7 +279,7 @@ export default function RFQFooter() {
       </footer>
 
       {/* Floating Requisition Tracker */}
-      {selectedProducts.length > 0 && (
+      {selectedProducts.length > 0 && !contactVisible && (
         <button
           onClick={scrollToForm}
           className="fixed bottom-8 right-8 z-50 bg-[#FA5D19] text-white border-4 border-black px-6 py-4 font-mono text-sm font-bold uppercase tracking-widest shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all flex items-center gap-3 cursor-pointer"
