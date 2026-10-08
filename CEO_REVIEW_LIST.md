@@ -30,6 +30,8 @@ Tick each box once it is settled.
 - [ ] Approve the "Guided by Vision, Built on Integrity" leadership section on the homepage: it names Mr. Sajith Daniel Varghese, and calls the company a "premier subcontinent exporter" that grew "from a local Mumbai workshop"; confirm the wording and the photo shown with it
 - [ ] Written permission to show these client names under "Trusted by industry giants": Exide Industries, Crompton Greaves, Hindustan Pencils, Mehta Tubes, Multimetals
 - [ ] Confirm or remove the stock and delivery claims shown on every product: an "IN_STOCK" badge on the catalogue cards, "In stock / ready to ship" and "standard configurations ship within 14 business days" on product pages. These are currently shown for all products regardless of actual stock
+- [ ] Confirm the homepage and product-page images are genuine photos of the company's own factory, products and people, and that the company has the rights to use them. They are hosted by an AI design tool and look like generated or stock images; one shows a man in a hard hat in the "Guided by Vision" section next to a named person. Replace with real photographs if they are not. The same question applies to an unused 8-second foundry video found in the project
+- [ ] Decide what to do with the "Total Quality Management" section on the homepage. It currently shows only a heading in a large white block: its three detail cards (material integrity, process control and so on) and their pop-up details are switched off in the code. Either publish them, with approved wording, or remove the section
 - [ ] Approve the product photos and descriptions (photos being prepared)
 - [ ] Confirm which products are public. 32 are visible and 17 are currently hidden from the catalogue
 
