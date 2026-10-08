@@ -186,6 +186,7 @@ export default function LiveFeed() {
 <h3 className="font-label-caps text-lg font-black uppercase">Performance Overview</h3>
 <div className="relative">
   <select 
+    aria-label="Time range"
     value={timeRange}
     onChange={(e) => setTimeRange(e.target.value)}
     className="appearance-none px-4 py-2 pr-10 border-[3px] border-black bg-white text-black font-mono text-xs font-bold tracking-widest uppercase cursor-pointer focus:outline-none focus:border-[#FA5D19] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-[2px] hover:translate-x-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all"

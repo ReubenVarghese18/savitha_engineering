@@ -115,7 +115,7 @@ export default function Hero() {
               <div className="flex flex-col sm:flex-row gap-4">
                 <button
                   onClick={() => navigate('/products')}
-                  className="bg-primary text-white p-6 font-brutal-head text-lg flex-1 hover:translate-x-2 transition-transform cursor-pointer border-none"
+                  className="bg-[#D13B00] text-white p-6 font-brutal-head text-lg flex-1 hover:translate-x-2 transition-transform cursor-pointer border-none"
                 >
                   EXPLORE PRODUCTS
                 </button>

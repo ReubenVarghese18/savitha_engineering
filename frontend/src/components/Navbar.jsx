@@ -128,7 +128,7 @@ export default function Navbar() {
 
 
   return (
-    <nav className={`sticky top-0 w-full p-6 z-50 bg-surface border-b border-white/10 transition-transform duration-300 ${visible ? 'translate-y-0' : '-translate-y-full'}`}>
+    <nav aria-label="Main" className={`sticky top-0 w-full p-6 z-50 bg-surface border-b border-white/10 transition-transform duration-300 ${visible ? 'translate-y-0' : '-translate-y-full'}`}>
       <div className="flex justify-between items-center max-w-6xl mx-auto w-full">
         {/* Left: Logo */}
         <div className="flex items-center gap-4 cursor-pointer justify-start" onClick={handleLogoClick}>

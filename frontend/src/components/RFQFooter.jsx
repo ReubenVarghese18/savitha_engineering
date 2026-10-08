@@ -183,7 +183,7 @@ export default function RFQFooter() {
                           <button
                             type="button"
                             onClick={() => removeProductFromQuote(p.id)}
-                            className="text-[#FA5D19] hover:text-black font-black font-mono cursor-pointer ml-1 focus:outline-none bg-transparent border-none text-xs"
+                            className="text-[#D13B00] hover:text-black font-black font-mono cursor-pointer ml-1 focus:outline-none bg-transparent border-none text-xs"
                           >
                             [X]
                           </button>
@@ -217,7 +217,7 @@ export default function RFQFooter() {
                     )}
                   </div>
                 )}
-                <button type="submit" disabled={submitting} onClick={handleButtonClick} className="w-full bg-neon text-white font-brutal-head text-xl hover:bg-black hover:text-primary transition-colors py-3 brutalist-border border-black cursor-pointer disabled:opacity-60 disabled:cursor-wait">{submitting ? 'SENDING...' : 'SUBMIT QUOTE REQUEST'}</button>
+                <button type="submit" disabled={submitting} onClick={handleButtonClick} className="w-full bg-[#D13B00] text-white font-brutal-head text-xl hover:bg-black hover:text-primary transition-colors py-3 brutalist-border border-black cursor-pointer disabled:opacity-60 disabled:cursor-wait">{submitting ? 'SENDING...' : 'SUBMIT QUOTE REQUEST'}</button>
               </form>
               )}
             </div>
@@ -234,7 +234,7 @@ export default function RFQFooter() {
               <a className="bg-[#25D366] text-black p-4 flex items-center justify-center gap-3 border-4 border-white shadow-[12px_12px_0px_0px_#FA5D19] hover:translate-x-2 transition-transform cursor-pointer" href="https://wa.me/918044464594" target="_blank" rel="noopener noreferrer">
                 <span className="material-symbols-outlined text-3xl block">chat</span><span className="font-brutal-head text-lg">WHATSAPP SUPPORT</span>
               </a>
-              <a className="bg-[#FA5D19] text-white p-4 flex items-center justify-center gap-3 border-4 border-white shadow-[12px_12px_0px_0px_#FA5D19] hover:translate-x-2 transition-transform cursor-pointer" href="mailto:info@savithaeng.com">
+              <a className="bg-[#D13B00] text-white p-4 flex items-center justify-center gap-3 border-4 border-white shadow-[12px_12px_0px_0px_#FA5D19] hover:translate-x-2 transition-transform cursor-pointer" href="mailto:info@savithaeng.com">
                 <span className="material-symbols-outlined text-3xl block">mail</span><span className="font-brutal-head text-lg">EMAIL TECHNICAL TEAM</span>
               </a>
             </div>
@@ -254,7 +254,7 @@ export default function RFQFooter() {
               </div>
               <div className="grid grid-cols-2 gap-8 sm:gap-20">
                 <div className="space-y-6">
-                  <h4 className="font-brutal-head text-xl text-neon">LINKS</h4>
+                  <h4 className="font-brutal-head text-xl text-[#D13B00]">LINKS</h4>
                   <ul className="font-black space-y-2 uppercase text-lg">
                     <li><a className="hover:text-neon" href="#products">Products</a></li>
                     <li><a className="hover:text-neon" href="#services">Services</a></li>
@@ -262,7 +262,7 @@ export default function RFQFooter() {
                   </ul>
                 </div>
                 <div className="space-y-6">
-                  <h4 className="font-brutal-head text-xl text-neon">LEGAL</h4>
+                  <h4 className="font-brutal-head text-xl text-[#D13B00]">LEGAL</h4>
                   <ul className="font-black space-y-2 uppercase text-lg">
                     <li><Link className="hover:text-neon" to="/privacy">Privacy</Link></li>
                     <li><Link className="hover:text-neon" to="/terms">Terms</Link></li>
@@ -282,7 +282,7 @@ export default function RFQFooter() {
       {selectedProducts.length > 0 && !contactVisible && (
         <button
           onClick={scrollToForm}
-          className="fixed bottom-8 right-8 z-50 bg-[#FA5D19] text-white border-4 border-black px-6 py-4 font-mono text-sm font-bold uppercase tracking-widest shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all flex items-center gap-3 cursor-pointer"
+          className="fixed bottom-8 right-8 z-50 bg-[#D13B00] text-white border-4 border-black px-6 py-4 font-mono text-sm font-bold uppercase tracking-widest shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all flex items-center gap-3 cursor-pointer"
         >
           <span className="w-3 h-3 bg-white rounded-full animate-ping"></span>
           <span>ACTIVE QUOTE: {selectedProducts.length} {selectedProducts.length === 1 ? 'ASSET' : 'ASSETS'} SELECTED</span>

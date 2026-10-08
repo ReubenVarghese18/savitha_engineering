@@ -16,7 +16,7 @@ export default function Catalog() {
     <section className="px-6 max-w-6xl mx-auto py-24" id="products">
       <div className="mb-16 lg:mb-32 flex flex-col lg:flex-row justify-between items-start lg:items-end gap-8 lg:gap-12">
         <h2 className="font-brutal-head text-[clamp(2rem,6.5vw,6rem)] flex-1 leading-[0.85]">PRECISION<br/>CATALOG</h2>
-        <div className="brutalist-border p-8 bg-neon text-white brutalist-shadow max-w-xl">
+        <div className="brutalist-border p-8 bg-[#D13B00] text-white brutalist-shadow max-w-xl">
           <p className="font-black text-lg uppercase leading-tight">
             A comprehensive range of high-performance thermal systems designed for modern industrial scale.
           </p>
@@ -29,7 +29,7 @@ export default function Catalog() {
           onClick={() => handleCardClick('Heavy-Duty Melting Furnaces')}
           className="group relative bg-white text-black brutalist-border hover:-translate-y-4 transition-transform duration-300 min-h-[500px] py-16 px-10 flex flex-col justify-between cursor-pointer"
         >
-          <div className="absolute -top-6 -right-6 bg-primary text-white w-16 h-16 flex items-center justify-center font-brutal-head text-xl">01</div>
+          <div className="absolute -top-6 -right-6 bg-[#D13B00] text-white w-16 h-16 flex items-center justify-center font-brutal-head text-xl">01</div>
           <div>
             <span className="material-symbols-outlined text-7xl block text-primary mb-16">factory</span>
             <h3 className="font-brutal-head text-3xl mb-10 leading-tight">Heavy-Duty Melting Furnaces</h3>
@@ -57,7 +57,7 @@ export default function Catalog() {
           onClick={() => handleCardClick('Industrial Batch & Box Furnaces')}
           className="group relative bg-white text-black brutalist-border hover:-translate-y-4 transition-transform duration-300 min-h-[500px] py-16 px-10 flex flex-col justify-between cursor-pointer"
         >
-          <div className="absolute -top-6 -right-6 bg-primary text-white w-16 h-16 flex items-center justify-center font-brutal-head text-xl">03</div>
+          <div className="absolute -top-6 -right-6 bg-[#D13B00] text-white w-16 h-16 flex items-center justify-center font-brutal-head text-xl">03</div>
           <div>
             <span className="material-symbols-outlined text-7xl block text-primary mb-16">view_in_ar</span>
             <h3 className="font-brutal-head text-3xl mb-10 leading-tight">Industrial Batch &amp; Box Furnaces</h3>
@@ -85,7 +85,7 @@ export default function Catalog() {
           onClick={() => handleCardClick('Industrial Electrode Ovens')}
           className="group relative bg-white text-black brutalist-border hover:-translate-y-4 transition-transform duration-300 min-h-[500px] py-16 px-10 flex flex-col justify-between cursor-pointer"
         >
-          <div className="absolute -top-6 -right-6 bg-primary text-white w-16 h-16 flex items-center justify-center font-brutal-head text-xl">05</div>
+          <div className="absolute -top-6 -right-6 bg-[#D13B00] text-white w-16 h-16 flex items-center justify-center font-brutal-head text-xl">05</div>
           <div>
             <span className="material-symbols-outlined text-7xl block text-primary mb-16">oven</span>
             <h3 className="font-brutal-head text-3xl mb-10 leading-tight">Industrial &amp; Electrode Ovens</h3>

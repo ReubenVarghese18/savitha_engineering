@@ -675,6 +675,7 @@ export default function ProductsPage() {
                 {/* Category Dropdown */}
                 <div className="relative w-full sm:w-[340px]">
                   <select
+                    aria-label="Filter by product category"
                     value={selectedCategory}
                     onChange={(e) => setSelectedCategory(e.target.value)}
                     className="w-full h-10 appearance-none bg-white border-[4px] border-black rounded-none px-3 text-xs font-mono font-bold uppercase text-black cursor-pointer focus:outline-none focus:ring-0"

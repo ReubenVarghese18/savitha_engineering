@@ -223,7 +223,7 @@ export default function Catalog() {
               </span>
             </div>
           ) : (
-            <div className="overflow-x-auto border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] bg-white">
+            <div tabIndex={0} role="region" aria-label="Scrollable table" className="overflow-x-auto border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] bg-white">
               <table className="w-full text-left">
                 <thead>
                   <tr className="bg-black text-white font-sans font-black text-base uppercase">
@@ -289,7 +289,7 @@ export default function Catalog() {
               </span>
             </div>
           ) : (
-            <div className="overflow-x-auto border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] bg-white">
+            <div tabIndex={0} role="region" aria-label="Scrollable table" className="overflow-x-auto border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] bg-white">
               <table className="w-full text-left">
                 <thead>
                   <tr className="bg-black text-white font-sans font-black text-base uppercase">
@@ -339,7 +339,7 @@ export default function Catalog() {
               </span>
             </div>
           ) : (
-            <div className="overflow-x-auto border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] bg-white">
+            <div tabIndex={0} role="region" aria-label="Scrollable table" className="overflow-x-auto border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] bg-white">
               <table className="w-full text-left">
                 <thead>
                   <tr className="bg-black text-white font-sans font-black text-base uppercase">

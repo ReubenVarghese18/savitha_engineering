@@ -275,7 +275,7 @@ export default function PDPPage() {
         <main className="max-w-[1600px] mx-auto min-h-screen px-6 lg:px-12 py-10">
 
           {/* Breadcrumbs */}
-          <nav className="mb-8 font-mono text-[11px] uppercase flex flex-wrap items-center gap-2 text-gray-500 tracking-wider">
+          <nav aria-label="Breadcrumb" className="mb-8 font-mono text-[11px] uppercase flex flex-wrap items-center gap-2 text-gray-500 tracking-wider">
             <Link to="/" className="hover:text-stitch-primary hover:underline">HOME</Link>
             <span>/</span>
             <Link to="/catalog" className="hover:text-stitch-primary hover:underline">CATALOG</Link>
@@ -320,7 +320,7 @@ export default function PDPPage() {
                   ) : (
                     <PDPBlueprintPlaceholder title={product.title} />
                   )}
-                  <div className="absolute top-4 left-4 bg-stitch-primary text-white px-3 py-1 font-mono text-[10px] uppercase tracking-widest">
+                  <div className="absolute top-4 left-4 bg-[#D13B00] text-white px-3 py-1 font-mono text-[10px] uppercase tracking-widest">
                     MODEL: {product.sku}
                   </div>
                 </div>
@@ -375,10 +375,10 @@ export default function PDPPage() {
                     >
                       <img className="w-full h-full object-cover" src={stitchImages.main} alt="Generic Ref" />
                     </button>
-                    <div className="border-2 border-dashed border-gray-400 aspect-square flex items-center justify-center text-gray-400 font-mono text-[9px] uppercase p-2 text-center select-none">
+                    <div className="border-2 border-dashed border-gray-400 aspect-square flex items-center justify-center text-gray-600 font-mono text-[9px] uppercase p-2 text-center select-none">
                       IMG_02 PENDING
                     </div>
-                    <div className="border-2 border-dashed border-gray-400 aspect-square flex items-center justify-center text-gray-400 font-mono text-[9px] uppercase p-2 text-center select-none">
+                    <div className="border-2 border-dashed border-gray-400 aspect-square flex items-center justify-center text-gray-600 font-mono text-[9px] uppercase p-2 text-center select-none">
                       IMG_03 PENDING
                     </div>
                   </>
@@ -396,11 +396,11 @@ export default function PDPPage() {
                     <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
                     IN STOCK / READY TO SHIP
                   </div>
-                  <div className="font-mono text-xs text-stitch-primary font-bold uppercase break-all">SKU: {product.sku}</div>
+                  <div className="font-mono text-xs text-[#D13B00] font-bold uppercase break-all">SKU: {product.sku}</div>
                 </div>
 
                 <div className="bg-stitch-surface-container-low border-l-4 border-stitch-primary p-4">
-                  <h3 className="font-sans text-[15px] font-bold mb-1 uppercase text-stitch-on-background">Custom Engineering Available</h3>
+                  <h2 className="font-sans text-[15px] font-bold mb-1 uppercase text-stitch-on-background">Custom Engineering Available</h2>
                   <p className="text-[13px] text-gray-700 leading-relaxed">
                     Standard configurations ship within 14 business days. For specialized thermal profiles, atmospheric controls, or dimensions, consult our engineering department.
                   </p>
@@ -444,7 +444,7 @@ export default function PDPPage() {
                   {/* Dynamic Temp Value */}
                   <div className="border-b border-stitch-on-background/10 p-4 flex justify-between items-center hover:bg-stitch-surface-container-low transition-colors">
                     <div className="flex flex-col">
-                      <span className="text-stitch-primary font-bold text-[9px] leading-none mb-1">[01]</span>
+                      <span className="text-[#D13B00] font-bold text-[9px] leading-none mb-1">[01]</span>
                       <span className="text-gray-500 uppercase text-[10px]">MAX TEMP RANGE</span>
                     </div>
                     <span className="font-bold text-stitch-on-background">{product.tempText}</span>
@@ -453,7 +453,7 @@ export default function PDPPage() {
                   {/* Dynamic Fuel Value */}
                   <div className="border-b border-stitch-on-background/10 p-4 flex justify-between items-center hover:bg-stitch-surface-container-low transition-colors">
                     <div className="flex flex-col">
-                      <span className="text-stitch-primary font-bold text-[9px] leading-none mb-1">[02]</span>
+                      <span className="text-[#D13B00] font-bold text-[9px] leading-none mb-1">[02]</span>
                       <span className="text-gray-500 uppercase text-[10px]">FUEL SOURCE</span>
                     </div>
                     <span className="font-bold text-stitch-on-background">{product.fuel}</span>
@@ -462,7 +462,7 @@ export default function PDPPage() {
                   {/* Dynamic Operation Value */}
                   <div className="border-b border-stitch-on-background/10 p-4 flex justify-between items-center hover:bg-stitch-surface-container-low transition-colors">
                     <div className="flex flex-col">
-                      <span className="text-stitch-primary font-bold text-[9px] leading-none mb-1">[03]</span>
+                      <span className="text-[#D13B00] font-bold text-[9px] leading-none mb-1">[03]</span>
                       <span className="text-gray-500 uppercase text-[10px]">HEARTH OPERATION</span>
                     </div>
                     <span className="font-bold text-stitch-on-background">{product.operation}</span>
@@ -471,7 +471,7 @@ export default function PDPPage() {
                   {/* Dynamic Spec: Heating Element */}
                   <div className="border-b border-stitch-on-background/10 p-4 flex justify-between items-center hover:bg-stitch-surface-container-low transition-colors">
                     <div className="flex flex-col">
-                      <span className="text-stitch-primary font-bold text-[9px] leading-none mb-1">[04]</span>
+                      <span className="text-[#D13B00] font-bold text-[9px] leading-none mb-1">[04]</span>
                       <span className="text-gray-500 uppercase text-[10px]">HEATING SOURCE</span>
                     </div>
                     <span className="font-bold text-stitch-on-background">{product.specifications?.heatingElement || 'Data Pending'}</span>
@@ -480,7 +480,7 @@ export default function PDPPage() {
                   {/* Dynamic Spec: Thermocouple */}
                   <div className="border-b border-stitch-on-background/10 p-4 flex justify-between items-center hover:bg-stitch-surface-container-low transition-colors">
                     <div className="flex flex-col">
-                      <span className="text-stitch-primary font-bold text-[9px] leading-none mb-1">[05]</span>
+                      <span className="text-[#D13B00] font-bold text-[9px] leading-none mb-1">[05]</span>
                       <span className="text-gray-500 uppercase text-[10px]">THERMOCOUPLE TYPE</span>
                     </div>
                     <span className="font-bold text-stitch-on-background">{product.specifications?.thermocouple || 'Data Pending'}</span>
@@ -489,7 +489,7 @@ export default function PDPPage() {
                   {/* Dynamic Spec: Electrical Phase */}
                   <div className="border-b border-stitch-on-background/10 p-4 flex justify-between items-center hover:bg-stitch-surface-container-low transition-colors">
                     <div className="flex flex-col">
-                      <span className="text-stitch-primary font-bold text-[9px] leading-none mb-1">[06]</span>
+                      <span className="text-[#D13B00] font-bold text-[9px] leading-none mb-1">[06]</span>
                       <span className="text-gray-500 uppercase text-[10px]">ELECTRICAL PHASE</span>
                     </div>
                     <span className="font-bold text-stitch-on-background">{product.specifications?.electricalPhase || 'Data Pending'}</span>
@@ -498,7 +498,7 @@ export default function PDPPage() {
                   {/* Dynamic Spec: Insulation */}
                   <div className="border-b border-stitch-on-background/10 p-4 flex justify-between items-center hover:bg-stitch-surface-container-low transition-colors">
                     <div className="flex flex-col">
-                      <span className="text-stitch-primary font-bold text-[9px] leading-none mb-1">[07]</span>
+                      <span className="text-[#D13B00] font-bold text-[9px] leading-none mb-1">[07]</span>
                       <span className="text-gray-500 uppercase text-[10px]">INSULATION</span>
                     </div>
                     <span className="font-bold text-stitch-on-background">{product.specifications?.insulation || 'Data Pending'}</span>
@@ -507,7 +507,7 @@ export default function PDPPage() {
                   {/* Dynamic Spec: Dimensions */}
                   <div className="p-4 flex justify-between items-center hover:bg-stitch-surface-container-low transition-colors">
                     <div className="flex flex-col">
-                      <span className="text-stitch-primary font-bold text-[9px] leading-none mb-1">[08]</span>
+                      <span className="text-[#D13B00] font-bold text-[9px] leading-none mb-1">[08]</span>
                       <span className="text-gray-500 uppercase text-[10px]">DIMENSIONS</span>
                     </div>
                     <span className="font-bold text-stitch-on-background">{product.specifications?.dimensions || 'Consult Engineering'}</span>
@@ -515,7 +515,7 @@ export default function PDPPage() {
                 </div>
 
                 <div className="bg-stitch-industrial-gray p-2 border-t-2 border-stitch-on-background flex justify-center">
-                  <span className="text-[9px] font-mono text-gray-500 uppercase tracking-widest">// END OF SPECIFICATION REPORT //</span>
+                  <span className="text-[9px] font-mono text-gray-600 uppercase tracking-widest">// END OF SPECIFICATION REPORT //</span>
                 </div>
               </div>
 
@@ -603,10 +603,10 @@ export default function PDPPage() {
           </div>
 
           {/* Technical Consultation Section */}
-          <div className="mt-12 bg-stitch-primary p-8 border-2 border-stitch-on-background brutal-shadow-stitch flex flex-col md:flex-row justify-between items-center gap-8 text-white">
+          <div className="mt-12 bg-[#D13B00] p-8 border-2 border-stitch-on-background brutal-shadow-stitch flex flex-col md:flex-row justify-between items-center gap-8 text-white">
             <div>
               <h3 className="font-sans text-xl md:text-2xl font-bold uppercase mb-2">Have Technical Questions?</h3>
-              <p className="text-sm opacity-90 leading-relaxed font-sans">
+              <p className="text-sm leading-relaxed font-sans">
                 Our engineering team is available for direct consultation on custom thermal profiles, material compatibility, and power considerations.
               </p>
             </div>
