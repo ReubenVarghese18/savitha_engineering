@@ -41,6 +41,9 @@ sitemap, deep links, HSTS header).
   (`robots.txt` and the sitemap pick up the domain from `DOMAIN` automatically)
 - [ ] Pin `connect-src` in `frontend/nginx.conf` to the real domain instead of `https:`
 - [ ] Add the Sentry DSN if error tracking is wanted
+- [ ] Set up an uptime monitor (for example UptimeRobot, free) on `https://<domain>/api/health`.
+  It returns 200 when the API and database are working and 503 when the database is down.
+  Docker also uses it to mark the API container healthy or unhealthy.
 - [ ] Set up the off-server copy of backups (below) and test a restore once
 
 ## Updating the site

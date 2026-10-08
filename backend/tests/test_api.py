@@ -261,6 +261,28 @@ def test_sitemap_lists_only_active_products_on_real_routes(client, auth):
     assert "/catalog" not in xml and "/products</loc>" in xml
 
 
+def test_health_reports_ok_without_login(client):
+    r = client.get("/api/health")
+    assert r.status_code == 200
+    assert r.json() == {"status": "ok", "database": "ok"}
+
+
+def test_health_reports_503_when_database_is_down(client):
+    from app.database import get_db
+    from app.main import app as main_app
+
+    class BrokenSession:
+        def execute(self, *args, **kwargs):
+            raise RuntimeError("db down")
+
+    main_app.dependency_overrides[get_db] = lambda: BrokenSession()
+    try:
+        r = client.get("/api/health")
+    finally:
+        main_app.dependency_overrides.pop(get_db, None)
+    assert r.status_code == 503
+
+
 def test_robots_points_at_sitemap_on_configured_domain(client, monkeypatch):
     monkeypatch.setenv("SITE_URL", "https://example.com/")
     body = client.get("/robots.txt").text

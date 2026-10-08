@@ -291,6 +291,19 @@ async def generate_sitemap():
         db.close()
 
 
+@app.get("/api/health")
+def health(db: Session = Depends(get_db)):
+    """For uptime monitors and Docker: 200 when the API and database respond, 503 otherwise."""
+    from fastapi.responses import JSONResponse
+    from sqlalchemy import text
+
+    try:
+        db.execute(text("SELECT 1"))
+    except Exception:
+        return JSONResponse({"status": "error", "database": "unreachable"}, status_code=503)
+    return {"status": "ok", "database": "ok"}
+
+
 @app.get("/robots.txt")
 async def robots_txt():
     from fastapi.responses import PlainTextResponse
