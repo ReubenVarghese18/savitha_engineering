@@ -218,7 +218,9 @@ export default function PDPPage() {
   if (!matchedProduct) return <ProductNotFound />;
   // ─────────────────────────────────────────────────────────────────────
 
-  const metaDesc = `${product.title} (${product.category}). Max temp: ${product.tempText}. ${product.specifications?.shortDescription || product.description || ''}`.substring(0, 155) + '...';
+  const fullDesc = `${product.title} (${product.category}). Max temp: ${product.tempText}. ${product.specifications?.shortDescription || product.description || ''}`.trim();
+  const metaDesc = fullDesc.length > 158 ? fullDesc.substring(0, 155) + '...' : fullDesc;
+  const pageUrl = `${window.location.origin}/products/${product.sku}`;
 
   const schemaData = {
     "@context": "https://schema.org",
@@ -226,12 +228,10 @@ export default function PDPPage() {
     "name": product.title,
     "description": product.description,
     "sku": product.sku,
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "INR",
-      "availability": "https://schema.org/InStock"
-    },
+    "category": product.category,
+    "url": pageUrl,
+    "brand": { "@type": "Brand", "name": "Savitha Engineering" },
+    "manufacturer": { "@type": "Organization", "name": "Savitha Engineering" },
     "additionalProperty": [
       {
         "@type": "PropertyValue",
@@ -253,7 +253,7 @@ export default function PDPPage() {
         "name": "Fuel Source",
         "value": product.fuel || "N/A"
       }
-    ]
+    ].filter((prop) => prop.value && prop.value !== "N/A")
   };
 
   return (
@@ -264,6 +264,8 @@ export default function PDPPage() {
         <meta property="og:title" content={`${product.title} - ${product.sku} | Savitha Engineering`} />
         <meta property="og:description" content={metaDesc} />
         <meta property="og:type" content="website" />
+        <meta property="og:url" content={pageUrl} />
+        <link rel="canonical" href={pageUrl} />
         <script type="application/ld+json">
           {JSON.stringify(schemaData)}
         </script>

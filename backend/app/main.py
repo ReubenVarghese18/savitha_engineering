@@ -290,6 +290,20 @@ async def generate_sitemap():
     finally:
         db.close()
 
+
+@app.get("/robots.txt")
+async def robots_txt():
+    from fastapi.responses import PlainTextResponse
+
+    site_url = os.getenv("SITE_URL", "https://savithaengineering.com").rstrip("/")
+    return PlainTextResponse(
+        "User-agent: *\n"
+        "Disallow: /admin\n"
+        "Allow: /\n"
+        "\n"
+        f"Sitemap: {site_url}/sitemap.xml\n"
+    )
+
 # Include routers
 app.include_router(furnaces_router)
 app.include_router(enquiries_router)

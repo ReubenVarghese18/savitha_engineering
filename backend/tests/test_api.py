@@ -261,6 +261,13 @@ def test_sitemap_lists_only_active_products_on_real_routes(client, auth):
     assert "/catalog" not in xml and "/products</loc>" in xml
 
 
+def test_robots_points_at_sitemap_on_configured_domain(client, monkeypatch):
+    monkeypatch.setenv("SITE_URL", "https://example.com/")
+    body = client.get("/robots.txt").text
+    assert "Disallow: /admin" in body
+    assert "Sitemap: https://example.com/sitemap.xml" in body
+
+
 def test_update_to_existing_sku_returns_conflict(client, auth):
     a, b = _furnace(auth, client), _furnace(auth, client)
     r = client.put(f"/furnaces/{b['id']}", json={"sku": a["sku"]}, headers=auth)

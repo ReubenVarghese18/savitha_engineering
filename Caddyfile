@@ -4,7 +4,7 @@
 	encode gzip
 	header Strict-Transport-Security "max-age=31536000"
 
-	@backend path /api/* /furnaces /furnaces/* /enquiries /enquiries/* /sitemap.xml
+	@backend path /api/* /furnaces /furnaces/* /enquiries /enquiries/* /sitemap.xml /robots.txt
 	handle @backend {
 		reverse_proxy backend:8000
 	}

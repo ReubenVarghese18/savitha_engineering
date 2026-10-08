@@ -48,6 +48,8 @@ function PublicLanding() {
         <title>Savitha Engineering | Industrial Furnaces &amp; Ovens Since 1976</title>
         <meta name="description" content="Manufacturer of extreme-performance industrial furnaces, specialized melting systems and heavy-duty thermal ovens, built to international standards since 1976." />
         <meta property="og:type" content="website" />
+        <meta property="og:url" content={`${window.location.origin}/`} />
+        <link rel="canonical" href={`${window.location.origin}/`} />
         <meta property="og:title" content="Savitha Engineering | Industrial Furnaces &amp; Ovens Since 1976" />
         <meta property="og:description" content="Manufacturer of extreme-performance industrial furnaces, specialized melting systems and heavy-duty thermal ovens, built to international standards since 1976." />
       </Helmet>

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { useAuth } from '../../context/AuthContext';
 import { apiFetch } from '../../api/client';
 
@@ -48,6 +49,10 @@ export default function Login() {
 
   return (
     <main className="min-h-screen bg-[#0A0A0B] text-white flex items-center justify-center font-mono selection:bg-[#FF4D00] selection:text-black">
+      <Helmet>
+        <title>Admin Sign In | Savitha Engineering</title>
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
       <div className="w-full max-w-md p-8 border border-zinc-800 bg-black shadow-2xl relative">
         <div className="absolute top-0 left-0 w-full h-1 bg-[#FF4D00]"></div>
         

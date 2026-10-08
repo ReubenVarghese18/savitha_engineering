@@ -409,6 +409,8 @@ export default function ProductsPage() {
         <title>Industrial Furnaces &amp; Ovens Catalog | Savitha Engineering</title>
         <meta name="description" content="Browse Savitha Engineering's range of melting furnaces, annealing systems, batch and box furnaces and industrial ovens. Request a quote online." />
         <meta property="og:type" content="website" />
+        <meta property="og:url" content={`${window.location.origin}/products`} />
+        <link rel="canonical" href={`${window.location.origin}/products`} />
         <meta property="og:title" content="Industrial Furnaces &amp; Ovens Catalog | Savitha Engineering" />
         <meta property="og:description" content="Browse Savitha Engineering's range of melting furnaces, annealing systems, batch and box furnaces and industrial ovens. Request a quote online." />
       </Helmet>

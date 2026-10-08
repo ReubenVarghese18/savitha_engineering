@@ -33,6 +33,7 @@ Tick each box once it is settled.
 - [ ] Confirm the homepage and product-page images are genuine photos of the company's own factory, products and people, and that the company has the rights to use them. They are hosted by an AI design tool and look like generated or stock images; one shows a man in a hard hat in the "Guided by Vision" section next to a named person. Replace with real photographs if they are not. The same question applies to an unused 8-second foundry video found in the project
 - [ ] Decide what to do with the "Total Quality Management" section on the homepage. It currently shows only a heading in a large white block: its three detail cards (material integrity, process control and so on) and their pop-up details are switched off in the code. Either publish them, with approved wording, or remove the section
 - [ ] Approve the product photos and descriptions (photos being prepared)
+- [ ] Choose the picture shown when the website link is shared on WhatsApp, LinkedIn or email (a logo or a genuine factory or product photo, ideally 1200 × 630 pixels). Today a shared link shows text only
 - [ ] Confirm which products are public. 32 are visible and 17 are currently hidden from the catalogue
 
 ## D. Business decisions

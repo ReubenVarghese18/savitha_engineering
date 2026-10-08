@@ -37,7 +37,8 @@ sitemap, deep links, HSTS header).
    Send a test quote and confirm the alert email arrives.
 
 ## After the domain is live
-- [ ] Replace the domain in `frontend/public/robots.txt` (Sitemap line) and rebuild
+- [ ] Register the site in Google Search Console and submit `https://<domain>/sitemap.xml`
+  (`robots.txt` and the sitemap pick up the domain from `DOMAIN` automatically)
 - [ ] Pin `connect-src` in `frontend/nginx.conf` to the real domain instead of `https:`
 - [ ] Add the Sentry DSN if error tracking is wanted
 - [ ] Turn on automatic backups (below) and test a restore once
