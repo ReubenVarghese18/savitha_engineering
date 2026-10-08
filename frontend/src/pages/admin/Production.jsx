@@ -155,11 +155,11 @@ function DraggableCard({ job, column, onOpenInvoice, onOpenProforma }) {
         {/* Company Name — Primary Anchor: sans black uppercase */}
         <p className="font-sans font-black text-sm uppercase text-zinc-950">{job.company}</p>
         {/* PO# — System Data: monospace */}
-        <p className="font-mono text-[10px] text-zinc-400">PO #{job.po}</p>
+        <p className="font-mono text-[10px] text-zinc-600">PO #{job.po}</p>
         {/* Machine — Secondary Description: sans normal */}
         <p 
-          className="font-sans font-normal text-sm mt-1" 
-          style={{ color: column.color }}
+          className="font-sans font-normal text-sm mt-1 text-zinc-800 border-l-4 pl-2" 
+          style={{ borderColor: column.color }}
         >
           {job.type === 'PO' ? 'MATERIALS ORDER' : getJobMachineStr(job)}
         </p>
@@ -179,7 +179,7 @@ function DraggableCard({ job, column, onOpenInvoice, onOpenProforma }) {
             e.stopPropagation();
             onOpenProforma(job);
           }}
-          className="w-full bg-zinc-950 text-white font-sans font-bold text-xs py-2 hover:bg-[#FA5D19] hover:text-black transition-colors flex items-center justify-center gap-2 uppercase tracking-wider rounded-none border border-zinc-950 cursor-pointer"
+          className="w-full bg-zinc-950 text-white font-sans font-bold text-xs py-2 hover:bg-[#D13B00] hover:text-black transition-colors flex items-center justify-center gap-2 uppercase tracking-wider rounded-none border border-zinc-950 cursor-pointer"
         >
           <span className="material-symbols-outlined text-sm">description</span>
           PROFORMA INVOICE
@@ -478,7 +478,7 @@ export default function Production() {
 
       {/* Redesigned Final Tax Invoice Modal (2-Column Layout, max-w-4xl, p-10) */}
       {isFinalInvoiceOpen && activeInvoiceJob && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+        <div role="dialog" aria-modal="true" aria-label="Invoice" className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
           <div className="bg-white border-[3px] border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] w-full max-w-4xl p-10 flex flex-col text-black">
             {/* Modal Header */}
             <div className="flex justify-between items-center mb-6 border-b-[3px] border-black pb-4 text-left">
@@ -490,7 +490,7 @@ export default function Production() {
                   setIsFinalInvoiceOpen(false);
                   setActiveInvoiceJob(null);
                 }} 
-                className="text-black hover:text-[#FA5D19] transition-colors focus:outline-none"
+                aria-label="Close" className="text-black hover:text-[#FA5D19] transition-colors focus:outline-none"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="3" d="M6 18L18 6M6 6l12 12"></path>
@@ -564,6 +564,7 @@ export default function Production() {
                     </label>
                     <div className="relative">
                       <select 
+                        aria-label="Applicable tax / GST" 
                         className="w-full appearance-none p-4 pr-10 border-2 border-black bg-white text-black font-mono text-sm font-bold tracking-widest uppercase cursor-pointer focus:outline-none focus:border-[#FA5D19] focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] rounded-none transition-all"
                       >
                         <option value="18% IGST">18% IGST (INTER-STATE)</option>
@@ -606,7 +607,7 @@ export default function Production() {
 
       {/* Proforma Invoice Modal (max-w-3xl, p-10) */}
       {isProformaOpen && activeProformaJob && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+        <div role="dialog" aria-modal="true" aria-label="Proforma invoice" className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
           <div className="bg-white border-[3px] border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] w-full max-w-3xl p-10 flex flex-col text-black">
             {/* Modal Header */}
             <div className="flex justify-between items-center mb-6 border-b-[3px] border-black pb-4 text-left">
@@ -618,7 +619,7 @@ export default function Production() {
                   setIsProformaOpen(false);
                   setActiveProformaJob(null);
                 }} 
-                className="text-black hover:text-[#FA5D19] transition-colors focus:outline-none"
+                aria-label="Close" className="text-black hover:text-[#FA5D19] transition-colors focus:outline-none"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="3" d="M6 18L18 6M6 6l12 12"></path>
@@ -656,6 +657,7 @@ export default function Production() {
                 </label>
                 <div className="relative">
                   <select 
+                    aria-label="Advance payment terms" 
                     className="w-full appearance-none p-4 pr-10 border-2 border-black bg-white text-black font-mono text-sm font-bold tracking-widest uppercase cursor-pointer focus:outline-none focus:border-[#FA5D19] focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] rounded-none transition-all"
                   >
                     <option value="50% Advance">50% ADVANCE PAYMENT</option>

@@ -126,7 +126,7 @@ function QuoteModalContent({ inquiry, onClose, onUpdate }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex justify-end bg-black/70 backdrop-blur-sm bg-[radial-gradient(#444_1px,transparent_1px)] [background-size:16px_16px]">
+    <div role="dialog" aria-modal="true" aria-label="Quote draft" className="fixed inset-0 z-50 flex justify-end bg-black/70 backdrop-blur-sm bg-[radial-gradient(#444_1px,transparent_1px)] [background-size:16px_16px]">
       
       {/* Sliding Panel */}
       <div className="w-[500px] h-full bg-[#FAF9F6] border-l-[3px] border-black flex flex-col shadow-2xl font-sans animate-slide-in-right">
@@ -136,7 +136,7 @@ function QuoteModalContent({ inquiry, onClose, onUpdate }) {
           <h2 className="text-[13px] font-bold tracking-widest uppercase text-black">
             Drafting Quote: {inquiry.id} // {inquiry.company}
           </h2>
-          <button onClick={onClose} className="text-2xl font-bold hover:text-[#FA5D19] transition-colors leading-none bg-transparent border-none cursor-pointer">
+          <button onClick={onClose} aria-label="Close" className="text-2xl font-bold hover:text-[#FA5D19] transition-colors leading-none bg-transparent border-none cursor-pointer">
             &times;
           </button>
         </div>
@@ -145,13 +145,13 @@ function QuoteModalContent({ inquiry, onClose, onUpdate }) {
         {(inquiry.full_name || inquiry.email || inquiry.phone) && (
           <div className="px-6 py-3 border-b-[3px] border-black bg-[#F2F0E9] font-mono text-xs space-y-1 text-black">
             {inquiry.full_name && (
-              <div><span className="font-bold text-gray-500">CONTACT </span>{inquiry.full_name}</div>
+              <div><span className="font-bold text-gray-600">CONTACT </span>{inquiry.full_name}</div>
             )}
             {inquiry.email && (
-              <div><span className="font-bold text-gray-500">EMAIL </span><a className="underline text-[#FA5D19]" href={`mailto:${inquiry.email}`}>{inquiry.email}</a></div>
+              <div><span className="font-bold text-gray-600">EMAIL </span><a className="underline text-[#D13B00]" href={`mailto:${inquiry.email}`}>{inquiry.email}</a></div>
             )}
             {inquiry.phone && (
-              <div><span className="font-bold text-gray-500">PHONE </span><a className="underline text-[#FA5D19]" href={`tel:${inquiry.phone}`}>{inquiry.phone}</a></div>
+              <div><span className="font-bold text-gray-600">PHONE </span><a className="underline text-[#D13B00]" href={`tel:${inquiry.phone}`}>{inquiry.phone}</a></div>
             )}
           </div>
         )}
@@ -161,7 +161,7 @@ function QuoteModalContent({ inquiry, onClose, onUpdate }) {
           
           {/* Inquiry Summary */}
           <div className="bg-[#F3F4F6] p-5 border-l-[4px] border-gray-400 text-left">
-            <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-2">Inquiry Summary</p>
+            <p className="text-[10px] text-gray-600 font-bold uppercase tracking-widest mb-2">Inquiry Summary</p>
             <p className="font-bold text-black text-sm mb-1">Category: {inquiry.category}</p>
             {inquiry.is_custom_request && (
               <div className="mt-3 p-3 bg-yellow-100 border border-yellow-400">
@@ -198,9 +198,9 @@ function QuoteModalContent({ inquiry, onClose, onUpdate }) {
 
           {/* Form Group: Base Price */}
           <div className="flex flex-col space-y-2 text-left">
-            <label className="text-[10px] font-bold uppercase tracking-widest text-gray-600">Base Price (INR)</label>
+            <label htmlFor="quote-base-price" className="text-[10px] font-bold uppercase tracking-widest text-gray-600">Base Price (INR)</label>
             <input 
-              type="text" 
+              id="quote-base-price" type="text" 
               value={basePrice}
               onChange={(e) => setBasePrice(e.target.value)}
               className="p-3 border-[2px] border-black bg-white focus:outline-none focus:border-[#FA5D19] font-mono text-sm transition-colors" 
@@ -209,9 +209,9 @@ function QuoteModalContent({ inquiry, onClose, onUpdate }) {
 
           {/* Form Group: Lead Time */}
           <div className="flex flex-col space-y-2 text-left">
-            <label className="text-[10px] font-bold uppercase tracking-widest text-gray-600">Estimated Lead Time</label>
+            <label htmlFor="quote-lead-time" className="text-[10px] font-bold uppercase tracking-widest text-gray-600">Estimated Lead Time</label>
             <input 
-              type="text" 
+              id="quote-lead-time" type="text" 
               value={leadTime}
               onChange={(e) => setLeadTime(e.target.value)}
               className="p-3 border-[2px] border-black bg-white focus:outline-none focus:border-[#FA5D19] font-mono text-sm transition-colors" 
@@ -220,9 +220,9 @@ function QuoteModalContent({ inquiry, onClose, onUpdate }) {
 
           {/* Form Group: Payment Terms */}
           <div className="flex flex-col space-y-2 text-left">
-            <label className="text-[10px] font-bold uppercase tracking-widest text-gray-600">Payment Terms</label>
+            <label htmlFor="quote-payment-terms" className="text-[10px] font-bold uppercase tracking-widest text-gray-600">Payment Terms</label>
             <input 
-              type="text" 
+              id="quote-payment-terms" type="text" 
               value={paymentTerms}
               onChange={(e) => setPaymentTerms(e.target.value)}
               className="p-3 border-[2px] border-black bg-white focus:outline-none focus:border-[#FA5D19] font-mono text-sm transition-colors" 
@@ -231,9 +231,9 @@ function QuoteModalContent({ inquiry, onClose, onUpdate }) {
 
           {/* Form Group: Notes */}
           <div className="flex flex-col space-y-2 text-left">
-            <label className="text-[10px] font-bold uppercase tracking-widest text-gray-600">Additional Notes/Exclusions</label>
+            <label htmlFor="quote-notes" className="text-[10px] font-bold uppercase tracking-widest text-gray-600">Additional Notes/Exclusions</label>
             <textarea 
-              rows="4" 
+              id="quote-notes" rows="4" 
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               placeholder="Enter technical caveats or exclusions..." 

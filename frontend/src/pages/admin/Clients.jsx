@@ -133,7 +133,7 @@ export default function Clients() {
               </h2>
               <div className="flex items-center gap-3 mt-1 mb-6">
                 <span className="w-12 h-[3px] bg-[#FA5D19]"></span>
-                <span className="font-mono text-xs font-bold tracking-widest text-gray-500 uppercase">
+                <span className="font-mono text-xs font-bold tracking-widest text-gray-600 max-md:text-gray-400 uppercase">
                   SYS.ADMIN // CRM_MODULE
                 </span>
               </div>
@@ -237,7 +237,7 @@ export default function Clients() {
           ADD NEW CLIENT MODAL
       ══════════════════════════════════════════════════════════════ */}
       {isAddClientOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+        <div role="dialog" aria-modal="true" aria-label="Add client" className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
           <div className="bg-white border-[3px] border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] w-full max-w-4xl p-8 max-h-[90vh] overflow-hidden flex flex-col">
 
             {/* Modal Header */}
@@ -247,7 +247,7 @@ export default function Clients() {
               </h2>
               <button
                 onClick={() => setIsAddClientOpen(false)}
-                className="text-black hover:text-[#FA5D19] transition-colors focus:outline-none"
+                aria-label="Close" className="text-black hover:text-[#FA5D19] transition-colors focus:outline-none"
               >
                 <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="3" d="M6 18L18 6M6 6l12 12" />
@@ -356,7 +356,7 @@ export default function Clients() {
                 {/* Close button */}
                 <button
                   onClick={handleCloseDrawer}
-                  className="text-black hover:text-[#FA5D19] transition-colors focus:outline-none mt-1 flex-shrink-0"
+                  aria-label="Close" className="text-black hover:text-[#FA5D19] transition-colors focus:outline-none mt-1 flex-shrink-0"
                 >
                   <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="3" d="M6 18L18 6M6 6l12 12" />

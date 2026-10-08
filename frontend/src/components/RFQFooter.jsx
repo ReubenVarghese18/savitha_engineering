@@ -125,7 +125,7 @@ export default function RFQFooter() {
       <footer className="mt-24 bg-[#0A0A0B]" id="contact">
         <div className="max-w-6xl mx-auto px-6 lg:px-12 pt-0 pb-12">
           <div className="w-full border-t-2 border-white/20 relative">
-            <div className="absolute -top-2.5 left-8 lg:left-12 bg-[#0A0A0B] px-4 font-mono text-[10px] md:text-xs text-white/40 tracking-[0.2em] uppercase">
+            <div className="absolute -top-2.5 left-8 lg:left-12 bg-[#0A0A0B] px-4 font-mono text-[10px] md:text-xs text-white/60 tracking-[0.2em] uppercase">
               0x04 :: END_LEGACY_FILE // INITIATE_INQUIRY
             </div>
           </div>

@@ -274,7 +274,7 @@ export default function AdminLayout() {
           </svg>
           <div>
             <h1 className="font-brutal-head text-[18px] leading-tight font-black uppercase text-[#FA5D19]">Savitha Engineering</h1>
-            <p className="font-mono text-[9px] opacity-60 text-[#FA5D19] uppercase tracking-wider mt-0.5">INQUIRY TERMINAL</p>
+            <p className="font-mono text-[9px] text-[#FA5D19] uppercase tracking-wider mt-0.5">INQUIRY TERMINAL</p>
           </div>
         </div>
 
@@ -339,8 +339,8 @@ export default function AdminLayout() {
           {/* Breadcrumb Path */}
           <div className="flex items-center gap-4 h-full border-r-2 border-black pr-8">
             <div className="flex items-center gap-2 font-mono text-xs tracking-widest">
-              <span className="opacity-40 text-zinc-950 uppercase">Dashboard</span>
-              <span className="opacity-40 text-zinc-950">/</span>
+              <span className="text-zinc-600 uppercase">Dashboard</span>
+              <span className="text-zinc-600">/</span>
               <span className="font-black text-zinc-950 uppercase">{getActiveTabName()}</span>
             </div>
           </div>
@@ -425,14 +425,14 @@ export default function AdminLayout() {
       </div>
 
       {isNewInquiryOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+        <div role="dialog" aria-modal="true" aria-label="Log new inquiry" className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
           <div className="bg-white border-[3px] border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] w-full max-w-4xl p-10 flex flex-col text-black">
             {/* Modal Header */}
             <div className="flex justify-between items-center mb-8 border-b-[3px] border-black pb-4 text-left">
               <h2 className="text-2xl font-black uppercase tracking-widest font-mono text-black">LOG NEW INQUIRY</h2>
               <button 
                 onClick={() => setIsNewInquiryOpen(false)} 
-                className="text-black hover:text-[#FA5D19] transition-colors focus:outline-none"
+                aria-label="Close" className="text-black hover:text-[#FA5D19] transition-colors focus:outline-none"
               >
                 <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="3" d="M6 18L18 6M6 6l12 12"></path>
@@ -508,10 +508,10 @@ export default function AdminLayout() {
                   </label>
                   <div className="relative">
                     <select 
-                      required
+                      aria-label="Equipment category" required
                       value={formData.category}
                       onChange={handleCategoryChange}
-                      className={`w-full appearance-none px-4 py-3 pr-10 border-2 border-black bg-white font-mono text-lg font-bold tracking-widest uppercase cursor-pointer focus:outline-none focus:border-[#FA5D19] focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] rounded-none transition-all ${!formData.category ? 'text-zinc-400' : 'text-black'}`}
+                      className={`w-full appearance-none px-4 py-3 pr-10 border-2 border-black bg-white font-mono text-lg font-bold tracking-widest uppercase cursor-pointer focus:outline-none focus:border-[#FA5D19] focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] rounded-none transition-all ${!formData.category ? 'text-zinc-600' : 'text-black'}`}
                     >
                       <option value="" disabled>SELECT CATEGORY</option>
                       {uniqueCategories.map(cat => (
@@ -529,23 +529,23 @@ export default function AdminLayout() {
                 
                 {formData.category !== "Custom Build / Spare Parts" && (
                   <div className="flex flex-col">
-                    <label className={`block text-sm font-mono font-bold tracking-widest uppercase mb-2 ${!formData.category ? 'text-zinc-400' : 'text-black'}`}>
+                    <label className={`block text-sm font-mono font-bold tracking-widest uppercase mb-2 ${!formData.category ? 'text-zinc-600' : 'text-black'}`}>
                       REQUESTED PRODUCT
                     </label>
                     <div className="relative">
                       <select 
-                        required
+                        aria-label="Requested product" required
                         disabled={!formData.category}
                         value={formData.requested_asset}
                         onChange={(e) => setFormData({...formData, requested_asset: e.target.value})}
-                        className={`w-full appearance-none px-4 py-3 pr-10 border-2 border-black bg-white font-mono text-lg font-bold tracking-widest uppercase cursor-pointer focus:outline-none focus:border-[#FA5D19] focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] rounded-none transition-all ${!formData.requested_asset ? 'text-zinc-400' : 'text-black'} ${!formData.category ? 'cursor-not-allowed opacity-60' : ''}`}
+                        className={`w-full appearance-none px-4 py-3 pr-10 border-2 border-black bg-white font-mono text-lg font-bold tracking-widest uppercase cursor-pointer focus:outline-none focus:border-[#FA5D19] focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] rounded-none transition-all ${!formData.requested_asset ? 'text-zinc-600' : 'text-black'} ${!formData.category ? 'cursor-not-allowed opacity-60' : ''}`}
                       >
                         <option value="" disabled>{formData.category ? 'SELECT PRODUCT' : 'SELECT CATEGORY FIRST'}</option>
                         {availableProducts.map(p => (
                           <option key={p.id} value={p.id} className="text-black">{p.title}</option>
                         ))}
                       </select>
-                      <div className={`pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 ${!formData.category ? 'text-zinc-400' : 'text-black'}`}>
+                      <div className={`pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 ${!formData.category ? 'text-zinc-600' : 'text-black'}`}>
                         <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                           <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
                         </svg>
@@ -562,10 +562,10 @@ export default function AdminLayout() {
                 </label>
                 <div className="relative">
                   <select 
-                    required
+                    aria-label="Expected timeline or urgency" required
                     value={formData.timeline}
                     onChange={(e) => setFormData({...formData, timeline: e.target.value})}
-                    className={`w-full appearance-none px-4 py-3 pr-10 border-2 border-black bg-white font-mono text-lg font-bold tracking-widest uppercase cursor-pointer focus:outline-none focus:border-[#FA5D19] focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] rounded-none transition-all ${!formData.timeline ? 'text-zinc-400' : 'text-black'}`}
+                    className={`w-full appearance-none px-4 py-3 pr-10 border-2 border-black bg-white font-mono text-lg font-bold tracking-widest uppercase cursor-pointer focus:outline-none focus:border-[#FA5D19] focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] rounded-none transition-all ${!formData.timeline ? 'text-zinc-600' : 'text-black'}`}
                   >
                     <option value="" disabled>SELECT TIMELINE</option>
                     <option value="Standard" className="text-black">STANDARD TIMELINE</option>
@@ -634,7 +634,7 @@ export default function AdminLayout() {
                 </button>
                 <button 
                   type="submit" 
-                  className="px-8 py-4 bg-[#FA5D19] text-white border-[3px] border-black font-mono text-sm font-bold tracking-widest uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-[2px] hover:translate-x-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer focus:outline-none"
+                  className="px-8 py-4 bg-[#D13B00] text-white border-[3px] border-black font-mono text-sm font-bold tracking-widest uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-[2px] hover:translate-x-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer focus:outline-none"
                 >
                   SAVE INQUIRY
                 </button>
@@ -645,7 +645,7 @@ export default function AdminLayout() {
       )}
 
       {isTerminalOpen && (
-        <div className="fixed inset-0 z-50 flex items-start justify-center bg-black/80 backdrop-blur-xs p-12 md:p-24 overflow-y-auto">
+        <div role="dialog" aria-modal="true" aria-label="Command search" className="fixed inset-0 z-50 flex items-start justify-center bg-black/80 backdrop-blur-xs p-12 md:p-24 overflow-y-auto">
           <div className="bg-white border-8 border-black shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] w-full max-w-4xl flex flex-col text-black no-roundness relative mt-12">
             
             {/* Input Bar */}
@@ -724,7 +724,7 @@ export default function AdminLayout() {
             </div>
             
             {/* Terminal Footer */}
-            <div className="bg-zinc-100 border-t-4 border-black p-4 text-left font-mono text-[10px] text-zinc-500 flex justify-between uppercase">
+            <div className="bg-zinc-100 border-t-4 border-black p-4 text-left font-mono text-[10px] text-zinc-600 flex justify-between uppercase">
               <span>Use ↑↓ keys to navigate, [Enter] to execute, [Esc] to close</span>
               <span>Inquiry Terminal v1.1.0</span>
             </div>

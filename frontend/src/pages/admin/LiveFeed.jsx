@@ -392,19 +392,19 @@ export default function LiveFeed() {
 <section className="pb-12">
 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 <div className="bg-white border-2 border-black p-4">
-<p className="font-label-caps text-[9px] font-black uppercase text-zinc-400 mb-2">Total Quotes</p>
+<p className="font-label-caps text-[9px] font-black uppercase text-zinc-600 mb-2">Total Quotes</p>
 <p className="font-data-readout text-xl">{stats.totalQuotes}</p>
 </div>
 <div className="bg-white border-2 border-black p-4 border-l-4 border-l-molten-amber">
-<p className="font-label-caps text-[9px] font-black uppercase text-zinc-400 mb-2">Awaiting Review</p>
+<p className="font-label-caps text-[9px] font-black uppercase text-zinc-600 mb-2">Awaiting Review</p>
 <p className="font-data-readout text-xl">{stats.awaitingReview}</p>
 </div>
 <div className="bg-white border-2 border-black p-4">
-<p className="font-label-caps text-[9px] font-black uppercase text-zinc-400 mb-2">In Production</p>
+<p className="font-label-caps text-[9px] font-black uppercase text-zinc-600 mb-2">In Production</p>
 <p className="font-data-readout text-xl">{stats.inProduction}</p>
 </div>
 <div className="bg-white border-2 border-black p-4">
-<p className="font-label-caps text-[9px] font-black uppercase text-zinc-400 mb-2">Open Purchase Orders</p>
+<p className="font-label-caps text-[9px] font-black uppercase text-zinc-600 mb-2">Open Purchase Orders</p>
 <p className="font-data-readout text-xl">{stats.openPOs}</p>
 </div>
 </div>

@@ -20,7 +20,7 @@ export default function Navbar() {
   if (quoteCount > 0) {
     // State A: Active Cart (Global)
     ctaText = `[ QUOTE CART (${quoteCount}) ]`;
-    ctaClasses = 'bg-[#FA5D19] text-white brutalist-border hover:bg-white hover:text-black border-white hover:brightness-110';
+    ctaClasses = 'bg-[#D13B00] text-white brutalist-border hover:bg-white hover:text-black border-white hover:brightness-110';
   } else if (isPDP) {
     // State B: Empty Cart (on PDP)
     ctaText = '[ QUOTE CART (0) ]';
@@ -28,7 +28,7 @@ export default function Navbar() {
   } else {
     // State C: Empty Cart (OG Landing/PLP)
     ctaText = '[ REQUEST QUOTE ]';
-    ctaClasses = 'bg-[#FA5D19] text-white brutalist-border hover:bg-white hover:text-black border-white hover:brightness-110';
+    ctaClasses = 'bg-[#D13B00] text-white brutalist-border hover:bg-white hover:text-black border-white hover:brightness-110';
   }
 
   useEffect(() => {

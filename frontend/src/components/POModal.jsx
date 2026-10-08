@@ -41,7 +41,7 @@ export default function POModal({ po, onClose, onUpdate }) {
   if (!po && !isEdit && !onUpdate) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+    <div role="dialog" aria-modal="true" aria-label="Purchase order" className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
       <div className="bg-zinc-200 border-[3px] border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] w-full max-w-2xl p-8 flex flex-col text-black relative">
         
         {/* Header */}
@@ -49,7 +49,7 @@ export default function POModal({ po, onClose, onUpdate }) {
           <h2 className="text-xl font-black uppercase tracking-widest font-mono text-black">
             {isEdit ? `PURCHASE ORDER // ${po.id}` : 'CREATE PURCHASE ORDER'}
           </h2>
-          <button onClick={onClose} className="hover:text-[#FA5D19] transition-colors focus:outline-none">
+          <button onClick={onClose} aria-label="Close" className="hover:text-[#FA5D19] transition-colors focus:outline-none">
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="3" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
@@ -60,17 +60,17 @@ export default function POModal({ po, onClose, onUpdate }) {
         {isEdit ? (
           <div className="space-y-6">
             <div className="flex flex-col gap-1">
-              <span className="font-mono text-xs font-bold text-gray-500 uppercase">Vendor Name</span>
+              <span className="font-mono text-xs font-bold text-gray-700 uppercase">Vendor Name</span>
               <span className="font-sans text-xl font-black uppercase text-black">{po.vendor_name}</span>
             </div>
             
             <div className="flex flex-col gap-1">
-              <span className="font-mono text-xs font-bold text-gray-500 uppercase">Status</span>
+              <span className="font-mono text-xs font-bold text-gray-700 uppercase">Status</span>
               <span className="font-sans text-lg font-bold uppercase text-black">{po.status}</span>
             </div>
             
             <div className="flex flex-col gap-2">
-              <span className="font-mono text-xs font-bold text-gray-500 uppercase">Items Requested</span>
+              <span className="font-mono text-xs font-bold text-gray-700 uppercase">Items Requested</span>
               <div className="flex flex-wrap gap-2">
                 {(po.items_requested || []).map((item, idx) => (
                   <span key={idx} className="px-2 py-1 bg-white border border-black text-sm font-mono font-bold text-black uppercase">
@@ -83,7 +83,7 @@ export default function POModal({ po, onClose, onUpdate }) {
         ) : (
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="flex flex-col">
-              <label className="font-mono text-xs font-bold text-gray-500 uppercase mb-2">Vendor Name</label>
+              <label className="font-mono text-xs font-bold text-gray-700 uppercase mb-2">Vendor Name</label>
               <input 
                 type="text" 
                 required
@@ -95,7 +95,7 @@ export default function POModal({ po, onClose, onUpdate }) {
             </div>
             
             <div className="flex flex-col">
-              <label className="font-mono text-xs font-bold text-gray-500 uppercase mb-2">Items Requested (Comma Separated)</label>
+              <label className="font-mono text-xs font-bold text-gray-700 uppercase mb-2">Items Requested (Comma Separated)</label>
               <textarea 
                 required
                 rows={3}

@@ -155,7 +155,7 @@ export default function Catalog() {
   <span className="w-12 h-[3px] bg-[#FA5D19]"></span>
   
   {/* Monospace Subtitle */}
-  <span className="font-mono text-[11px] sm:text-xs font-bold tracking-[0.2em] text-gray-600 uppercase">
+  <span className="font-mono text-[11px] sm:text-xs font-bold tracking-[0.2em] text-gray-600 max-md:text-gray-400 uppercase">
     SYS.ADMIN // CATALOG
   </span>
 </div>
@@ -188,7 +188,7 @@ export default function Catalog() {
       className={`pb-4 font-label-caps text-sm font-black uppercase transition-opacity ${
         activeTab === tab.id
           ? 'border-b-4 border-[#FA5D19] opacity-100'
-          : 'opacity-40 hover:opacity-100'
+          : 'text-zinc-600 hover:text-zinc-950'
       }`}
     >
       {tab.label}
@@ -239,7 +239,7 @@ export default function Catalog() {
                   {filteredProducts.map((p) => {
                     const basePriceVal = p.maxTempVal ? (p.maxTempVal * 1250) : 850000;
                     return (
-                      <tr key={p.id} className={`transition-colors ${p.is_active === false ? 'bg-zinc-100 opacity-60' : 'hover:bg-zinc-50'}`}>
+                      <tr key={p.id} className={`transition-colors ${p.is_active === false ? 'bg-zinc-100' : 'hover:bg-zinc-50'}`}>
                         {/* ITEM CODE — System Data: monospace ledger */}
                         <td className="py-8 px-6 font-mono text-base font-black text-black">
                           {p.sku}
@@ -378,7 +378,7 @@ export default function Catalog() {
 
       {/* ── ADD ITEM MODAL ────────────────────────────────────────────── */}
       {isAddItemOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+        <div role="dialog" aria-modal="true" aria-label="Add catalogue item" className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
           <div className="bg-white border-[3px] border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] w-full max-w-3xl p-10 flex flex-col text-black max-h-[90vh] overflow-y-auto">
 
             {/* Modal Header */}
@@ -388,7 +388,7 @@ export default function Catalog() {
               </h2>
               <button
                 onClick={() => setIsAddItemOpen(false)}
-                className="text-black hover:text-[#FA5D19] transition-colors focus:outline-none"
+                aria-label="Close" className="text-black hover:text-[#FA5D19] transition-colors focus:outline-none"
               >
                 <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="3" d="M6 18L18 6M6 6l12 12"></path>

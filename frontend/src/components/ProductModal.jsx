@@ -123,7 +123,7 @@ export default function ProductModal({ isOpen, onClose, product, onSave }) {
   const labelClass = "block text-xs font-mono font-bold tracking-widest text-black uppercase mb-2";
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+    <div role="dialog" aria-modal="true" aria-label="Product editor" className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
       <div className="bg-white border-[3px] border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] w-full max-w-5xl flex flex-col text-black max-h-[90vh]">
         
         {/* Header */}
@@ -134,7 +134,7 @@ export default function ProductModal({ isOpen, onClose, product, onSave }) {
           <button 
             type="button"
             onClick={onClose} 
-            className="text-black hover:text-[#FA5D19] transition-colors focus:outline-none"
+            aria-label="Close" className="text-black hover:text-[#FA5D19] transition-colors focus:outline-none"
           >
             <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="3" d="M6 18L18 6M6 6l12 12"></path>
@@ -148,7 +148,7 @@ export default function ProductModal({ isOpen, onClose, product, onSave }) {
             
             {/* Core Data Section */}
             <div>
-              <h3 className="font-mono text-lg font-black uppercase mb-6 border-b-[3px] border-black pb-2 text-[#FA5D19]">CORE SPECIFICATIONS</h3>
+              <h3 className="font-mono text-lg font-black uppercase mb-6 border-b-[3px] border-black pb-2 text-[#C43600]">CORE SPECIFICATIONS</h3>
               <div className="grid grid-cols-2 gap-x-8 gap-y-6">
                 <div>
                   <label className={labelClass}>SKU / ID</label>
@@ -214,7 +214,7 @@ export default function ProductModal({ isOpen, onClose, product, onSave }) {
 
             {/* Technical Specs Section */}
             <div>
-              <h3 className="font-mono text-lg font-black uppercase mb-6 border-b-[3px] border-black pb-2 text-[#FA5D19]">TECHNICAL SPECS</h3>
+              <h3 className="font-mono text-lg font-black uppercase mb-6 border-b-[3px] border-black pb-2 text-[#C43600]">TECHNICAL SPECS</h3>
               <div className="grid grid-cols-2 gap-x-8 gap-y-6">
                 <div>
                   <label className={labelClass}>SPECIFIC MAX TEMP</label>
@@ -266,7 +266,7 @@ export default function ProductModal({ isOpen, onClose, product, onSave }) {
           <button 
             type="submit" 
             form="product-form"
-            className="px-8 py-4 bg-[#FA5D19] text-white border-[3px] border-black font-mono text-sm font-bold tracking-widest uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-[2px] hover:translate-x-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer focus:outline-none"
+            className="px-8 py-4 bg-[#D13B00] text-white border-[3px] border-black font-mono text-sm font-bold tracking-widest uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-[2px] hover:translate-x-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer focus:outline-none"
           >
             SAVE PRODUCT
           </button>

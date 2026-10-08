@@ -47,7 +47,7 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0A0A0B] text-white flex items-center justify-center font-mono selection:bg-[#FF4D00] selection:text-black">
+    <main className="min-h-screen bg-[#0A0A0B] text-white flex items-center justify-center font-mono selection:bg-[#FF4D00] selection:text-black">
       <div className="w-full max-w-md p-8 border border-zinc-800 bg-black shadow-2xl relative">
         <div className="absolute top-0 left-0 w-full h-1 bg-[#FF4D00]"></div>
         
@@ -94,6 +94,6 @@ export default function Login() {
           </button>
         </form>
       </div>
-    </div>
+    </main>
   );
 }

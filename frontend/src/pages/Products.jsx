@@ -83,7 +83,7 @@ function ProductCardGrid({ title, specs, imagePlaceholder, sku }) {
             onClick={handleQuoteClick}
             className={`w-full border-2 border-black py-3 font-mono text-[11px] font-bold uppercase tracking-wider transition-colors cursor-pointer ${isAdded
                 ? 'bg-black text-white hover:bg-white hover:text-black'
-                : 'bg-primary text-white hover:bg-black hover:text-white'
+                : 'bg-[#D13B00] text-white hover:bg-black hover:text-white'
               }`}
           >
             {isAdded ? '[ ADDED TO QUOTE ]' : 'ADD TO QUOTE'}
