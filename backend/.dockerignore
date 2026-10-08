@@ -5,3 +5,7 @@ __pycache__/
 *.db
 stitch_screens/
 products_data.json
+.env.*
+*.db.bak*
+backups
+tests

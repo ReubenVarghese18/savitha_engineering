@@ -1,0 +1,20 @@
+# Caddy gets and renews the HTTPS certificate by itself.
+# {$DOMAIN} comes from .env.production (for example savithaeng.com).
+{$DOMAIN} {
+	encode gzip
+	header Strict-Transport-Security "max-age=31536000"
+
+	@backend path /api/* /furnaces /furnaces/* /enquiries /enquiries/* /sitemap.xml
+	handle @backend {
+		reverse_proxy backend:8000
+	}
+
+	handle {
+		reverse_proxy frontend:80
+	}
+}
+
+# Send www to the main address (only works once the DNS record for www exists).
+www.{$DOMAIN} {
+	redir https://{$DOMAIN}{uri} permanent
+}
