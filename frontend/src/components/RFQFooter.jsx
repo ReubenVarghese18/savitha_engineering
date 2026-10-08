@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { useQuote } from '../context/QuoteContext';
 import { apiFetch } from '../api/client';

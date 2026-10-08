@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { DndContext, useDraggable, useDroppable, pointerWithin } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
@@ -330,8 +330,8 @@ export default function Production() {
     );
 
     const numericId = originalCard.db_id || draggedCardId.replace(/^SE-/i, '').replace(/^PO-/i, '');
-    let dbStatus = '';
-    let endpoint = '';
+    let dbStatus;
+    let endpoint;
     
     if (originalCard.type === 'PO') {
       endpoint = `/api/purchase_orders/${numericId}`;

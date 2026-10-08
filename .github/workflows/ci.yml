@@ -61,7 +61,6 @@ jobs:
           cache: npm
           cache-dependency-path: frontend/package-lock.json
       - run: npm ci
-      - name: Lint (non-blocking until existing errors are cleaned up)
+      - name: Lint
         run: npm run lint
-        continue-on-error: true
       - run: npm run build

@@ -34,7 +34,7 @@ export async function apiFetch(endpoint, options = {}) {
       if (errorData.detail) {
         errorMessage = typeof errorData.detail === 'string' ? errorData.detail : JSON.stringify(errorData.detail);
       }
-    } catch (e) {
+    } catch {
       // Ignore if response is not JSON
     }
     throw new Error(errorMessage);

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import QuoteModal from '../../components/QuoteModal';
 import POModal from '../../components/POModal';
@@ -326,8 +326,8 @@ export default function LiveFeed() {
         {inquiries.map((row, index) => {
           const isPO = row.type === 'PO';
           const statusUpper = (row.status || 'PENDING').toUpperCase();
-          let statusBg = 'bg-black';
-          let statusText = 'text-white';
+          let statusBg;
+          let statusText;
           
           if (isPO) {
              statusBg = statusUpper === 'DRAFT' ? 'bg-zinc-300' 

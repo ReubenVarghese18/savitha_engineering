@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { apiFetch } from '../../api/client';
@@ -41,7 +41,7 @@ export default function Login() {
       login(data.access_token);
       navigate('/admin/live-feed', { replace: true });
       
-    } catch (err) {
+    } catch {
       setError('NETWORK ERROR');
     }
   };

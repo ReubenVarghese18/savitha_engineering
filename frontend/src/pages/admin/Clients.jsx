@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import AdminFooter from '../../components/AdminFooter';
 
@@ -8,22 +8,6 @@ import AdminFooter from '../../components/AdminFooter';
 const INPUT_CLS =
   'w-full px-4 py-2.5 border-2 border-black bg-white rounded-none focus:outline-none focus:border-[#FA5D19] focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-mono text-lg transition-all';
 const LABEL_CLS = 'block font-mono font-bold uppercase text-gray-700 mb-2 tracking-wider text-sm';
-const SELECT_CLS =
-  'w-full p-4 pr-10 border-2 border-black bg-white rounded-none appearance-none font-mono text-lg cursor-pointer focus:outline-none focus:border-[#FA5D19] focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all';
-
-function SelectWrapper({ children }) {
-  return (
-    <div className="relative">
-      {children}
-      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-black">
-        <svg className="fill-current h-4 w-4" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-          <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-        </svg>
-      </div>
-    </div>
-  );
-}
-
 /* ─────────────────────────────────────────────────────────────────
    MOCK DATA
 ───────────────────────────────────────────────────────────────── */

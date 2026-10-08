@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useQuote } from '../context/QuoteContext';
 
@@ -14,8 +14,8 @@ export default function Navbar() {
   const isPDP = location.pathname.startsWith('/products/') && location.pathname !== '/products';
 
   // Determine button text and styling based on 3-tier contextual logic
-  let ctaText = '';
-  let ctaClasses = '';
+  let ctaText;
+  let ctaClasses;
 
   if (quoteCount > 0) {
     // State A: Active Cart (Global)

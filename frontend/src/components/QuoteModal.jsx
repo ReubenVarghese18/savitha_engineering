@@ -1,10 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { products } from '../data/products';
 import { apiFetch } from '../api/client';
 
-export default function QuoteModal({ inquiry, onClose, onUpdate }) {
-  if (!inquiry) return null;
+export default function QuoteModal(props) {
+  if (!props.inquiry) return null;
+  // Keyed by quote id so the form state resets whenever a different quote is opened.
+  return <QuoteModalContent key={props.inquiry.id} {...props} />;
+}
 
+function QuoteModalContent({ inquiry, onClose, onUpdate }) {
   const selectedItems = (inquiry.requested_assets || []).map(assetId => 
     products.find(p => p.id === assetId || p.sku === assetId)
   ).filter(Boolean);
@@ -72,12 +76,6 @@ export default function QuoteModal({ inquiry, onClose, onUpdate }) {
       setIsSaving(false);
       setIsSaved(true);
       
-      // Update the inquiry object in memory so it persists across modal closes
-      inquiry.base_price = basePrice;
-      inquiry.lead_time = leadTime;
-      inquiry.payment_terms = paymentTerms;
-      inquiry.notes = notes;
-
       if (onUpdate) {
         onUpdate(inquiry.id, {
           base_price: basePrice,

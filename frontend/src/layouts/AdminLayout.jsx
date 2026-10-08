@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { NavLink, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { products } from '../data/products';
 import { apiFetch } from '../api/client';
 
 export default function AdminLayout() {
-  const { user, logout } = useAuth();
+  const { logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [time, setTime] = useState(new Date().toLocaleTimeString());
@@ -78,7 +78,7 @@ export default function AdminLayout() {
           custom_details: '',
           equipment_serial_number: ''
         });
-    } catch (err) {
+    } catch {
       alert("Failed to save inquiry.");
     }
   };
@@ -228,16 +228,6 @@ export default function AdminLayout() {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
-
-  useEffect(() => {
-    let interval;
-    if (isTerminalOpen) {
-      interval = setInterval(() => {
-        setLogs(prev => [...prev, generateMockLog()]);
-      }, 1500);
-    }
-    return () => clearInterval(interval);
-  }, [isTerminalOpen]);
 
   useEffect(() => {
     if (isNewInquiryOpen || isTerminalOpen) {

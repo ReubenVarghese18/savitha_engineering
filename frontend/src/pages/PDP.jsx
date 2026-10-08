@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Navbar from '../components/Navbar';
 import RFQFooter from '../components/RFQFooter';
@@ -68,7 +68,6 @@ function ProductNotFound() {
 
 export default function PDPPage() {
   const { productId } = useParams();
-  const navigate = useNavigate();
   const { addProductToQuote, removeProductFromQuote, isProductInQuote } = useQuote();
 
   // ── DATA LAYER: Local-first with full API sync ────────────────────────

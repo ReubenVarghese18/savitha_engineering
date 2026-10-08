@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function ProductModal({ isOpen, onClose, product, onSave }) {
   const [formData, setFormData] = useState({

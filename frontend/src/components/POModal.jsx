@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { apiFetch } from '../api/client';
 
 export default function POModal({ po, onClose, onUpdate }) {
